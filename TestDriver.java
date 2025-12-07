@@ -13,7 +13,6 @@ public class TestDriver
         Enemy enemyTest = new Enemy(8, .4, 100, "nuclear bomb", 900);
         RoomGUI gui = new RoomGUI();
 
-        gui.windowLayout();
 
    
     }
