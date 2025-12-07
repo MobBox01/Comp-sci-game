@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.util.Scanner;
 
+import Unused.Enemy;
+import Unused.Player;
+import Unused.ProgressSaving;
+
 public class TestDriver
 {
 
