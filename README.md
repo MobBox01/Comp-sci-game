@@ -22,7 +22,10 @@ Each board has a [0] [1] and [2]
 [4] - Next room
 
 Board -> 10x10 (Planned) OR 5x5 easier to build map
+7x7 Board in use!
 
+
+To be considered later:
 [ENCOUNTER] will not happen, instead its all RNG
 [Steps] -> Each time a play steps it will choose a direction, wont go previous location until previous is smth else
 Enemy moves up, cant move down until next step

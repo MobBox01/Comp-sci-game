@@ -11,13 +11,18 @@ public class TestDriver
     public static void main(String[] args) throws IOException  
     {
 
-        Scanner sc = new Scanner(System.in);
-        ProgressSaving savingTest = new ProgressSaving();
-        Player playerTest = new Player(savingTest.obtainSavePoint());
-        Enemy enemyTest = new Enemy(8, .4, 100, "nuclear bomb", 900);
         RoomGUI gui = new RoomGUI();
+        PlayerMovement e = new PlayerMovement(gui);
+        gui.addKeyListener(e);
 
 
+        gui.enteredRoom(1);  
+        gui.enteredRoom(0);    
+
+
+
+
+     
    
     }
 }
