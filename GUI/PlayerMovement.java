@@ -1,14 +1,13 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+package GUI;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import javax.swing.*;
 public class PlayerMovement implements KeyListener 
 {
-    RoomGUI gui;
+    RoomGui gui;
 
-    public PlayerMovement(RoomGUI r)
+    public PlayerMovement(RoomGui r)
     {
         this.gui = r;
     }

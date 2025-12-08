@@ -1,8 +1,9 @@
+package GUI;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-public class RoomGUI extends JFrame 
+public class RoomGui extends JFrame 
 {
 
     private ArrayList<JPanel> panel = new ArrayList<>();
@@ -13,7 +14,7 @@ public class RoomGUI extends JFrame
     /**
      * Sets up window and starting room
      */
-    public RoomGUI() 
+    public RoomGui() 
     {
         
         setTitle("Void Game");
@@ -81,7 +82,7 @@ public class RoomGUI extends JFrame
                     {
                         if((int)(Math.random()*10) == 2)
                         {
-                            setTile("RoomSprites/VoidEye.jpg", index);
+                            setTile("Sprites/VoidEye.jpg",index);
                         }
                         else
                         {
@@ -91,7 +92,7 @@ public class RoomGUI extends JFrame
 
                     case 1 ->
                     {
-                        setTile("RoomSprites/Flooring.png", index);
+                        setTile("Sprites/Flooring.png", index);
                     }
 
                     default -> panel.get(index).setBackground(Color.GRAY);

@@ -1,4 +1,4 @@
-package Unused;
+package Saving;
 import java.io.*;
 import java.util.Scanner;
 
@@ -18,7 +18,7 @@ public class ProgressSaving
      */
     public int[] obtainSavePoint() throws IOException
     {
-        sc = new Scanner(new File("SaveFile.txt"));
+        sc = new Scanner(new File("Saving/SaveFile.txt"));
 
         info[0] = sc.nextInt();
         info[1] = sc.nextInt();
@@ -29,11 +29,10 @@ public class ProgressSaving
     }
 
     /**
-     * Sets your stats when you save 
+     * Sets your stats when you enter a new room 
      * [1] - Level
      * [2] - XP
      * [3] - Room number
-     * /!\ YOU WILL LOSE PROGRESS IF YOU SAVE ANYWHERE ELSE /!\
      */
     public void setSavePoint(int[] input) throws IOException 
     {

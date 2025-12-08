@@ -1,4 +1,4 @@
-package Unused;
+package Stats;
 
 public class Enemy 
 {
@@ -20,7 +20,6 @@ public class Enemy
      * @param Health
      * @param Name
      * @param Shield
-     * e
      */
     public Enemy(int Attack, Double Defense, int Health, String Name, int Shield)
     {

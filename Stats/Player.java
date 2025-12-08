@@ -1,4 +1,4 @@
-package Unused;
+package Stats;
 public class Player
 {
     private int[] attack = {10,20,30,40,50};

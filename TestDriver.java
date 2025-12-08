@@ -1,9 +1,10 @@
 import java.io.IOException;
-import java.util.Scanner;
 
-import Unused.Enemy;
-import Unused.Player;
-import Unused.ProgressSaving;
+import GUI.PlayerMovement;
+import GUI.RoomGui;
+import Saving.ProgressSaving;
+import Stats.Enemy;
+import Stats.Player;
 
 public class TestDriver
 {
@@ -11,13 +12,17 @@ public class TestDriver
     public static void main(String[] args) throws IOException  
     {
 
-        RoomGUI gui = new RoomGUI();
+        RoomGui gui = new RoomGui();
+        ProgressSaving saving = new ProgressSaving();
         PlayerMovement e = new PlayerMovement(gui);
+        Enemy enemy1 = new Enemy(0, 1.0, 0, "Balls", 0);
+        Player player = new Player(saving.obtainSavePoint());
+
+
         gui.addKeyListener(e);
 
 
         gui.enteredRoom(1);  
-        gui.enteredRoom(0);    
 
 
 
