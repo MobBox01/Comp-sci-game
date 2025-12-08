@@ -1,10 +1,9 @@
-import java.io.IOException;
-
 import GUI.PlayerMovement;
 import GUI.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Enemy;
 import Stats.Player;
+import java.io.IOException;
 
 public class TestDriver
 {
@@ -22,7 +21,7 @@ public class TestDriver
         gui.addKeyListener(e);
 
 
-        gui.enteredRoom(1);  
+        gui.enteredRoom(0);  
 
 
 

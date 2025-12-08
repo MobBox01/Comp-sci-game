@@ -17,8 +17,8 @@ public class PlayerMovement implements KeyListener
     {
         switch(e.getKeyCode())
         {
-            case KeyEvent.VK_LEFT -> gui.movePlayer(-1, 0);
-            case KeyEvent.VK_RIGHT -> gui.movePlayer(1,0);
+            case KeyEvent.VK_LEFT -> gui.enteredRoom(1);
+            case KeyEvent.VK_RIGHT -> gui.enteredRoom(0);
             case KeyEvent.VK_UP -> gui.movePlayer(0, 1);
             case KeyEvent.VK_DOWN -> gui.movePlayer(0, -1);
         }

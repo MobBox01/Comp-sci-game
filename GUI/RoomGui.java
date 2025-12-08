@@ -10,19 +10,23 @@ public class RoomGui extends JFrame
     
     private Rooms room = new Rooms();
     private int[][] roomArray;
+    private int x = 10;
+    private int y = 10;
+    private int product = x*y;
     
     /**
      * Sets up window and starting room
-     */
+    */
     public RoomGui() 
     {
         
         setTitle("Void Game");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(7, 7, 0, 0));
+        setResizable(false);
+        setLayout(new GridLayout(x, y, 0, 0));
 
-        for(int i = 0; i < 49; i++)
+        for(int i = 0; i < product; i++)
         {
             panel.add(new JPanel());
             panel.get(i).setLayout(new BorderLayout());
@@ -67,14 +71,14 @@ public class RoomGui extends JFrame
     {
         int index = 0; 
 
-        for(int i = 0; i < 49; i++)
+        for(int i = 0; i < product; i++)
         {
             panel.get(i).removeAll();
         }
 
-        for (int i = 0; i < 7; i++) 
+        for (int i = 0; i < x; i++) 
         {
-            for (int j = 0; j < 7; j++) 
+            for (int j = 0; j < x; j++) 
             {
                 switch (roomArray[i][j]) 
                 {
@@ -110,7 +114,7 @@ public class RoomGui extends JFrame
 
     /**
      * @param tilePath String for picture of tile
-     * @param index Index of the 7x7 for loop
+     * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
      */
     private void setTile(String tilePath, int index)
