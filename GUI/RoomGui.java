@@ -53,9 +53,65 @@ public class RoomGui extends JFrame
      * @param x -> 1 tile left/right (Left > 0)
      * @param y Y -> 1 tile Up/Down  (Down > 0)
      */
-    public void movePlayer(int x,int y)
+    public void movePlayer(int dx,int dy)
     {
+        int[] found = new int[2];
+        for(int i = 0; i < x; i++)
+        {
+            for(int j = 0; j < x; j++)
+            {
+                if(roomArray[i][j] == 90)
+                {
+                    found[0] = i;
+                    found[1] = j;
+                }
+            }    
+        }
+        int row = found[0];
+        int col = found[1];
 
+        switch(dx)
+        {
+            case 1 -> 
+            {
+                if(roomArray[row][col+1] == 1)
+                {
+                    roomArray[row][col+1] = 90;
+                    roomArray[row][col] = 1;
+                }
+
+            }
+            case 2 ->
+            {
+                if(roomArray[row][col-1] == 1)
+                {
+                    roomArray[row][col-1] = 90;
+                    roomArray[row][col] = 1;
+                }
+            }
+        }
+
+        switch(dy)
+        {
+            case 1 -> 
+            {
+                if(roomArray[row-1][col] == 1)
+                {
+                    roomArray[row-1][col] = 90;
+                    roomArray[row][col] = 1;
+                }
+
+            }
+            case 2 ->
+            {
+                if(roomArray[row+1][col] == 1)
+                {
+                    roomArray[row+1][col] = 90;
+                    roomArray[row][col] = 1;
+                }
+            }
+        }
+        buildRoom();
     }
 
     /**
@@ -82,25 +138,18 @@ public class RoomGui extends JFrame
             {
                 switch (roomArray[i][j]) 
                 {
-                    case 0 -> 
-                    {
-                        if((int)(Math.random()*10) == 2)
-                        {
-                            setTile("Sprites/VoidEye.jpg",index);
-                        }
-                        else
-                        {
-                            panel.get(index).setBackground(Color.BLACK);
-                        }
-                    }
+                    case 0 -> panel.get(index).setBackground(Color.BLACK);
 
-                    case 1 ->
-                    {
-                        setTile("Sprites/Flooring.png", index);
-                    }
+                    case 1 -> setTile("Sprites/Flooring.png", index);
+
+                    case -1 -> setTile("Sprites/VoidEye.jpg", index);
+                    case 90 -> setTile("Sprites/Logo.png",index);
 
                     default -> panel.get(index).setBackground(Color.GRAY);
+
                 }
+
+                
 
                 add(panel.get(index)); 
                 index++;
