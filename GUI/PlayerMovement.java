@@ -2,8 +2,8 @@ package GUI;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
-public class PlayerMovement implements KeyListener 
+import javax.swing.*;
+public class PlayerMovement extends JFrame implements KeyListener 
 {
     RoomGui gui;
 
@@ -18,10 +18,10 @@ public class PlayerMovement implements KeyListener
     {
         switch(e.getKeyCode())
         {
-            case KeyEvent.VK_LEFT -> gui.movePlayer(2, 0);
+            case KeyEvent.VK_LEFT -> gui.movePlayer(-1, 0);
             case KeyEvent.VK_RIGHT -> gui.movePlayer(1,0);
             case KeyEvent.VK_UP -> gui.movePlayer(0, 1);
-            case KeyEvent.VK_DOWN -> gui.movePlayer(0, 2);
+            case KeyEvent.VK_DOWN -> gui.movePlayer(0, -1);
         }
     }
 

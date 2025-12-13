@@ -9,11 +9,13 @@ public class RoomGui extends JFrame
     private ArrayList<JPanel> panel = new ArrayList<>();
     
     private Rooms room = new Rooms();
-    private int[][] roomArray;
+    private int[][] currentRoom;
     private int x = 10;
     private int y = 10;
     private int product = x*y;
-    
+    private int roomCounter = 0;
+    private int tileUnderPlayer = 1;
+
     /**
      * Sets up window and starting room
     */
@@ -33,7 +35,7 @@ public class RoomGui extends JFrame
 
         }
 
-        roomArray = room.obtainRoom(0);
+        currentRoom = room.obtainRoom(0);
         setVisible(true);
     }
 
@@ -43,74 +45,99 @@ public class RoomGui extends JFrame
      */
     public void enteredRoom(int roomNumber)
     {
-        roomArray = room.obtainRoom(roomNumber);
-
+        currentRoom = room.obtainRoom(roomNumber);
         buildRoom();
     }
 
 
     /**
-     * @param x -> 1 tile left/right (Left > 0)
-     * @param y Y -> 1 tile Up/Down  (Down > 0)
+     * @param dx -> 1 tile left/right (Left == -1) (Right == 1)
+     * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
+     * [IF] User encounter square 10, move to next room
+     * [IF] USer encounters square 11, move back a room
      */
     public void movePlayer(int dx,int dy)
     {
-        int[] found = new int[2];
+        int[] playerFound = new int[2];
+
         for(int i = 0; i < x; i++)
         {
-            for(int j = 0; j < x; j++)
+            for(int j = 0; j < y; j++)
             {
-                if(roomArray[i][j] == 90)
+                if(currentRoom[i][j] == 90)
                 {
-                    found[0] = i;
-                    found[1] = j;
+                    playerFound[0] = i;
+                    playerFound[1] = j;
                 }
             }    
         }
-        int row = found[0];
-        int col = found[1];
+
+        int row = playerFound[0];
+        int collumn = playerFound[1];
 
         switch(dx)
         {
             case 1 -> 
-            {
-                if(roomArray[row][col+1] == 1)
-                {
-                    roomArray[row][col+1] = 90;
-                    roomArray[row][col] = 1;
-                }
+            {//Right
+                int targetTile = currentRoom[row][collumn + 1];
 
-            }
-            case 2 ->
-            {
-                if(roomArray[row][col-1] == 1)
+                if (targetTile == 1 || targetTile == 2) 
                 {
-                    roomArray[row][col-1] = 90;
-                    roomArray[row][col] = 1;
+                    currentRoom[row][collumn] = tileUnderPlayer;
+                    tileUnderPlayer = targetTile;
+                    currentRoom[row][collumn + 1] = 90;
                 }
-            }
+                else if(targetTile == 10)
+                {
+                    roomCounter++;
+                    enteredRoom(roomCounter);
+                }
+            }//Right
+            case -1 -> 
+            {//Left
+                int targetTile = currentRoom[row][collumn - 1];
+
+                if (targetTile == 1 || targetTile == 2) 
+                {
+                    currentRoom[row][collumn] = tileUnderPlayer;
+                    tileUnderPlayer = targetTile;
+                    currentRoom[row][collumn - 1] = 90;
+                }
+                else if(targetTile == 11)
+                {
+                    roomCounter--;
+                    enteredRoom(roomCounter);
+                }
+            }//Left
         }
 
         switch(dy)
         {
             case 1 -> 
             {
-                if(roomArray[row-1][col] == 1)
+                int targetTile = currentRoom[row -1 ][collumn];
+
+                if (targetTile == 1 || targetTile == 2) 
                 {
-                    roomArray[row-1][col] = 90;
-                    roomArray[row][col] = 1;
+                    currentRoom[row][collumn] = tileUnderPlayer;
+                    tileUnderPlayer = targetTile;
+                    currentRoom[row-1][collumn] = 90;
                 }
 
             }
-            case 2 ->
+            case -1 ->
             {
-                if(roomArray[row+1][col] == 1)
+                int targetTile = currentRoom[row + 1][collumn];
+
+                if (targetTile == 1 || targetTile == 2) 
                 {
-                    roomArray[row+1][col] = 90;
-                    roomArray[row][col] = 1;
+                    currentRoom[row][collumn] = tileUnderPlayer;
+                    tileUnderPlayer = targetTile;
+                    currentRoom[row + 1][collumn] = 90;
                 }
             }
         }
+        
         buildRoom();
     }
 
@@ -119,9 +146,7 @@ public class RoomGui extends JFrame
      * <p>
      * Cleans up all tile panels
      * <p>
-     * Loops until each tile is filled 
-     * <p>
-     * <b>[CASE 0]: Void eyes will always change when u reenter room, lore reason; not a bug.
+     * Loops until each tile is filled
      */
     private void buildRoom() 
     {
@@ -134,26 +159,26 @@ public class RoomGui extends JFrame
 
         for (int i = 0; i < x; i++) 
         {
-            for (int j = 0; j < x; j++) 
+            for (int j = 0; j < y; j++) 
             {
-                switch (roomArray[i][j]) 
+                switch (currentRoom[i][j]) 
                 {
                     case 0 -> panel.get(index).setBackground(Color.BLACK);
 
-                    case 1 -> setTile("Sprites/Flooring.png", index);
+                    case 1 ->   setTile("Sprites/GreenPlain.png", index);
+
+                    case 2 -> setTile("Sprites/GrassBlades.png", index);
 
                     case -1 -> setTile("Sprites/VoidEye.jpg", index);
+                    
                     case 90 -> setTile("Sprites/Logo.png",index);
 
                     default -> panel.get(index).setBackground(Color.GRAY);
 
                 }
 
-                
-
                 add(panel.get(index)); 
                 index++;
-
             }
         }
         
@@ -165,6 +190,7 @@ public class RoomGui extends JFrame
      * @param tilePath String for picture of tile
      * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
+     * [IF] image not found or error; set tile to magenta to spot it easily
      */
     private void setTile(String tilePath, int index)
     {
@@ -174,5 +200,6 @@ public class RoomGui extends JFrame
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
         panel.get(index).add(l, BorderLayout.CENTER);  
+        panel.get(index).setBackground(Color.magenta);
     }
 }
