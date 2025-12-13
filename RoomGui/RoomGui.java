@@ -1,4 +1,4 @@
-package GUI;
+package RoomGui;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -8,10 +8,10 @@ public class RoomGui extends JFrame
 
     private ArrayList<JPanel> panel = new ArrayList<>();
     
-    private Rooms room = new Rooms();
+    private Rooms rooms = new Rooms();
     private int[][] currentRoom;
-    private int x = 10;
-    private int y = 10;
+    private int x = 15;
+    private int y = 15;
     private int product = x*y;
     private int roomCounter = 0;
     private int tileUnderPlayer = 1;
@@ -21,23 +21,27 @@ public class RoomGui extends JFrame
     */
     public RoomGui() 
     {
-        
         setTitle("Void Game");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+
         setLayout(new GridLayout(x, y, 0, 0));
 
-        for(int i = 0; i < product; i++)
+        for (int i = 0; i < product; i++) 
         {
-            panel.add(new JPanel());
-            panel.get(i).setLayout(new BorderLayout());
-
+            JPanel p = new JPanel();
+            p.setLayout(new BorderLayout());
+            panel.add(p);
+            add(p);
         }
 
-        currentRoom = room.obtainRoom(0);
+        currentRoom = rooms.obtainRoom(0);
+        buildRoom();
+
         setVisible(true);
     }
+
 
     /**
      * @param roomNumber
@@ -45,7 +49,8 @@ public class RoomGui extends JFrame
      */
     public void enteredRoom(int roomNumber)
     {
-        currentRoom = room.obtainRoom(roomNumber);
+        System.out.println("Entered room number: {" + roomNumber + "}");
+        currentRoom = rooms.obtainRoom(roomNumber);
         buildRoom();
     }
 
@@ -150,38 +155,28 @@ public class RoomGui extends JFrame
      */
     private void buildRoom() 
     {
-        int index = 0; 
-
-        for(int i = 0; i < product; i++)
-        {
-            panel.get(i).removeAll();
-        }
-
+        int index = 0;
         for (int i = 0; i < x; i++) 
         {
             for (int j = 0; j < y; j++) 
             {
+                panel.get(index).removeAll();
+                
                 switch (currentRoom[i][j]) 
                 {
                     case 0 -> panel.get(index).setBackground(Color.BLACK);
-
-                    case 1 ->   setTile("Sprites/GreenPlain.png", index);
-
+                    case 1 -> setTile("Sprites/GrassPlain.png", index);
                     case 2 -> setTile("Sprites/GrassBlades.png", index);
-
-                    case -1 -> setTile("Sprites/VoidEye.jpg", index);
-                    
-                    case 90 -> setTile("Sprites/Logo.png",index);
-
-                    default -> panel.get(index).setBackground(Color.GRAY);
-
+                    case -1 -> setGifTile("Sprites/VoidHeart.gif", index);
+                    case 90 -> setTile("Sprites/Logo.png", index);
+                    case 10 -> panel.get(index).setBackground(Color.BLUE);
+                    case 11 -> panel.get(index).setBackground(Color.CYAN);
+                    default -> panel.get(index).setBackground(Color.RED);
                 }
 
-                add(panel.get(index)); 
                 index++;
             }
         }
-        
         revalidate();
         repaint();
     }
@@ -195,11 +190,29 @@ public class RoomGui extends JFrame
     private void setTile(String tilePath, int index)
     {
         ImageIcon icon = new ImageIcon(tilePath);
-        Image img = icon.getImage().getScaledInstance(107, 107, Image.SCALE_SMOOTH);
+        Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         JLabel l = new JLabel(new ImageIcon(img));
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
         panel.get(index).add(l, BorderLayout.CENTER);  
         panel.get(index).setBackground(Color.magenta);
     }
+
+     /**
+     * Set an animated GIF tile on the panel at index
+     * @param gifPath Path to the animated GIF
+     * @param index Index of the tile in the panel list
+     */
+    private void setGifTile(String gifPath, int index)
+    {
+        ImageIcon gifIcon = new ImageIcon(gifPath); 
+        JLabel label = new JLabel(gifIcon);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setVerticalAlignment(JLabel.CENTER);
+
+        panel.get(index).removeAll();
+        panel.get(index).add(label, BorderLayout.CENTER);
+        panel.get(index).setBackground(Color.magenta);
+    }
+
 }

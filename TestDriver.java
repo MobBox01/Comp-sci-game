@@ -1,27 +1,33 @@
-import GUI.PlayerMovement;
-import GUI.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Enemy;
 import Stats.Player;
 import java.io.IOException;
 
+import FightingGui.FightGui;
+import RoomGui.PlayerMovement;
+import RoomGui.RoomGui;
+
 public class TestDriver
 {
 
+    
     public static void main(String[] args) throws IOException  
     {
 
         RoomGui gui = new RoomGui();
         ProgressSaving saving = new ProgressSaving();
-        PlayerMovement e = new PlayerMovement(gui);
-        Enemy enemy1 = new Enemy(0, 1.0, 0, "Balls", 0);
+        PlayerMovement movement = new PlayerMovement(gui);
+        @SuppressWarnings("unused")
+        Enemy enemy1 = new Enemy(0, 1.0, 0, "Testing", 0);
+        @SuppressWarnings("unused")
         Player player = new Player(saving.obtainSavePoint());
+        FightGui test = new FightGui();
 
+        movement.fightTime(test);
+        gui.addKeyListener(movement);
+        test.addKeyListener(movement);
+        
 
-        gui.addKeyListener(e);
-
-
-        gui.enteredRoom(0);  
 
 
 
