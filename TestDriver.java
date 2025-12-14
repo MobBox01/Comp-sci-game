@@ -14,18 +14,18 @@ public class TestDriver
     public static void main(String[] args) throws IOException  
     {
 
-        RoomGui gui = new RoomGui();
+        FightGui fgui = new FightGui();
+        RoomGui gui = new RoomGui(fgui);
         ProgressSaving saving = new ProgressSaving();
         PlayerMovement movement = new PlayerMovement(gui);
         @SuppressWarnings("unused")
         Enemy enemy1 = new Enemy(0, 1.0, 0, "Testing", 0);
         @SuppressWarnings("unused")
         Player player = new Player(saving.obtainSavePoint());
-        FightGui test = new FightGui();
 
-        movement.fightTime(test);
+        movement.fightTime(fgui);
         gui.addKeyListener(movement);
-        test.addKeyListener(movement);
+        fgui.addKeyListener(movement);
         
 
 

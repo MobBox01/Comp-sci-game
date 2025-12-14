@@ -3,6 +3,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
+import FightingGui.FightGui;
+
 public class RoomGui extends JFrame 
 {
 
@@ -15,12 +17,15 @@ public class RoomGui extends JFrame
     private int product = x*y;
     private int roomCounter = 0;
     private int tileUnderPlayer = 1;
-
+    private FightGui fgui;
     /**
      * Sets up window and starting room
     */
-    public RoomGui() 
+
+
+    public RoomGui(FightGui e) 
     {
+        fgui = e;
         setTitle("Void Game");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -142,7 +147,10 @@ public class RoomGui extends JFrame
                 }
             }
         }
-        
+        if((int)(Math.random()*1000) <= 10)
+        {
+            fgui.fightSet(true);
+        }
         buildRoom();
     }
 
@@ -169,6 +177,7 @@ public class RoomGui extends JFrame
                     case 2 -> setTile("Sprites/GrassBlades.png", index);
                     case -1 -> setGifTile("Sprites/VoidHeart.gif", index);
                     case 90 -> setTile("Sprites/Logo.png", index);
+                    case -10 -> setGifTile("Sprites/LightProducer.gif", index);
                     case 10 -> panel.get(index).setBackground(Color.BLUE);
                     case 11 -> panel.get(index).setBackground(Color.CYAN);
                     default -> panel.get(index).setBackground(Color.RED);

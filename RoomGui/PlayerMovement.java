@@ -25,7 +25,7 @@ public class PlayerMovement extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent e) 
     {
-        if(!fgui.fight())
+        if(!fgui.fightCheck())
         {
             switch(e.getKeyCode())
             {
@@ -35,12 +35,13 @@ public class PlayerMovement extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> gui.movePlayer(0, -1);
             }
         }
-        else if(fgui.fight())
+        else if(fgui.fightCheck())
         {
             switch (e.getKeyCode()) 
             {
-                case KeyEvent.VK_LEFT -> fgui.movePlayer(-1, 0);
-                case KeyEvent.VK_RIGHT -> fgui.movePlayer(1, 0);
+                case KeyEvent.VK_LEFT -> fgui.movePlayer(-1);
+                case KeyEvent.VK_RIGHT -> fgui.movePlayer(1);
+                case KeyEvent.VK_ENTER -> fgui.movePlayer(90);
             }
         }
     }

@@ -18,11 +18,11 @@ public class FightGui extends JFrame
     private int product = x*y;
     private Layout fightLayout = new Layout();
     private int[][] fightMap = fightLayout.getFightMapping();
-    @SuppressWarnings("unused")
     private int[][] noFight = fightLayout.getNoFightMapping();
     private int[][] currentLayout = noFight;
     private ArrayList<JPanel> panel = new ArrayList<>();
-    private int tileUnderPlayer;
+    private int storedTileChoice = 1;
+    private boolean fightStatus = false;
 
 
     public FightGui()
@@ -48,10 +48,10 @@ public class FightGui extends JFrame
     }
 
     /**
-     * @param dx -> 1 tile left/right (Left == -1) (Right == 1)
+     * @param move_OR_selected -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
     */
-    public void movePlayer(int dx,int dy)
+    public void movePlayer(int move_OR_selected)
     {
         int[] playerFound = new int[2];
 
@@ -70,45 +70,71 @@ public class FightGui extends JFrame
         int row = playerFound[0];
         int collumn = playerFound[1];
 
-    switch(dx)
-    {
-        case 1 -> // RIGHT
-        {
-            int targetTile = currentLayout[row][collumn + 1];
 
-            switch(targetTile)
+        switch(move_OR_selected)
+        {
+            case 1 -> // RIGHT
             {
-                case 1 ->
+                int targetTile = currentLayout[row][collumn + 1];
+                switch(targetTile)
                 {
-                    currentLayout[row][collumn] = 1;
-                    currentLayout[row][collumn + 1] = 2;
-                    
-                }
-                case 3 ->
-                {
-                    currentLayout[row][collumn] = 3; 
-                    currentLayout[row][collumn + 1] = 4;
+
+                    case 3 ->
+                    {
+                        currentLayout[row][collumn] = storedTileChoice;
+                        storedTileChoice = targetTile;
+                        currentLayout[row][collumn + 1] = 4;
+                    }
+                    case 5 ->
+                    {
+                        currentLayout[row][collumn] = storedTileChoice;
+                        storedTileChoice = targetTile;
+                        currentLayout[row][collumn + 1] = 6;
+                    }
                 }
             }
-        }
 
-        case -1 -> // LEFT
-        {
-            int targetTile = currentLayout[row][collumn - 1];
-
-            if(targetTile == 1 || targetTile == 3)
+            case -1 ->
             {
-                currentLayout[row][collumn] = 1;
-                currentLayout[row][collumn - 1] = 2;
+                int targetTile = currentLayout[row][collumn - 1];
+                switch(targetTile)
+                {
+                    case 1 ->
+                    {
+                        currentLayout[row][collumn] = storedTileChoice;
+                        storedTileChoice = targetTile;
+                        currentLayout[row][collumn - 1] = 2;
+                        
+                    }
+                    case 3 ->
+                    {
+                        currentLayout[row][collumn] = storedTileChoice;
+                        storedTileChoice = targetTile;
+                        currentLayout[row][collumn - 1] = 4;
+                    }
+
+                }
+            }
+
+            case 90 ->
+            {
+                System.out.println("ENTERED");
             }
         }
-    }
 
         buildFightRoom();
     }
-    public boolean fight()
+    public boolean fightCheck()
     {
-        return true;
+
+        return fightStatus;
+    }
+
+    public boolean fightSet(boolean e)
+    {
+        fightStatus = e;
+        return fightStatus;
+
     }
 
 
@@ -133,10 +159,20 @@ public class FightGui extends JFrame
                 switch (currentLayout[i][j]) 
                 {
                     case 0 -> panel.get(index).setBackground(Color.BLACK);
+                    
+                    //ATK
                     case 1 -> setTile("Sprites/Unselected_Attack.png", index);
                     case 2 -> setTile("Sprites/Selected_Attack.png", index);
+
+                    //HP
                     case 3 -> setTile("Sprites/Unselected_Health.png", index);
                     case 4 -> setTile("Sprites/Selected_Health.png", index);
+
+                    //DFN
+                    case 5 -> setTile("Sprites/Unselected_Defense.png", index);
+                    case 6 -> setTile("Sprites/Selected_Defense.png", index);
+
+                    //ERROR
                     default -> panel.get(index).setBackground(Color.magenta);
                 }
 
