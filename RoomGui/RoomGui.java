@@ -11,18 +11,19 @@ public class RoomGui extends JFrame
     private ArrayList<JPanel> panel = new ArrayList<>();
     
     private Rooms rooms = new Rooms();
+    private FightGui fgui;
+
     private int[][] currentRoom;
+    
     private int x = 15;
     private int y = 15;
     private int product = x*y;
     private int roomCounter = 0;
     private int tileUnderPlayer = 1;
-    private FightGui fgui;
+    
     /**
      * Sets up window and starting room
     */
-
-
     public RoomGui(FightGui e) 
     {
         fgui = e;
@@ -147,7 +148,7 @@ public class RoomGui extends JFrame
                 }
             }
         }
-        if((int)(Math.random()*1000) <= 10)
+        if((int)(Math.random()*3000) <= 20)//~.6% chance for encounter will be later readjusted
         {
             fgui.fightSet(true);
         }

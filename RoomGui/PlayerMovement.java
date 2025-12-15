@@ -5,10 +5,12 @@ import java.awt.event.KeyListener;
 import javax.swing.*;
 
 import FightingGui.FightGui;
+
 public class PlayerMovement extends JFrame implements KeyListener 
 {
     RoomGui gui;
     FightGui fgui;
+    
     boolean battleStatus;
 
     public PlayerMovement(RoomGui r)

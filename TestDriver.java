@@ -1,6 +1,3 @@
-import Saving.ProgressSaving;
-import Stats.Enemy;
-import Stats.Player;
 import java.io.IOException;
 
 import FightingGui.FightGui;
@@ -9,31 +6,16 @@ import RoomGui.RoomGui;
 
 public class TestDriver
 {
-
-    
-    public static void main(String[] args) throws IOException  
+    public static void main(String[] args) throws IOException
     {
 
         FightGui fgui = new FightGui();
         RoomGui gui = new RoomGui(fgui);
-        ProgressSaving saving = new ProgressSaving();
         PlayerMovement movement = new PlayerMovement(gui);
-        @SuppressWarnings("unused")
-        Enemy enemy1 = new Enemy(0, 1.0, 0, "Testing", 0);
-        @SuppressWarnings("unused")
-        Player player = new Player(saving.obtainSavePoint());
 
         movement.fightTime(fgui);
         gui.addKeyListener(movement);
         fgui.addKeyListener(movement);
-        
-
-
-
-
-
-     
-   
     }
 }
 

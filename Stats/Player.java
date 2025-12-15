@@ -2,8 +2,8 @@ package Stats;
 public class Player
 {
     private int[] attack = {10,20,30,40,50};
-    private int[] health = {30,60,90,120,150};
-    private int[] mana = {100,120,140,160,180};
+    private int[] health = {100,200,300,400,500};
+    //private int[] mana = {100,120,140,160,180};
     
     private double[] defense = {.1,.2,.3,.4,.5};
 
@@ -11,7 +11,7 @@ public class Player
     private int xp = 0;
 
     private final int[] maxHealth = {100,200,300,400,500};
-    private final int[] maxMana = {100,120,140,160,180};
+    //private final int[] maxMana = {100,120,140,160,180};
 
     public Player(int[] info)
     {
@@ -24,8 +24,8 @@ public class Player
      */
     public void savePointReset()
     {
-        health = maxHealth;
-        mana = maxMana;
+        health[level] = maxHealth[level];
+        //mana[level] = maxMana[level];
     }
 
     /**
@@ -65,17 +65,15 @@ public class Player
     /**
      * @param heal
      * Heals 100% of the healed amount
-     * Restores 10% mana from healed amount
      * Avoids health overflow
      */
     public void amountHealed(int heal)
     {
         health[level] += heal;
-        mana[level] += (int)(heal*.1);
 
-        if(health[level] > maxHealth[level])
+        if(health[level] >= maxHealth[level])
         {
-            health = maxHealth;
+            health[level] = maxHealth[level];
         }
     }
 
@@ -84,7 +82,7 @@ public class Player
      * Reduces mana stored
      * [IF] Player goes past empty -> Take damage
      * [IF] mana < 0, set {mana = 0}. Negative mana cant exist 
-     */
+     
     public void manaUsed(int Mana)
     {
         mana[level] -= Mana;
@@ -95,7 +93,7 @@ public class Player
             mana[level] = 0;
         }
     }
-
+    */
     /**
      * @return [TRUE] - if alive, [FALSE] if dead, [INBETWEEN] when limit x -> klus = DNE 
      */
@@ -107,6 +105,6 @@ public class Player
     @Override
     public String toString()
     {
-        return "\n[HEALTH]: " + health[level] + "\n[DEFENSE]: " + defense[level] + "\n[ATTACK]: " + attack[level] + "\n[MANA]: " + mana[level] + "\n\n[MAX-HEALTH]: " + maxHealth[level] + "\n[MAX-MANA]: " + maxMana[level] + "\n\n[ALIVE]: " + isAlive() + "\n[LEVEL]: " + level + "\n[XP]: " + xp;
+        return "\n[HEALTH]: " + health[level] + "\n[DEFENSE]: " + defense[level] + "\n[ATTACK]: " + attack[level] + "\n\n[MAX-HEALTH]: " + maxHealth[level] + "\n\n[ALIVE]: " + isAlive() + "\n[LEVEL]: " + level + "\n[XP]: " + xp;
     }
 }

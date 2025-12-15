@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class FightGui extends JFrame 
@@ -16,16 +18,22 @@ public class FightGui extends JFrame
     private int x = 5;
     private int y = 5;
     private int product = x*y;
+    private int storedTileChoice = 1;
+
+    private boolean fightStatus = false;
+
     private Layout fightLayout = new Layout();
+    private ArrayList<JPanel> panel = new ArrayList<>();
+    private FightingSystem system;
+    
     private int[][] fightMap = fightLayout.getFightMapping();
     private int[][] noFight = fightLayout.getNoFightMapping();
     private int[][] currentLayout = noFight;
-    private ArrayList<JPanel> panel = new ArrayList<>();
-    private int storedTileChoice = 1;
-    private boolean fightStatus = false;
 
 
-    public FightGui()
+
+
+    public FightGui() throws IOException
     {
         setLayout(new GridLayout(x,y,0,0));
         setTitle("ENEMY: None");
@@ -34,6 +42,8 @@ public class FightGui extends JFrame
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setVisible(true);
+        
+        system = new FightingSystem();
 
         for(int i = 0; i < product; i++)
         {
@@ -42,9 +52,7 @@ public class FightGui extends JFrame
             panel.add(p);
             add(p);
         }
-
         buildFightRoom();
-
     }
 
     /**
@@ -59,7 +67,7 @@ public class FightGui extends JFrame
         {
             for(int j = 0; j < y; j++)
             {
-                if(currentLayout[i][j] == 2 || currentLayout[i][j] == 4 || currentLayout[i][j] == 6)
+                if(currentLayout[i][ j] == 2 || currentLayout[i][j] == 4 || currentLayout[i][j] == 6)
                 {
                     playerFound[0] = i;
                     playerFound[1] = j;
@@ -70,7 +78,6 @@ public class FightGui extends JFrame
         int row = playerFound[0];
         int collumn = playerFound[1];
 
-
         switch(move_OR_selected)
         {
             case 1 -> // RIGHT
@@ -78,7 +85,6 @@ public class FightGui extends JFrame
                 int targetTile = currentLayout[row][collumn + 1];
                 switch(targetTile)
                 {
-
                     case 3 ->
                     {
                         currentLayout[row][collumn] = storedTileChoice;
@@ -103,8 +109,7 @@ public class FightGui extends JFrame
                     {
                         currentLayout[row][collumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        currentLayout[row][collumn - 1] = 2;
-                        
+                        currentLayout[row][collumn - 1] = 2;   
                     }
                     case 3 ->
                     {
@@ -112,29 +117,67 @@ public class FightGui extends JFrame
                         storedTileChoice = targetTile;
                         currentLayout[row][collumn - 1] = 4;
                     }
-
                 }
             }
 
             case 90 ->
             {
-                System.out.println("ENTERED");
+                for(int i = 0; i < x; i++)
+                {
+                    for(int j = 0; j < y; j++)
+                    {
+                        if(currentLayout[i][j] == 2 || currentLayout[i][j] == 4 || currentLayout[i][j] == 6)
+                        {
+                            playerFound[0] = i;
+                            playerFound[1] = j;
+                        }
+                    }    
+                }
+
+                row = playerFound[0];
+                collumn = playerFound[1];
+
+                switch (currentLayout[row][collumn]) 
+                {
+
+                    case 2 -> system.attack();
+                    case 4 -> system.heal();
+                    case 6 -> system.defend(); 
+                
+                }
             }
         }
-
         buildFightRoom();
     }
     public boolean fightCheck()
     {
+        if(system.isEnemyAlive())
+        {
+            fightStatus = true;
+        }
+        else if(!system.isEnemyAlive())
+        {
+            fightStatus = false;
+        }
 
+        if(!system.isPlayerAlive())
+        {
+        JOptionPane.showMessageDialog(
+            null,
+            "YOU DIED",
+            "GAME OVER",
+            JOptionPane.ERROR_MESSAGE
+        );
+
+        System.exit(0);
+        }
         return fightStatus;
     }
 
-    public boolean fightSet(boolean e)
+    public void fightSet(boolean e)
     {
         fightStatus = e;
-        return fightStatus;
-
+        system.enemyEncounter();
     }
 
 
