@@ -1,10 +1,9 @@
 package FightingGui;
 
-import java.io.IOException;
-
 import Saving.ProgressSaving;
 import Stats.Enemy;
 import Stats.Player;
+import java.io.IOException;
 
 public class FightingSystem 
 {
@@ -46,7 +45,7 @@ public class FightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            System.out.println("PARRY FAILED!" + damage);
+            System.out.println("PARRY FAILED! " + damage);
         }
     }
 
@@ -73,6 +72,11 @@ public class FightingSystem
     {
         player.amountHealed(2);
         System.out.println(player);
+    }
+
+    public String getCurrentName()
+    {
+        return enemy.getName();
     }
 
 }

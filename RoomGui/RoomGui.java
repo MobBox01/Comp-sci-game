@@ -1,9 +1,8 @@
 package RoomGui;
+import FightingGui.FightGui;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
-
-import FightingGui.FightGui;
 
 public class RoomGui extends JFrame 
 {
@@ -27,7 +26,7 @@ public class RoomGui extends JFrame
     public RoomGui(FightGui e) 
     {
         fgui = e;
-        setTitle("Void Game");
+        setTitle("Room Number: [0] VOID GAME");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -56,6 +55,7 @@ public class RoomGui extends JFrame
     public void enteredRoom(int roomNumber)
     {
         System.out.println("Entered room number: {" + roomNumber + "}");
+        setTitle("Room Number: [" + roomNumber + "] VOID GAME");
         currentRoom = rooms.obtainRoom(roomNumber);
         buildRoom();
     }
@@ -148,7 +148,7 @@ public class RoomGui extends JFrame
                 }
             }
         }
-        if((int)(Math.random()*3000) <= 20)//~.6% chance for encounter will be later readjusted
+        if((int)(Math.random()*1000) <= 20)//~2% chance for encounter will be later readjusted
         {
             fgui.fightSet(true);
         }

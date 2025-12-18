@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,18 +19,14 @@ public class FightGui extends JFrame
     private int product = x*y;
     private int storedTileChoice = 1;
 
+    private String name = "null";
     private boolean fightStatus = false;
 
     private Layout fightLayout = new Layout();
     private ArrayList<JPanel> panel = new ArrayList<>();
     private FightingSystem system;
     
-    private int[][] fightMap = fightLayout.getFightMapping();
-    private int[][] noFight = fightLayout.getNoFightMapping();
-    private int[][] currentLayout = noFight;
-
-
-
+    private int[][] currentLayout = fightLayout.getFightMapping();
 
     public FightGui() throws IOException
     {
@@ -177,18 +172,14 @@ public class FightGui extends JFrame
     public void fightSet(boolean e)
     {
         fightStatus = e;
+        //name = enemyName;
         system.enemyEncounter();
+        setEnemyInfo();
     }
 
-
-    private void layoutManager()
+    private void setEnemyInfo()
     {
-    }
-
-
-    public void getEnemyInfo()
-    {
-        setTitle("HOI");
+        setTitle(system.getCurrentName());
     }
 
     public void buildFightRoom()

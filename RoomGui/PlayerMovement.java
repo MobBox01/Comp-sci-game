@@ -1,10 +1,9 @@
 package RoomGui;
 
+import FightingGui.FightGui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
-
-import FightingGui.FightGui;
 
 public class PlayerMovement extends JFrame implements KeyListener 
 {
@@ -27,6 +26,7 @@ public class PlayerMovement extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent e) 
     {
+        
         if(!fgui.fightCheck())
         {
             switch(e.getKeyCode())

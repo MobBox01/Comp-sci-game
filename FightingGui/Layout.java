@@ -2,19 +2,11 @@ package FightingGui;
 
 public class Layout 
 {
+
     int[][] fightLayout =
     {
         {0,0,0,0,0},
         {0,0,1,0,0},
-        {0,0,0,0,0},
-        {0,2,3,5,0},
-        {0,0,0,0,0}
-    };
-
-    int[][] noFight =
-    {
-        {0,0,0,0,0},
-        {0,0,0,0,0},
         {0,0,0,0,0},
         {0,2,3,5,0},
         {0,0,0,0,0}
@@ -31,8 +23,4 @@ public class Layout
         return fightLayout;
     }
 
-    public int[][] getNoFightMapping()
-    {
-        return noFight;
-    }
 }
