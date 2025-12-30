@@ -31,9 +31,8 @@ public class FightGui extends JFrame
     public FightGui() throws IOException
     {
         setLayout(new GridLayout(x,y,0,0));
-        setTitle("ENEMY: None");
-        setLocation(740,0);
-        setSize(550, 550);
+        setTitle("Enemy: None");
+        setBounds(740, 0, 550, 550);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -150,21 +149,17 @@ public class FightGui extends JFrame
         {
             fightStatus = true;
         }
+
         else if(!system.isEnemyAlive())
         {
             fightStatus = false;
+            setTitle("Enemy: None");
         }
 
         if(!system.isPlayerAlive())
         {
-        JOptionPane.showMessageDialog(
-            null,
-            "YOU DIED",
-            "GAME OVER",
-            JOptionPane.ERROR_MESSAGE
-        );
-
-        System.exit(0);
+            JOptionPane.showMessageDialog(null,"YOU DIED","GAME OVER",JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
         }
         return fightStatus;
     }
@@ -179,7 +174,7 @@ public class FightGui extends JFrame
 
     private void setEnemyInfo()
     {
-        setTitle(system.getCurrentName());
+        setTitle("Enemy: " + system.getCurrentName());
     }
 
     public void buildFightRoom()

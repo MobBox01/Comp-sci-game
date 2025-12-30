@@ -9,12 +9,14 @@ public class FightingSystem
 {
     private Player player;
     private Enemy enemy; 
+    private Dialouge message = new Dialouge();
 
     public FightingSystem() throws IOException
     {
         ProgressSaving saving = new ProgressSaving();
         player = new Player(saving.obtainSavePoint());
         enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY", 0);
+
     }
 
     /**
@@ -29,7 +31,7 @@ public class FightingSystem
         }
         */
         enemy = new Enemy(10, .2, 300, "Testing", 0);
-
+        message.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
     /**
@@ -45,7 +47,12 @@ public class FightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            System.out.println("PARRY FAILED! " + damage);
+            message.setNewText("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth());
+        }
+
+        else
+        {
+            message.setNewText("PARRIED!\n" + "Your health: " + player.getHealth());
         }
     }
 
@@ -55,11 +62,16 @@ public class FightingSystem
     public void attack()
     {
         enemy.damageRecieved(player.attackAction());
-        System.out.println(enemy);
+        message.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
+
     }
 
     public boolean isEnemyAlive()
     {
+        if(enemy.isAlive() == false)
+        {
+            message.setNewText("No Enemies yet!");
+        }
         return enemy.isAlive();
     }
 
@@ -71,12 +83,13 @@ public class FightingSystem
     public void heal()
     {
         player.amountHealed(2);
-        System.out.println(player);
+        message.setNewText("Your health: " + player.getHealth());
     }
 
     public String getCurrentName()
     {
         return enemy.getName();
     }
+
 
 }

@@ -62,6 +62,11 @@ public class Player
     {
         return attack[level];
     }
+
+    public int getHealth()
+    {
+        return health[level];
+    }
     /**
      * @param heal
      * Heals 100% of the healed amount

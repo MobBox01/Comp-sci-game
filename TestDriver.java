@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+import FightingGui.Dialouge;
 import FightingGui.FightGui;
 import RoomGui.PlayerMovement;
 import RoomGui.RoomGui;
@@ -12,7 +13,6 @@ public class TestDriver
         FightGui fgui = new FightGui();
         RoomGui gui = new RoomGui(fgui);
         PlayerMovement movement = new PlayerMovement(gui);
-
         movement.fightTime(fgui);
         gui.addKeyListener(movement);
         fgui.addKeyListener(movement);

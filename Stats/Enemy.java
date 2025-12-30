@@ -38,6 +38,10 @@ public class Enemy
         return name;
     }
 
+    public int getHealth()
+    {
+        return health;
+    }
     /**
      * @param damage
      * Damages the enemy, defense reduces a % of the damage 
