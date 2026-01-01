@@ -19,14 +19,13 @@ public class FightGui extends JFrame
     private int product = x*y;
     private int storedTileChoice = 1;
 
-    private String name = "null";
     private boolean fightStatus = false;
 
     private Layout fightLayout = new Layout();
     private ArrayList<JPanel> panel = new ArrayList<>();
     private FightingSystem system;
     
-    private int[][] currentLayout = fightLayout.getFightMapping();
+    private int[][] fightRoomLayout = fightLayout.getFightMapping();
 
     public FightGui() throws IOException
     {
@@ -61,7 +60,7 @@ public class FightGui extends JFrame
         {
             for(int j = 0; j < y; j++)
             {
-                if(currentLayout[i][ j] == 2 || currentLayout[i][j] == 4 || currentLayout[i][j] == 6)
+                if(fightRoomLayout[i][ j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
                 {
                     playerFound[0] = i;
                     playerFound[1] = j;
@@ -76,40 +75,40 @@ public class FightGui extends JFrame
         {
             case 1 -> // RIGHT
             {
-                int targetTile = currentLayout[row][collumn + 1];
+                int targetTile = fightRoomLayout[row][collumn + 1];
                 switch(targetTile)
                 {
                     case 3 ->
                     {
-                        currentLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[row][collumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        currentLayout[row][collumn + 1] = 4;
+                        fightRoomLayout[row][collumn + 1] = 4;
                     }
                     case 5 ->
                     {
-                        currentLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[row][collumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        currentLayout[row][collumn + 1] = 6;
+                        fightRoomLayout[row][collumn + 1] = 6;
                     }
                 }
             }
 
             case -1 ->
             {
-                int targetTile = currentLayout[row][collumn - 1];
+                int targetTile = fightRoomLayout[row][collumn - 1];
                 switch(targetTile)
                 {
                     case 1 ->
                     {
-                        currentLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[row][collumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        currentLayout[row][collumn - 1] = 2;   
+                        fightRoomLayout[row][collumn - 1] = 2;   
                     }
                     case 3 ->
                     {
-                        currentLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[row][collumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        currentLayout[row][collumn - 1] = 4;
+                        fightRoomLayout[row][collumn - 1] = 4;
                     }
                 }
             }
@@ -120,7 +119,7 @@ public class FightGui extends JFrame
                 {
                     for(int j = 0; j < y; j++)
                     {
-                        if(currentLayout[i][j] == 2 || currentLayout[i][j] == 4 || currentLayout[i][j] == 6)
+                        if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
                         {
                             playerFound[0] = i;
                             playerFound[1] = j;
@@ -131,7 +130,7 @@ public class FightGui extends JFrame
                 row = playerFound[0];
                 collumn = playerFound[1];
 
-                switch (currentLayout[row][collumn]) 
+                switch (fightRoomLayout[row][collumn]) 
                 {
 
                     case 2 -> system.attack();
@@ -141,8 +140,24 @@ public class FightGui extends JFrame
                 }
             }
         }
+        healthStatus();
         buildFightRoom();
     }
+
+    private void healthStatus()
+    {
+        int hp = system.getPlayerHealthPercentage();
+
+        switch (hp)
+        {//[2][0]
+            case 100 -> fightRoomLayout[2][0] = -200;
+            case 75  -> fightRoomLayout[2][0] = -175;
+            case 50  -> fightRoomLayout[2][0] = -150;
+            case 25  -> fightRoomLayout[2][0] = -125;
+            case 0   -> fightRoomLayout[2][0] = -100;
+        }
+    }
+
     public boolean fightCheck()
     {
         if(system.isEnemyAlive())
@@ -185,7 +200,7 @@ public class FightGui extends JFrame
             for(int j = 0; j < y; j++)
             {
                 panel.get(index).removeAll();
-                switch (currentLayout[i][j]) 
+                switch (fightRoomLayout[i][j]) 
                 {
                     case 0 -> panel.get(index).setBackground(Color.BLACK);
                     
@@ -200,6 +215,12 @@ public class FightGui extends JFrame
                     //DFN
                     case 5 -> setTile("Sprites/Unselected_Defense.png", index);
                     case 6 -> setTile("Sprites/Selected_Defense.png", index);
+
+                    case -200 -> setTile("Sprites/MC_Full.png", index);
+                    case -175 -> setTile("Sprites/MC_75.png", index);
+                    case -150 -> setTile("Sprites/MC_50.png", index);
+                    case -125 -> setTile("Sprites/MC_25.png", index);
+                    case -100 -> setTile("Sprites/MC_Dead.png", index);
 
                     //ERROR
                     default -> panel.get(index).setBackground(Color.magenta);

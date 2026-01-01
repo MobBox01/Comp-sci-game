@@ -16,15 +16,16 @@ public class Dialouge extends JFrame
         setResizable(false);
         getContentPane().setBackground(Color.black);
         setLayout(new BorderLayout()); 
-        setNewText("HELLO WORLD!");
+        setNewText("Peaceful...");
 
         setVisible(true);
     }
 
+    /**
+     * @param e -> String, Dialouge you want to put 
+     */
     public void setNewText(String e)
     {
-
-
         textBox.setText(e);
         textBox.setEditable(false);
         textBox.setFocusable(false);

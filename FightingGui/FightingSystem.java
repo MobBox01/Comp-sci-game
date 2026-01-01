@@ -16,11 +16,11 @@ public class FightingSystem
         ProgressSaving saving = new ProgressSaving();
         player = new Player(saving.obtainSavePoint());
         enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY", 0);
-
     }
 
     /**
      * Initialize the new enemy
+     * Set dialouge text for new enemy encounter
      */
     public void enemyEncounter()
     {
@@ -30,7 +30,7 @@ public class FightingSystem
             case 3 -> enemy = new Enemy(0, null, 0, null, 0);
         }
         */
-        enemy = new Enemy(10, .2, 300, "Testing", 0);
+        enemy = new Enemy(10, .2, 100, "Testing", 0);
         message.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
@@ -62,15 +62,45 @@ public class FightingSystem
     public void attack()
     {
         enemy.damageRecieved(player.attackAction());
+        player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.2)));
         message.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
 
     }
 
+
+
+    /**
+     * Heal a specified amount, default: 5 HP
+     * TODO: Make RNG Change for more health
+     */
+    public void heal()
+    {
+        player.amountHealed(10);
+        player.damageRecieved((int)(enemy.Attack()*.5));
+        message.setNewText("Your health: " + player.getHealth());
+    }
+
+    /**
+     * @return the current % of players hp
+     */
+    public int getPlayerHealthPercentage()
+    {
+        int hp = player.healthPercentage();
+
+        if (hp >= 100) return 100;
+        if (hp >= 75)  return 75;
+        if (hp >= 50)  return 50;
+        if (hp > 0)  return 25;
+        message.setNewText("You have DIED! \nGame over...");
+        return 0;
+    }
+
+    //GETTERS
     public boolean isEnemyAlive()
     {
         if(enemy.isAlive() == false)
         {
-            message.setNewText("No Enemies yet!");
+            message.setNewText("Peaceful...");
         }
         return enemy.isAlive();
     }
@@ -78,12 +108,6 @@ public class FightingSystem
     public boolean isPlayerAlive()
     {
         return player.isAlive();
-    }
-
-    public void heal()
-    {
-        player.amountHealed(2);
-        message.setNewText("Your health: " + player.getHealth());
     }
 
     public String getCurrentName()

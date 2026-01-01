@@ -3,15 +3,12 @@ public class Player
 {
     private int[] attack = {10,20,30,40,50};
     private int[] health = {100,200,300,400,500};
-    //private int[] mana = {100,120,140,160,180};
-    
+    private int[] maxHealth = {100,200,300,400,500};
+
     private double[] defense = {.1,.2,.3,.4,.5};
 
     private int level = 0;
     private int xp = 0;
-
-    private final int[] maxHealth = {100,200,300,400,500};
-    //private final int[] maxMana = {100,120,140,160,180};
 
     public Player(int[] info)
     {
@@ -25,7 +22,6 @@ public class Player
     public void savePointReset()
     {
         health[level] = maxHealth[level];
-        //mana[level] = maxMana[level];
     }
 
     /**
@@ -82,6 +78,41 @@ public class Player
         }
     }
 
+
+    public int healthPercentage()
+    {
+        return (int)((health[level] * 100.0) / maxHealth[level]);
+    }    
+
+
+    /**
+     * @return [TRUE] - if alive, [FALSE] if dead, [INBETWEEN] when limit x -> klus = DNE 
+     */
+    public boolean isAlive()
+    {
+        return health[level] > 0;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "\n[HEALTH]: " + health[level] + "\n[DEFENSE]: " + defense[level] + "\n[ATTACK]: " + attack[level] + "\n\n[MAX-HEALTH]: " + maxHealth[level] + "\n\n[ALIVE]: " + isAlive() + "\n[LEVEL]: " + level + "\n[XP]: " + xp;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * @param Mana
      * Reduces mana stored
@@ -99,17 +130,3 @@ public class Player
         }
     }
     */
-    /**
-     * @return [TRUE] - if alive, [FALSE] if dead, [INBETWEEN] when limit x -> klus = DNE 
-     */
-    public boolean isAlive()
-    {
-        return health[level] > 0;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "\n[HEALTH]: " + health[level] + "\n[DEFENSE]: " + defense[level] + "\n[ATTACK]: " + attack[level] + "\n\n[MAX-HEALTH]: " + maxHealth[level] + "\n\n[ALIVE]: " + isAlive() + "\n[LEVEL]: " + level + "\n[XP]: " + xp;
-    }
-}

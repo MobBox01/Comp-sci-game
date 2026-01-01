@@ -1,6 +1,5 @@
 import java.io.IOException;
 
-import FightingGui.Dialouge;
 import FightingGui.FightGui;
 import RoomGui.PlayerMovement;
 import RoomGui.RoomGui;

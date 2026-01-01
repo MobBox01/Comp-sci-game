@@ -14,11 +14,22 @@ public class RoomGui extends JFrame
 
     private int[][] currentRoom;
     
-    private int x = 15;
-    private int y = 15;
+    private int x = 10;
+    private int y = 10;
     private int product = x*y;
     private int roomCounter = 0;
     private int tileUnderPlayer = 1;
+
+    //CONSTANTS
+    private static final int VOID = 0;
+    private static final int GRASS = 1;
+    private static final int GRASS_BLADES = 2;
+    private static final int PLAYER = 90;
+    private static final int NEXT_ROOM = 10;
+    private static final int LAST_ROOM = 11;
+    private static final int VOID_HEART = -1;
+    private static final int LIGHT_PRODUCER = -10;
+
     
     /**
      * Sets up window and starting room
@@ -60,7 +71,6 @@ public class RoomGui extends JFrame
         buildRoom();
     }
 
-
     /**
      * @param dx -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
@@ -75,7 +85,7 @@ public class RoomGui extends JFrame
         {
             for(int j = 0; j < y; j++)
             {
-                if(currentRoom[i][j] == 90)
+                if(currentRoom[i][j] == PLAYER)
                 {
                     playerFound[0] = i;
                     playerFound[1] = j;
@@ -96,9 +106,9 @@ public class RoomGui extends JFrame
                 {
                     currentRoom[row][collumn] = tileUnderPlayer;
                     tileUnderPlayer = targetTile;
-                    currentRoom[row][collumn + 1] = 90;
+                    currentRoom[row][collumn + 1] = PLAYER;
                 }
-                else if(targetTile == 10)
+                else if(targetTile == NEXT_ROOM)
                 {
                     roomCounter++;
                     enteredRoom(roomCounter);
@@ -112,9 +122,9 @@ public class RoomGui extends JFrame
                 {
                     currentRoom[row][collumn] = tileUnderPlayer;
                     tileUnderPlayer = targetTile;
-                    currentRoom[row][collumn - 1] = 90;
+                    currentRoom[row][collumn - 1] = PLAYER;
                 }
-                else if(targetTile == 11)
+                else if(targetTile == LAST_ROOM)
                 {
                     roomCounter--;
                     enteredRoom(roomCounter);
@@ -132,7 +142,7 @@ public class RoomGui extends JFrame
                 {
                     currentRoom[row][collumn] = tileUnderPlayer;
                     tileUnderPlayer = targetTile;
-                    currentRoom[row-1][collumn] = 90;
+                    currentRoom[row-1][collumn] = PLAYER;
                 }
 
             }
@@ -144,7 +154,7 @@ public class RoomGui extends JFrame
                 {
                     currentRoom[row][collumn] = tileUnderPlayer;
                     tileUnderPlayer = targetTile;
-                    currentRoom[row + 1][collumn] = 90;
+                    currentRoom[row + 1][collumn] = PLAYER;
                 }
             }
         }
@@ -173,14 +183,14 @@ public class RoomGui extends JFrame
                 
                 switch (currentRoom[i][j]) 
                 {
-                    case 0 -> panel.get(index).setBackground(Color.BLACK);
-                    case 1 -> setTile("Sprites/GrassPlain.png", index);
-                    case 2 -> setTile("Sprites/GrassBlades.png", index);
-                    case -1 -> setGifTile("Sprites/VoidHeart.gif", index);
-                    case 90 -> setTile("Sprites/Logo.png", index);
-                    case -10 -> setGifTile("Sprites/LightProducer.gif", index);
-                    case 10 -> panel.get(index).setBackground(Color.BLUE);
-                    case 11 -> panel.get(index).setBackground(Color.CYAN);
+                    case VOID -> panel.get(index).setBackground(Color.BLACK);
+                    case GRASS -> setTile("Sprites/GrassPlain.png", index);
+                    case GRASS_BLADES -> setTile("Sprites/GrassBlades.png", index);
+                    case VOID_HEART -> setGifTile("Sprites/VoidHeart.gif", index);
+                    case PLAYER -> setTile("Sprites/Logo.png", index);
+                    case LIGHT_PRODUCER -> setGifTile("Sprites/LightProducer.gif", index);
+                    case NEXT_ROOM -> panel.get(index).setBackground(Color.BLUE);
+                    case LAST_ROOM -> panel.get(index).setBackground(Color.CYAN);
                     default -> panel.get(index).setBackground(Color.RED);
                 }
 
@@ -205,7 +215,7 @@ public class RoomGui extends JFrame
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
         panel.get(index).add(l, BorderLayout.CENTER);  
-        panel.get(index).setBackground(Color.magenta);
+        panel.get(index).setBackground(Color.RED);
     }
 
      /**
@@ -222,7 +232,7 @@ public class RoomGui extends JFrame
 
         panel.get(index).removeAll();
         panel.get(index).add(label, BorderLayout.CENTER);
-        panel.get(index).setBackground(Color.magenta);
+        panel.get(index).setBackground(Color.red);
     }
 
 }
