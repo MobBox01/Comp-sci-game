@@ -7,18 +7,22 @@ import javax.swing.*;
 public class RoomGui extends JFrame 
 {
 
+    //Classes & Arrays
+    private int[][] currentRoom;
     private ArrayList<JPanel> panel = new ArrayList<>();
-    
     private Rooms rooms = new Rooms();
     private FightGui fgui;
 
-    private int[][] currentRoom;
-    
-    private int x = 10;
-    private int y = 10;
-    private int product = x*y;
+    //Game Size - Constant
+    private final int x = 10;
+    private final int y = 10;
+    private final int product = x*y;
+
+    //Rooms
     private int roomCounter = 0;
     private int tileUnderPlayer = 1;
+    private int playerRow;
+    private int playerCollumn;
 
     //CONSTANTS
     private static final int VOID = 0;
@@ -30,7 +34,6 @@ public class RoomGui extends JFrame
     private static final int VOID_HEART = -1;
     private static final int LIGHT_PRODUCER = -10;
 
-    
     /**
      * Sets up window and starting room
     */
@@ -53,6 +56,7 @@ public class RoomGui extends JFrame
         }
 
         currentRoom = rooms.obtainRoom(0);
+        findPlayer();
         buildRoom();
 
         setVisible(true);
@@ -61,13 +65,14 @@ public class RoomGui extends JFrame
 
     /**
      * @param roomNumber
-     * Obtain room, then build it
+     * Obtain new room, then build it
      */
     public void enteredRoom(int roomNumber)
     {
         System.out.println("Entered room number: {" + roomNumber + "}");
         setTitle("Room Number: [" + roomNumber + "] VOID GAME");
         currentRoom = rooms.obtainRoom(roomNumber);
+        findPlayer();
         buildRoom();
     }
 
@@ -79,90 +84,80 @@ public class RoomGui extends JFrame
      */
     public void movePlayer(int dx,int dy)
     {
-        int[] playerFound = new int[2];
+        if (dx != 0) movePlayerX(dx);
+        if (dy != 0) movePlayerY(dy);
 
+        if((int)(Math.random()*1000) <= 3)
+        {
+            fgui.fightSet(true);
+        }
+        buildRoom();
+    }
+
+    /**
+     * Find the players current X, Y position when entering a room.
+     */
+    private void findPlayer()
+    {
         for(int i = 0; i < x; i++)
         {
             for(int j = 0; j < y; j++)
             {
                 if(currentRoom[i][j] == PLAYER)
                 {
-                    playerFound[0] = i;
-                    playerFound[1] = j;
+                    playerRow = i;
+                    playerCollumn = j;
                 }
             }    
         }
+    }
 
-        int row = playerFound[0];
-        int collumn = playerFound[1];
+    /**
+     * @param dx
+     * Move player to the right or left 
+     * [1] -> Right
+     * [-1] -> Left
+     */
+    private void movePlayerX(int dx)
+    {
+        int targetTile = currentRoom[playerRow][playerCollumn + dx];
 
-        switch(dx)
+        if (targetTile == 1 || targetTile == 2) 
         {
-            case 1 -> 
-            {//Right
-                int targetTile = currentRoom[row][collumn + 1];
-
-                if (targetTile == 1 || targetTile == 2) 
-                {
-                    currentRoom[row][collumn] = tileUnderPlayer;
-                    tileUnderPlayer = targetTile;
-                    currentRoom[row][collumn + 1] = PLAYER;
-                }
-                else if(targetTile == NEXT_ROOM)
-                {
-                    roomCounter++;
-                    enteredRoom(roomCounter);
-                }
-            }//Right
-            case -1 -> 
-            {//Left
-                int targetTile = currentRoom[row][collumn - 1];
-
-                if (targetTile == 1 || targetTile == 2) 
-                {
-                    currentRoom[row][collumn] = tileUnderPlayer;
-                    tileUnderPlayer = targetTile;
-                    currentRoom[row][collumn - 1] = PLAYER;
-                }
-                else if(targetTile == LAST_ROOM)
-                {
-                    roomCounter--;
-                    enteredRoom(roomCounter);
-                }
-            }//Left
+            currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
+            tileUnderPlayer = targetTile;
+            playerCollumn += dx;
+            currentRoom[playerRow][playerCollumn] = PLAYER;
         }
-
-        switch(dy)
+        else if(targetTile == NEXT_ROOM)
         {
-            case 1 -> 
-            {
-                int targetTile = currentRoom[row -1 ][collumn];
-
-                if (targetTile == 1 || targetTile == 2) 
-                {
-                    currentRoom[row][collumn] = tileUnderPlayer;
-                    tileUnderPlayer = targetTile;
-                    currentRoom[row-1][collumn] = PLAYER;
-                }
-
-            }
-            case -1 ->
-            {
-                int targetTile = currentRoom[row + 1][collumn];
-
-                if (targetTile == 1 || targetTile == 2) 
-                {
-                    currentRoom[row][collumn] = tileUnderPlayer;
-                    tileUnderPlayer = targetTile;
-                    currentRoom[row + 1][collumn] = PLAYER;
-                }
-            }
+            roomCounter++;
+            enteredRoom(roomCounter);
         }
-        if((int)(Math.random()*1000) <= 20)//~2% chance for encounter will be later readjusted
+        else if(targetTile == LAST_ROOM)
         {
-            fgui.fightSet(true);
+            roomCounter--;
+            enteredRoom(roomCounter);
         }
-        buildRoom();
+    }
+
+    /**
+     * @param dx
+     * Move player to the right or left 
+     * [1] -> Up
+     * [-1] -> Down
+     */
+    private void movePlayerY(int dy)
+    {
+        int targetTile = currentRoom[playerRow - dy][playerCollumn];
+
+        if (targetTile == 1 || targetTile == 2) 
+        {
+            currentRoom[playerRow][playerCollumn] = tileUnderPlayer;
+            tileUnderPlayer = targetTile;
+            playerRow -= dy;
+            currentRoom[playerRow][playerCollumn] = PLAYER;
+        }
     }
 
     /**
@@ -180,7 +175,6 @@ public class RoomGui extends JFrame
             for (int j = 0; j < y; j++) 
             {
                 panel.get(index).removeAll();
-                
                 switch (currentRoom[i][j]) 
                 {
                     case VOID -> panel.get(index).setBackground(Color.BLACK);
@@ -193,7 +187,6 @@ public class RoomGui extends JFrame
                     case LAST_ROOM -> panel.get(index).setBackground(Color.CYAN);
                     default -> panel.get(index).setBackground(Color.RED);
                 }
-
                 index++;
             }
         }
@@ -205,15 +198,17 @@ public class RoomGui extends JFrame
      * @param tilePath String for picture of tile
      * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
-     * [IF] image not found or error; set tile to magenta to spot it easily
+     * [IF] image not found or error; set tile to RED to spot it easily
      */
     private void setTile(String tilePath, int index)
     {
         ImageIcon icon = new ImageIcon(tilePath);
         Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         JLabel l = new JLabel(new ImageIcon(img));
+
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
+
         panel.get(index).add(l, BorderLayout.CENTER);  
         panel.get(index).setBackground(Color.RED);
     }
@@ -227,12 +222,12 @@ public class RoomGui extends JFrame
     {
         ImageIcon gifIcon = new ImageIcon(gifPath); 
         JLabel label = new JLabel(gifIcon);
+
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setVerticalAlignment(JLabel.CENTER);
 
         panel.get(index).removeAll();
         panel.get(index).add(label, BorderLayout.CENTER);
-        panel.get(index).setBackground(Color.red);
+        panel.get(index).setBackground(Color.RED);
     }
-
 }

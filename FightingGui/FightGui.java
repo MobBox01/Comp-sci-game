@@ -60,7 +60,7 @@ public class FightGui extends JFrame
         {
             for(int j = 0; j < y; j++)
             {
-                if(fightRoomLayout[i][ j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
+                if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
                 {
                     playerFound[0] = i;
                     playerFound[1] = j;
