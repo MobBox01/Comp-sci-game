@@ -43,13 +43,13 @@ public class Enemy
         return health;
     }
     /**
-     * @param damage
+     * @param attackDamageRecieved
      * Damages the enemy, defense reduces a % of the damage 
      */
-    public int damageRecieved(int damage)
+    public int damageRecieved(int attackDamageRecieved)
     {
-        health -= damage-((int)(damage*defense));
-        return damage;
+        health -= attackDamageRecieved-((int)(attackDamageRecieved*defense));
+        return attackDamageRecieved;
     }
 
     public boolean isAlive()

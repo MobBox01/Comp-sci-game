@@ -1,20 +1,18 @@
 package FightingGui;
 
-import Saving.ProgressSaving;
 import Stats.Enemy;
 import Stats.Player;
-import java.io.IOException;
 
 public class FightingSystem 
 {
     private Player player;
     private Enemy enemy; 
-    private Dialouge message = new Dialouge();
+    private Dialouge dialougeSystem;
 
-    public FightingSystem() throws IOException
+    public FightingSystem(Player playerPass, Dialouge dialougeSystemPass) 
     {
-        ProgressSaving saving = new ProgressSaving();
-        player = new Player(saving.obtainSavePoint());
+        player = playerPass;
+        dialougeSystem = dialougeSystemPass;
         enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY", 0);
     }
 
@@ -30,16 +28,16 @@ public class FightingSystem
             case 3 -> enemy = new Enemy(0, null, 0, null, 0);
         }
         */
-        enemy = new Enemy(10, .2, 100, "Testing", 0);
-        message.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
+        enemy = new Enemy(3, .1, 50, "Enemy Sniper", 0);
+        dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
     /**
-     * 1/3 chance for failure, reduce incoming attack by 50%
+     * 1/2 chance for failure, reduce incoming attack by 50%
      */
     public void defend()
     {
-        int random = (int)(Math.random()*4);
+        int random = (int)(Math.random()*3);
 
         if(random == 1)
         {
@@ -47,12 +45,12 @@ public class FightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            message.setNewText("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth());
+            dialougeSystem.setNewText("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth());
         }
 
         else
         {
-            message.setNewText("PARRIED!\n" + "Your health: " + player.getHealth());
+            dialougeSystem.setNewText("PARRIED!\n" + "Your health: " + player.getHealth());
         }
     }
 
@@ -63,36 +61,20 @@ public class FightingSystem
     {
         enemy.damageRecieved(player.attackAction());
         player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.2)));
-        message.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
-
+        dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
     }
 
 
 
     /**
      * Heal a specified amount, default: 5 HP
-     * TODO: Make RNG Change for more health
+     * TODO: Health should be a random % increase honestly
      */
     public void heal()
     {
         player.amountHealed(10);
         player.damageRecieved((int)(enemy.Attack()*.5));
-        message.setNewText("Your health: " + player.getHealth());
-    }
-
-    /**
-     * @return the current % of players hp
-     */
-    public int getPlayerHealthPercentage()
-    {
-        int hp = player.healthPercentage();
-
-        if (hp >= 100) return 100;
-        if (hp >= 75)  return 75;
-        if (hp >= 50)  return 50;
-        if (hp > 0)  return 25;
-        message.setNewText("You have DIED! \nGame over...");
-        return 0;
+        dialougeSystem.setNewText("Your health: " + player.getHealth());
     }
 
     //GETTERS
@@ -100,14 +82,9 @@ public class FightingSystem
     {
         if(enemy.isAlive() == false)
         {
-            message.setNewText("Peaceful...");
+            dialougeSystem.setNewText("Peaceful...");
         }
         return enemy.isAlive();
-    }
-
-    public boolean isPlayerAlive()
-    {
-        return player.isAlive();
     }
 
     public String getCurrentName()

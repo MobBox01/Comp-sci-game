@@ -16,16 +16,22 @@ public class ProgressSaving
      * [1] - Xp
      * [3] - Room number - <b>DO NOT USE IN PLAYER CLASS<b>
      */
-    public int[] obtainSavePoint() throws IOException
+    public int[] obtainSavePoint() 
     {
+        try
+        {
         sc = new Scanner(new File("Saving/SaveFile.txt"));
 
         info[0] = sc.nextInt();
         info[1] = sc.nextInt();
         info[2] = sc.nextInt();
+        }
 
+        catch(IOException e)
+        {
+            System.out.println(e);
+        }
         return info;
-
     }
 
     /**
@@ -34,15 +40,24 @@ public class ProgressSaving
      * [2] - XP
      * [3] - Room number
      */
-    public void setSavePoint(int[] input) throws IOException 
+    public void setSavePoint(int level, int xp, int roomNumber) 
     {
-
-        fw = new RandomAccessFile("SaveFile.txt", "rw");
-        fw.setLength(0);
-
-        for (int i = 0; i < 3; i++) 
+        try
         {
-            fw.writeBytes(info[i] + "\n"); 
+            info[0] = level;
+            info[1] = xp;
+            info[2] = roomNumber;
+            fw = new RandomAccessFile("Saving/SaveFile.txt", "rw");
+            fw.setLength(0);
+
+            for (int i = 0; i < 3; i++) 
+            {
+                fw.writeBytes(info[i] + "\n"); 
+            }
+        }
+        catch(IOException e)
+        {
+            System.out.println(e);
         }
 
     }

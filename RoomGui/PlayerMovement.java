@@ -8,19 +8,17 @@ import javax.swing.*;
 
 public class PlayerMovement extends JFrame implements KeyListener 
 {
+    //Classes
     RoomGui gui;
     FightGui fgui;
     
+    //Booleans
     boolean battleStatus;
 
-    public PlayerMovement(RoomGui r)
+    public PlayerMovement(RoomGui r,FightGui f)
     {
         this.gui = r;
-    }
-
-    public void fightTime(FightGui r)
-    {
-        this.fgui = r;
+        this.fgui = f;
     }
 
 
@@ -48,7 +46,6 @@ public class PlayerMovement extends JFrame implements KeyListener
             }
         }
     }
-
 
 
 

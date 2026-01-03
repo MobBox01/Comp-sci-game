@@ -1,5 +1,8 @@
 package RoomGui;
 import FightingGui.FightGui;
+import Saving.ProgressSaving;
+import Stats.Player;
+
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -11,9 +14,11 @@ public class RoomGui extends JFrame
     private int[][] currentRoom;
     private ArrayList<JPanel> panel = new ArrayList<>();
     private Rooms rooms = new Rooms();
-    private FightGui fgui;
+    private FightGui fightingGui;
+    private ProgressSaving progressSaving;
+    private Player player;
 
-    //Game Size - Constant
+    //Room Size - Constants
     private final int x = 10;
     private final int y = 10;
     private final int product = x*y;
@@ -24,7 +29,7 @@ public class RoomGui extends JFrame
     private int playerRow;
     private int playerCollumn;
 
-    //CONSTANTS
+    //Constants
     private static final int VOID = 0;
     private static final int GRASS = 1;
     private static final int GRASS_BLADES = 2;
@@ -37,9 +42,12 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightGui e) 
+    public RoomGui(FightGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
     {
-        fgui = e;
+        fightingGui = fightGuiPass;
+        progressSaving = progressPass;
+        player = playerPass;
+
         setTitle("Room Number: [0] VOID GAME");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -55,7 +63,8 @@ public class RoomGui extends JFrame
             add(p);
         }
 
-        currentRoom = rooms.obtainRoom(0);
+        currentRoom = rooms.obtainRoom(progressSaving.obtainSavePoint()[2]);
+        roomCounter = progressSaving.obtainSavePoint()[2];
         findPlayer();
         buildRoom();
 
@@ -73,6 +82,9 @@ public class RoomGui extends JFrame
         setTitle("Room Number: [" + roomNumber + "] VOID GAME");
         currentRoom = rooms.obtainRoom(roomNumber);
         findPlayer();
+        progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
+
+        
         buildRoom();
     }
 
@@ -89,7 +101,7 @@ public class RoomGui extends JFrame
 
         if((int)(Math.random()*1000) <= 3)
         {
-            fgui.fightSet(true);
+            fightingGui.fightSet(true);
         }
         buildRoom();
     }
@@ -199,6 +211,8 @@ public class RoomGui extends JFrame
      * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
      * [IF] image not found or error; set tile to RED to spot it easily
+     * 
+     * TODO: Merge setGif and setTile into one method, this way itd be cleaner and more easier to work with
      */
     private void setTile(String tilePath, int index)
     {

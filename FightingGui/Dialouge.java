@@ -34,6 +34,7 @@ public class Dialouge extends JFrame
         textBox.setFont(new Font("DialogInput", Font.BOLD, 16));
         textBox.setLineWrap(true);
         textBox.setWrapStyleWord(true);
+        
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
 

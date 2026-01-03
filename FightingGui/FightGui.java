@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Stats.Player;
+
 public class FightGui extends JFrame 
 {
     private int x = 5;
@@ -21,14 +23,20 @@ public class FightGui extends JFrame
 
     private boolean fightStatus = false;
 
+    //Classess & Arrays
     private Layout fightLayout = new Layout();
-    private ArrayList<JPanel> panel = new ArrayList<>();
-    private FightingSystem system;
-    
+    private ArrayList<JPanel> panelArray = new ArrayList<>();
+    private FightingSystem fightingSystem;
+    private Player player;
+    private Dialouge dialougeSystem;
     private int[][] fightRoomLayout = fightLayout.getFightMapping();
 
-    public FightGui() throws IOException
+    public FightGui(FightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
     {
+        fightingSystem = fightSystemPass;
+        player = playerPass;
+        dialougeSystem = dialougeSystemPass;
+
         setLayout(new GridLayout(x,y,0,0));
         setTitle("Enemy: None");
         setBounds(740, 0, 550, 550);
@@ -36,14 +44,12 @@ public class FightGui extends JFrame
         setResizable(false);
         setVisible(true);
         
-        system = new FightingSystem();
-
         for(int i = 0; i < product; i++)
         {
-            JPanel p = new JPanel();
-            p.setLayout(new BorderLayout());
-            panel.add(p);
-            add(p);
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            panelArray.add(panel);
+            add(panel);
         }
         buildFightRoom();
     }
@@ -51,6 +57,8 @@ public class FightGui extends JFrame
     /**
      * @param move_OR_selected -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
+     * TODO: Rewrite this method, my brain wants to cry 
+     * /!\ WARNING: USABLE FOR RIGHT NOW, BUT PLSSS REMAKE THIS </3
     */
     public void movePlayer(int move_OR_selected)
     {
@@ -133,9 +141,9 @@ public class FightGui extends JFrame
                 switch (fightRoomLayout[row][collumn]) 
                 {
 
-                    case 2 -> system.attack();
-                    case 4 -> system.heal();
-                    case 6 -> system.defend(); 
+                    case 2 -> fightingSystem.attack();
+                    case 4 -> fightingSystem.heal();
+                    case 6 -> fightingSystem.defend(); 
                 
                 }
             }
@@ -146,32 +154,51 @@ public class FightGui extends JFrame
 
     private void healthStatus()
     {
-        int hp = system.getPlayerHealthPercentage();
+        int hp = player.healthPercentage();
 
-        switch (hp)
-        {//[2][0]
-            case 100 -> fightRoomLayout[2][0] = -200;
-            case 75  -> fightRoomLayout[2][0] = -175;
-            case 50  -> fightRoomLayout[2][0] = -150;
-            case 25  -> fightRoomLayout[2][0] = -125;
-            case 0   -> fightRoomLayout[2][0] = -100;
+        if(hp == 100)
+        {
+            fightRoomLayout[2][0] = -200;
+        }
+        else if(hp >= 75)
+        {
+            fightRoomLayout[2][0] = -175;
+        }
+        else if(hp >= 50)
+        {
+            fightRoomLayout[2][0] = -150;
+        }
+        else if(hp >= 25)
+        {
+            fightRoomLayout[2][0] = -125;
+        }
+        else if(hp <= 0)
+        {
+            fightRoomLayout[2][0] = -100;
+            dialougeSystem.setNewText("You have died...\n=={GAMER-OVER}==");
         }
     }
 
+    /**
+     * @return check if a fight is ongoing
+     * [IF] Enemy is alive -> True
+     * [ELSE-IF] Enemy isnt alive -> False TODO: Set a new decal to show that there is no enemy when peaceful
+     * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
+     */
     public boolean fightCheck()
     {
-        if(system.isEnemyAlive())
+        if(fightingSystem.isEnemyAlive())
         {
             fightStatus = true;
         }
 
-        else if(!system.isEnemyAlive())
+        else if(!fightingSystem.isEnemyAlive())
         {
             fightStatus = false;
             setTitle("Enemy: None");
         }
 
-        if(!system.isPlayerAlive())
+        if(!player.isAlive())
         {
             JOptionPane.showMessageDialog(null,"YOU DIED","GAME OVER",JOptionPane.ERROR_MESSAGE);
             System.exit(0);
@@ -183,13 +210,13 @@ public class FightGui extends JFrame
     {
         fightStatus = e;
         //name = enemyName;
-        system.enemyEncounter();
+        fightingSystem.enemyEncounter();
         setEnemyInfo();
     }
 
     private void setEnemyInfo()
     {
-        setTitle("Enemy: " + system.getCurrentName());
+        setTitle("Enemy: " + fightingSystem.getCurrentName());
     }
 
     public void buildFightRoom()
@@ -199,10 +226,10 @@ public class FightGui extends JFrame
         {
             for(int j = 0; j < y; j++)
             {
-                panel.get(index).removeAll();
+                panelArray.get(index).removeAll();
                 switch (fightRoomLayout[i][j]) 
                 {
-                    case 0 -> panel.get(index).setBackground(Color.BLACK);
+                    case 0 -> panelArray.get(index).setBackground(Color.BLACK);
                     
                     //ATK
                     case 1 -> setTile("Sprites/Unselected_Attack.png", index);
@@ -223,7 +250,7 @@ public class FightGui extends JFrame
                     case -100 -> setTile("Sprites/MC_Dead.png", index);
 
                     //ERROR
-                    default -> panel.get(index).setBackground(Color.magenta);
+                    default -> panelArray.get(index).setBackground(Color.magenta);
                 }
 
                 index++;
@@ -238,6 +265,7 @@ public class FightGui extends JFrame
      * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
      * [IF] image not found or error; set tile to magenta to spot it easily
+     * TODO: Merge setGif and setTile into one method, this way itd be cleaner and more easier to work with
      */
     private void setTile(String tilePath, int index)
     {
@@ -246,12 +274,12 @@ public class FightGui extends JFrame
         JLabel l = new JLabel(new ImageIcon(img));
         l.setHorizontalAlignment(JLabel.CENTER);
         l.setVerticalAlignment(JLabel.CENTER);
-        panel.get(index).add(l, BorderLayout.CENTER);  
-        panel.get(index).setBackground(Color.black);
+        panelArray.get(index).add(l, BorderLayout.CENTER);  
+        panelArray.get(index).setBackground(Color.black);
     }
     
     public void setGifTile(String tilePath, int index)
     {
-
+        //Inactive, please merge later!
     }
 }

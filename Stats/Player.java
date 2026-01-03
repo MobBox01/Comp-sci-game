@@ -1,9 +1,10 @@
 package Stats;
+
 public class Player
 {
-    private int[] attack = {10,20,30,40,50};
-    private int[] health = {100,200,300,400,500};
-    private int[] maxHealth = {100,200,300,400,500};
+    private int[] attack = {3,5,7,9,11};
+    private int[] health = {55,65,75,85,100};
+    private int[] maxHealth = {55,65,75,85,100};
 
     private double[] defense = {.1,.2,.3,.4,.5};
 
@@ -40,7 +41,7 @@ public class Player
      * level up if required xp is reached and level is not the limit
      * [level - 1] should be used 
      */
-    public void gainedXp(int xpGain)
+    public int gainedXp(int xpGain)
     {
         xp += xpGain;
         while(xp >= 1000 && level != 4)
@@ -49,6 +50,7 @@ public class Player
             level += 1;
             savePointReset();
         }
+        return xpGain;
     }
 
     /**
@@ -91,6 +93,16 @@ public class Player
     public boolean isAlive()
     {
         return health[level] > 0;
+    }
+
+    public int getLevel()
+    {
+        return level;
+    }
+
+    public int getXP()
+    {
+        return xp;
     }
 
     @Override
