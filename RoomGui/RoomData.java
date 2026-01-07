@@ -1,7 +1,7 @@
 package RoomGui;
 import java.util.ArrayList;
 
-public class Rooms 
+public class RoomData 
 {
     ArrayList<int[][]> rooms = new ArrayList<>();
 
@@ -48,7 +48,6 @@ public class Rooms
         {0,-10,-10,-10,0,-10,0,0,0,0}
     };
 
-
     int[][] room3 =
     {
         {0,0,0,0,0,-10,0,0,0,-1},
@@ -62,15 +61,9 @@ public class Rooms
         {0,0,0,0,0,0,1,0,0,0},
         {0,0,0,0,0,0,0,0,-1,0}
     };
+    //300 -> Special building parts
 
-
-
-
-//300 -> Special building parts
-
-
-
-    public Rooms()
+    public RoomData()
     {
         rooms.add(room0);
         rooms.add(room1);
@@ -78,13 +71,9 @@ public class Rooms
         rooms.add(room3);
     }
 
-    
-
     /**
-     * @param e 
-     * @return
-     * Obtain a 2D-Array which is the room layout.
-     * [IF] e == 0, give a black void room for testing.
+     * @param roomNumber
+     * @return 2D-Array which is the layout of the room
      */
     public int[][] obtainRoom(int roomNumber)
     {

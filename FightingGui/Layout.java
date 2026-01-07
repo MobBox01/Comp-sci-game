@@ -6,7 +6,7 @@ public class Layout
     int[][] fightLayout =
     {
         {0,0,0,0,0},
-        {0,0,1,0,0},
+        {0,0,300,0,0},
         {-200,0,0,0,0},
         {0,2,3,5,0},
         {0,0,0,0,0}
@@ -18,6 +18,9 @@ public class Layout
     //-150 -> 50%
     //-125 -> 25%
     //-100 -> DEAD 
+
+    //300 -> Eye Bubbles enemy
+    //301 ->
 
 
     //1 = Unselected attack

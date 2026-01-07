@@ -3,7 +3,6 @@ package FightingGui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
@@ -14,14 +13,16 @@ import javax.swing.JPanel;
 
 import Stats.Player;
 
-public class FightGui extends JFrame 
+public class FightingGui extends JFrame 
 {
-    private int x = 5;
-    private int y = 5;
-    private int product = x*y;
-    private int storedTileChoice = 1;
+    //Room Constants
+    private final int roomX = 5;
+    private final int roomY = 5;
+    private final int roomTotalTiles = roomX*roomY;
 
     private boolean fightStatus = false;
+    private int playerRow;
+    private int playerCollumn;
 
     //Classess & Arrays
     private Layout fightLayout = new Layout();
@@ -31,120 +32,104 @@ public class FightGui extends JFrame
     private Dialouge dialougeSystem;
     private int[][] fightRoomLayout = fightLayout.getFightMapping();
 
-    public FightGui(FightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
+    //Object ints
+    private final int SELECTED_ATTACK = 2;
+    private final int UNSELECTED_ATTACK = 1;
+
+    private final int SELECTED_HEALTH = 4;
+    private final int UNSELECTED_HEALTH = 3;
+
+    private final int SELECTED_DEFENSE = 6;
+    private final int UNSELECTED_DEFENSE = 5;
+
+    private int storedTileChoice = UNSELECTED_ATTACK;
+
+
+    public FightingGui(FightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
     {
         fightingSystem = fightSystemPass;
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
 
-        setLayout(new GridLayout(x,y,0,0));
+        setLayout(new GridLayout(roomX,roomY,0,0));
         setTitle("Enemy: None");
         setBounds(740, 0, 550, 550);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setResizable(false);
         setVisible(true);
         
-        for(int i = 0; i < product; i++)
+        for(int i = 0; i < roomTotalTiles; i++)
         {
             JPanel panel = new JPanel();
             panel.setLayout(new BorderLayout());
             panelArray.add(panel);
             add(panel);
         }
+
+        findPlayer();
         buildFightRoom();
     }
 
     /**
      * @param move_OR_selected -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
-     * TODO: Rewrite this method, my brain wants to cry 
      * /!\ WARNING: USABLE FOR RIGHT NOW, BUT PLSSS REMAKE THIS </3
     */
     public void movePlayer(int move_OR_selected)
     {
-        int[] playerFound = new int[2];
 
-        for(int i = 0; i < x; i++)
-        {
-            for(int j = 0; j < y; j++)
-            {
-                if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
-                {
-                    playerFound[0] = i;
-                    playerFound[1] = j;
-                }
-            }    
-        }
-
-        int row = playerFound[0];
-        int collumn = playerFound[1];
-
+        findPlayer();
         switch(move_OR_selected)
         {
             case 1 -> // RIGHT
             {
-                int targetTile = fightRoomLayout[row][collumn + 1];
+                int targetTile = fightRoomLayout[playerRow][playerCollumn + 1];
                 switch(targetTile)
                 {
-                    case 3 ->
+                    case UNSELECTED_HEALTH ->
                     {
-                        fightRoomLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[playerRow][playerCollumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        fightRoomLayout[row][collumn + 1] = 4;
+                        fightRoomLayout[playerRow][playerCollumn + 1] = SELECTED_HEALTH;
                     }
-                    case 5 ->
+                    case UNSELECTED_DEFENSE ->
                     {
-                        fightRoomLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[playerRow][playerCollumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        fightRoomLayout[row][collumn + 1] = 6;
+                        fightRoomLayout[playerRow][playerCollumn + 1] = SELECTED_DEFENSE;
                     }
                 }
             }
 
             case -1 ->
             {
-                int targetTile = fightRoomLayout[row][collumn - 1];
+                int targetTile = fightRoomLayout[playerRow][playerCollumn - 1];
                 switch(targetTile)
                 {
-                    case 1 ->
+                    case UNSELECTED_ATTACK ->
                     {
-                        fightRoomLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[playerRow][playerCollumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        fightRoomLayout[row][collumn - 1] = 2;   
+                        fightRoomLayout[playerRow][playerCollumn - 1] = SELECTED_ATTACK;   
                     }
-                    case 3 ->
+                    case UNSELECTED_HEALTH ->
                     {
-                        fightRoomLayout[row][collumn] = storedTileChoice;
+                        fightRoomLayout[playerRow][playerCollumn] = storedTileChoice;
                         storedTileChoice = targetTile;
-                        fightRoomLayout[row][collumn - 1] = 4;
+                        fightRoomLayout[playerRow][playerCollumn - 1] = SELECTED_HEALTH;
                     }
                 }
             }
 
             case 90 ->
             {
-                for(int i = 0; i < x; i++)
+                findPlayer();
+
+                switch (fightRoomLayout[playerRow][playerCollumn]) 
                 {
-                    for(int j = 0; j < y; j++)
-                    {
-                        if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
-                        {
-                            playerFound[0] = i;
-                            playerFound[1] = j;
-                        }
-                    }    
-                }
-
-                row = playerFound[0];
-                collumn = playerFound[1];
-
-                switch (fightRoomLayout[row][collumn]) 
-                {
-
                     case 2 -> fightingSystem.attack();
                     case 4 -> fightingSystem.heal();
                     case 6 -> fightingSystem.defend(); 
-                
                 }
             }
         }
@@ -152,27 +137,58 @@ public class FightGui extends JFrame
         buildFightRoom();
     }
 
+    /**
+     * @param dx Move player left or right
+     * <p>
+     * [1] -> Right
+     * <p>
+     * [-1] -> Left
+     
+    private void movePlayerX(int dx)
+    {
+
+    }
+    */
+
+    /**
+     * Find player when fight room is constructed
+    */
+    private void findPlayer()
+    {
+        for(int i = 0; i < roomX; i++)
+        {
+            for(int j = 0; j < roomY; j++)
+            {
+                if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
+                {
+                    playerRow = i;
+                    playerCollumn = j;
+                }
+            }    
+        }
+    }
+
     private void healthStatus()
     {
-        int hp = player.healthPercentage();
+        int healthPercentage = player.healthPercentage();
 
-        if(hp == 100)
+        if(healthPercentage == 100)
         {
             fightRoomLayout[2][0] = -200;
         }
-        else if(hp >= 75)
+        else if(healthPercentage >= 75)
         {
             fightRoomLayout[2][0] = -175;
         }
-        else if(hp >= 50)
+        else if(healthPercentage >= 50)
         {
             fightRoomLayout[2][0] = -150;
         }
-        else if(hp >= 25)
+        else if(healthPercentage >= 25)
         {
             fightRoomLayout[2][0] = -125;
         }
-        else if(hp <= 0)
+        else if(healthPercentage <= 0)
         {
             fightRoomLayout[2][0] = -100;
             dialougeSystem.setNewText("You have died...\n=={GAMER-OVER}==");
@@ -222,9 +238,9 @@ public class FightGui extends JFrame
     public void buildFightRoom()
     {
         int index = 0;
-        for(int i = 0; i < x; i++)
+        for(int i = 0; i < roomX; i++)
         {
-            for(int j = 0; j < y; j++)
+            for(int j = 0; j < roomY; j++)
             {
                 panelArray.get(index).removeAll();
                 switch (fightRoomLayout[i][j]) 
@@ -232,22 +248,24 @@ public class FightGui extends JFrame
                     case 0 -> panelArray.get(index).setBackground(Color.BLACK);
                     
                     //ATK
-                    case 1 -> setTile("Sprites/Unselected_Attack.png", index);
-                    case 2 -> setTile("Sprites/Selected_Attack.png", index);
+                    case 1 -> setTile("Sprites/Selectors/Unselected_Attack.png", index);
+                    case 2 -> setTile("Sprites/Selectors/Selected_Attack.png", index);
 
                     //HP
-                    case 3 -> setTile("Sprites/Unselected_Health.png", index);
-                    case 4 -> setTile("Sprites/Selected_Health.png", index);
+                    case 3 -> setTile("Sprites/Selectors/Unselected_Health.png", index);
+                    case 4 -> setTile("Sprites/Selectors/Selected_Health.png", index);
 
                     //DFN
-                    case 5 -> setTile("Sprites/Unselected_Defense.png", index);
-                    case 6 -> setTile("Sprites/Selected_Defense.png", index);
+                    case 5 -> setTile("Sprites/Selectors/Unselected_Defense.png", index);
+                    case 6 -> setTile("Sprites/Selectors/Selected_Defense.png", index);
 
-                    case -200 -> setTile("Sprites/MC_Full.png", index);
-                    case -175 -> setTile("Sprites/MC_75.png", index);
-                    case -150 -> setTile("Sprites/MC_50.png", index);
-                    case -125 -> setTile("Sprites/MC_25.png", index);
-                    case -100 -> setTile("Sprites/MC_Dead.png", index);
+                    case 300 -> setTile("", index);
+
+                    case -200 -> setTile("Sprites/HealthStates/MC_Full.png", index);
+                    case -175 -> setTile("Sprites/HealthStates/MC_75.png", index);
+                    case -150 -> setTile("Sprites/HealthStates/MC_50.png", index);
+                    case -125 -> setTile("Sprites/HealthStates/MC_25.png", index);
+                    case -100 -> setTile("Sprites/HealthStates/MC_Dead.png", index);
 
                     //ERROR
                     default -> panelArray.get(index).setBackground(Color.magenta);
@@ -265,21 +283,17 @@ public class FightGui extends JFrame
      * @param index Index of the [x]x[y] for loop
      * Set each tile and center them
      * [IF] image not found or error; set tile to magenta to spot it easily
-     * TODO: Merge setGif and setTile into one method, this way itd be cleaner and more easier to work with
      */
     private void setTile(String tilePath, int index)
     {
-        ImageIcon icon = new ImageIcon(tilePath);
-        Image img = icon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        JLabel l = new JLabel(new ImageIcon(img));
-        l.setHorizontalAlignment(JLabel.CENTER);
-        l.setVerticalAlignment(JLabel.CENTER);
-        panelArray.get(index).add(l, BorderLayout.CENTER);  
+        ImageIcon imageComponent = new ImageIcon(tilePath);
+        JLabel labelComponent = new JLabel(imageComponent);
+
+        labelComponent.setHorizontalAlignment(JLabel.CENTER);
+        labelComponent.setVerticalAlignment(JLabel.CENTER);
+
+        panelArray.get(index).add(labelComponent, BorderLayout.CENTER);  
         panelArray.get(index).setBackground(Color.black);
     }
-    
-    public void setGifTile(String tilePath, int index)
-    {
-        //Inactive, please merge later!
-    }
+
 }

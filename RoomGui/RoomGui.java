@@ -1,5 +1,5 @@
 package RoomGui;
-import FightingGui.FightGui;
+import FightingGui.FightingGui;
 import Saving.ProgressSaving;
 import Stats.Player;
 
@@ -12,16 +12,16 @@ public class RoomGui extends JFrame
 
     //Classes & Arrays
     private int[][] currentRoom;
-    private ArrayList<JPanel> panel = new ArrayList<>();
-    private Rooms rooms = new Rooms();
-    private FightGui fightingGui;
+    private ArrayList<JPanel> panelArray = new ArrayList<>();
+    private RoomData roomContainer = new RoomData();
+    private FightingGui fightingGui;
     private ProgressSaving progressSaving;
     private Player player;
 
     //Room Size - Constants
-    private final int x = 10;
-    private final int y = 10;
-    private final int product = x*y;
+    private final int roomX = 10;
+    private final int roomY = 10;
+    private final int roomTotalTiles = roomX*roomY;
 
     //Rooms
     private int roomCounter = 0;
@@ -42,7 +42,7 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
+    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
     {
         fightingGui = fightGuiPass;
         progressSaving = progressPass;
@@ -53,17 +53,17 @@ public class RoomGui extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        setLayout(new GridLayout(x, y, 0, 0));
+        setLayout(new GridLayout(roomX, roomY, 0, 0));
 
-        for (int i = 0; i < product; i++) 
+        for (int i = 0; i < roomTotalTiles; i++) 
         {
             JPanel p = new JPanel();
             p.setLayout(new BorderLayout());
-            panel.add(p);
+            panelArray.add(p);
             add(p);
         }
 
-        currentRoom = rooms.obtainRoom(progressSaving.obtainSavePoint()[2]);
+        currentRoom = roomContainer.obtainRoom(progressSaving.obtainSavePoint()[2]);
         roomCounter = progressSaving.obtainSavePoint()[2];
         findPlayer();
         buildRoom();
@@ -73,25 +73,26 @@ public class RoomGui extends JFrame
 
 
     /**
-     * @param roomNumber
-     * Obtain new room, then build it
+     * @param roomNumber Obtain the new room that player entered, then build it.
      */
     public void enteredRoom(int roomNumber)
     {
         System.out.println("Entered room number: {" + roomNumber + "}");
         setTitle("Room Number: [" + roomNumber + "] VOID GAME");
-        currentRoom = rooms.obtainRoom(roomNumber);
+
+        currentRoom = roomContainer.obtainRoom(roomNumber);
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
 
-        
         buildRoom();
     }
 
     /**
      * @param dx -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
+     * <p>
      * [IF] User encounter square 10, move to next room
+     * <p>
      * [IF] USer encounters square 11, move back a room
      */
     public void movePlayer(int dx,int dy)
@@ -99,7 +100,7 @@ public class RoomGui extends JFrame
         if (dx != 0) movePlayerX(dx);
         if (dy != 0) movePlayerY(dy);
 
-        if((int)(Math.random()*1000) <= 3)
+        if((int)(Math.random()*1000) <= 30)
         {
             fightingGui.fightSet(true);
         }
@@ -107,13 +108,13 @@ public class RoomGui extends JFrame
     }
 
     /**
-     * Find the players current X, Y position when entering a room.
+     * Finds the players current (Row,Collumn) position in the 2D-Array.
      */
     private void findPlayer()
     {
-        for(int i = 0; i < x; i++)
+        for(int i = 0; i < roomX; i++)
         {
-            for(int j = 0; j < y; j++)
+            for(int j = 0; j < roomY; j++)
             {
                 if(currentRoom[i][j] == PLAYER)
                 {
@@ -125,16 +126,17 @@ public class RoomGui extends JFrame
     }
 
     /**
-     * @param dx
-     * Move player to the right or left 
+     * @param dx Move player to the right or left 
+     * <p>
      * [1] -> Right
+     * <p>
      * [-1] -> Left
      */
     private void movePlayerX(int dx)
     {
         int targetTile = currentRoom[playerRow][playerCollumn + dx];
 
-        if (targetTile == 1 || targetTile == 2) 
+        if (targetTile == GRASS || targetTile == GRASS_BLADES) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
             tileUnderPlayer = targetTile;
@@ -154,16 +156,17 @@ public class RoomGui extends JFrame
     }
 
     /**
-     * @param dx
-     * Move player to the right or left 
+     * @param dy -> Move player up or down
+     * <p> 
      * [1] -> Up
+     * <p>
      * [-1] -> Down
      */
     private void movePlayerY(int dy)
     {
         int targetTile = currentRoom[playerRow - dy][playerCollumn];
 
-        if (targetTile == 1 || targetTile == 2) 
+        if (targetTile == GRASS || targetTile == GRASS_BLADES) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer;
             tileUnderPlayer = targetTile;
@@ -182,22 +185,22 @@ public class RoomGui extends JFrame
     private void buildRoom() 
     {
         int index = 0;
-        for (int i = 0; i < x; i++) 
+        for (int r = 0; r < roomX; r++) 
         {
-            for (int j = 0; j < y; j++) 
+            for (int c = 0; c < roomY; c++) 
             {
-                panel.get(index).removeAll();
-                switch (currentRoom[i][j]) 
+                panelArray.get(index).removeAll();
+                switch (currentRoom[r][c]) 
                 {
-                    case VOID -> panel.get(index).setBackground(Color.BLACK);
-                    case GRASS -> setTile("Sprites/GrassPlain.png", index);
-                    case GRASS_BLADES -> setTile("Sprites/GrassBlades.png", index);
-                    case VOID_HEART -> setGifTile("Sprites/VoidHeart.gif", index);
-                    case PLAYER -> setTile("Sprites/Logo.png", index);
-                    case LIGHT_PRODUCER -> setGifTile("Sprites/LightProducer.gif", index);
-                    case NEXT_ROOM -> panel.get(index).setBackground(Color.BLUE);
-                    case LAST_ROOM -> panel.get(index).setBackground(Color.CYAN);
-                    default -> panel.get(index).setBackground(Color.RED);
+                    case VOID -> panelArray.get(index).setBackground(Color.BLACK);
+                    case GRASS -> setTileImage("Sprites/Walkable/GrassPlain.png", index);
+                    case GRASS_BLADES -> setTileImage("Sprites/Walkable/GrassBlades.png", index);
+                    case VOID_HEART -> setTileImage("Sprites/Barriers/VoidHeart.gif", index);
+                    case PLAYER -> setTileImage("Sprites/Walkable/Logo.png", index);
+                    case LIGHT_PRODUCER -> setTileImage("Sprites/Barriers/LightProducer.gif", index);
+                    case NEXT_ROOM -> panelArray.get(index).setBackground(Color.BLUE);
+                    case LAST_ROOM -> panelArray.get(index).setBackground(Color.CYAN);
+                    default -> panelArray.get(index).setBackground(Color.RED);
                 }
                 index++;
             }
@@ -207,31 +210,45 @@ public class RoomGui extends JFrame
     }
 
     /**
-     * @param tilePath String for picture of tile
-     * @param index Index of the [x]x[y] for loop
+     * @param spritePath String for picture of tile
+     * @param index Index of the [x]x[y] for loop 
+     * <p>
      * Set each tile and center them
-     * [IF] image not found or error; set tile to RED to spot it easily
-     * 
-     * TODO: Merge setGif and setTile into one method, this way itd be cleaner and more easier to work with
-     */
-    private void setTile(String tilePath, int index)
+     * <p>
+     * [IF] Image/Gif not found; tile becomes RED.
+     * <p>
+     * [ALTERNATIVELY] Image/Gif found BUT doesnt match pixel size
+    */
+    private void setTileImage(String spritePath, int index)
     {
-        ImageIcon icon = new ImageIcon(tilePath);
-        Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        JLabel l = new JLabel(new ImageIcon(img));
+        ImageIcon imageComponent = new ImageIcon(spritePath); 
+        JLabel labelComponent = new JLabel(imageComponent);
+        
 
-        l.setHorizontalAlignment(JLabel.CENTER);
-        l.setVerticalAlignment(JLabel.CENTER);
+        labelComponent.setHorizontalAlignment(JLabel.CENTER);
+        labelComponent.setVerticalAlignment(JLabel.CENTER);
 
-        panel.get(index).add(l, BorderLayout.CENTER);  
-        panel.get(index).setBackground(Color.RED);
+        panelArray.get(index).removeAll();
+        panelArray.get(index).add(labelComponent, BorderLayout.CENTER);
+        panelArray.get(index).setBackground(Color.RED);
     }
+}
+
+
+
+
+
+
+
+
+
+
 
      /**
      * Set an animated GIF tile on the panel at index
      * @param gifPath Path to the animated GIF
      * @param index Index of the tile in the panel list
-     */
+     
     private void setGifTile(String gifPath, int index)
     {
         ImageIcon gifIcon = new ImageIcon(gifPath); 
@@ -244,4 +261,4 @@ public class RoomGui extends JFrame
         panel.get(index).add(label, BorderLayout.CENTER);
         panel.get(index).setBackground(Color.RED);
     }
-}
+    */

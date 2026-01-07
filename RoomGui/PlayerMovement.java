@@ -1,6 +1,6 @@
 package RoomGui;
 
-import FightingGui.FightGui;
+import FightingGui.FightingGui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -8,85 +8,55 @@ import javax.swing.*;
 
 public class PlayerMovement extends JFrame implements KeyListener 
 {
-    //Classes
-    RoomGui gui;
-    FightGui fgui;
+    RoomGui roomGui;
+    FightingGui fightingGui;
     
-    //Booleans
     boolean battleStatus;
 
-    public PlayerMovement(RoomGui r,FightGui f)
+    public PlayerMovement(RoomGui roomGuiPass,FightingGui fightingGuiPass)
     {
-        this.gui = r;
-        this.fgui = f;
+        this.roomGui = roomGuiPass;
+        this.fightingGui = fightingGuiPass;
     }
 
-
+    /**
+     * @param keyEvent 
+     * <p>
+     * Checks if player is in a fight.
+     * <p>
+     * [IF] Player is in a fight state, any events passed in will connect with the top right second biggest window
+     * <p>
+     * [IF] Player isnt in a fight state, any events passed in will connect with the left window screen.
+     */
     @Override
-    public void keyPressed(KeyEvent e) 
+    public void keyPressed(KeyEvent keyEvent) 
     {
         
-        if(!fgui.fightCheck())
+        if(!fightingGui.fightCheck())
         {
-            switch(e.getKeyCode())
+            switch(keyEvent.getKeyCode())
             {
-                case KeyEvent.VK_LEFT -> gui.movePlayer(-1, 0);
-                case KeyEvent.VK_RIGHT -> gui.movePlayer(1,0);
-                case KeyEvent.VK_UP -> gui.movePlayer(0, 1);
-                case KeyEvent.VK_DOWN -> gui.movePlayer(0, -1);
+                case KeyEvent.VK_LEFT -> roomGui.movePlayer(-1, 0);
+                case KeyEvent.VK_RIGHT -> roomGui.movePlayer(1,0);
+                case KeyEvent.VK_UP -> roomGui.movePlayer(0, 1);
+                case KeyEvent.VK_DOWN -> roomGui.movePlayer(0, -1);
             }
         }
-        else if(fgui.fightCheck())
+        else if(fightingGui.fightCheck())
         {
-            switch (e.getKeyCode()) 
+            switch (keyEvent.getKeyCode()) 
             {
-                case KeyEvent.VK_LEFT -> fgui.movePlayer(-1);
-                case KeyEvent.VK_RIGHT -> fgui.movePlayer(1);
-                case KeyEvent.VK_ENTER -> fgui.movePlayer(90);
+                case KeyEvent.VK_LEFT -> fightingGui.movePlayer(-1);
+                case KeyEvent.VK_RIGHT -> fightingGui.movePlayer(1);
+                case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e){}
     @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
+    public void keyReleased(KeyEvent e){}
 
 
     

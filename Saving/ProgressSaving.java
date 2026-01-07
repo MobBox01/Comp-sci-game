@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class ProgressSaving 
 {
 
-    private Scanner sc;
-    private RandomAccessFile fw;
+    private Scanner fileScanner;
+    private RandomAccessFile fileWriter;
     private int[] info = new int[3];
 
 
@@ -20,11 +20,11 @@ public class ProgressSaving
     {
         try
         {
-        sc = new Scanner(new File("Saving/SaveFile.txt"));
+        fileScanner = new Scanner(new File("Saving/SaveFile.txt"));
 
-        info[0] = sc.nextInt();
-        info[1] = sc.nextInt();
-        info[2] = sc.nextInt();
+        info[0] = fileScanner.nextInt();
+        info[1] = fileScanner.nextInt();
+        info[2] = fileScanner.nextInt();
         }
 
         catch(IOException e)
@@ -47,12 +47,12 @@ public class ProgressSaving
             info[0] = level;
             info[1] = xp;
             info[2] = roomNumber;
-            fw = new RandomAccessFile("Saving/SaveFile.txt", "rw");
-            fw.setLength(0);
+            fileWriter = new RandomAccessFile("Saving/SaveFile.txt", "rw");
+            fileWriter.setLength(0);
 
             for (int i = 0; i < 3; i++) 
             {
-                fw.writeBytes(info[i] + "\n"); 
+                fileWriter.writeBytes(info[i] + "\n"); 
             }
         }
         catch(IOException e)

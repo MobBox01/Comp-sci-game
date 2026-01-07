@@ -22,11 +22,11 @@ public class Dialouge extends JFrame
     }
 
     /**
-     * @param e -> String, Dialouge you want to put 
+     * @param newText -> String, Dialouge you want to put 
      */
-    public void setNewText(String e)
+    public void setNewText(String newText)
     {
-        textBox.setText(e);
+        textBox.setText(newText);
         textBox.setEditable(false);
         textBox.setFocusable(false);
         textBox.setBackground(Color.BLACK);

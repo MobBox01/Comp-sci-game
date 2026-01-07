@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 import FightingGui.Dialouge;
-import FightingGui.FightGui;
+import FightingGui.FightingGui;
 import FightingGui.FightingSystem;
 import RoomGui.PlayerMovement;
 import RoomGui.RoomGui;
@@ -13,19 +13,10 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         ProgressSaving saving = new ProgressSaving();
-
-       //[1/3/2026 3:30 AM Log]: helllooooo me, working on adding objects here and parsing through
-       //[1/3/2026 3:44 AM Log]: Hello again, managed to successfully connect progress saving with room gui!
-
-       //[1/3/2026 5:27 PM Log]: todays goal [connect more objects together and refactor changes]
-       //[1/3/2026 5:56 PM Log]: Took me a bit, zoned out but refactoring changes have been done.
-       //[1/3/2026 6:02 PM Log]: new goal [get rid of objects not needed]
-       //[1/3/2026 6:11 PM Log]:: Goal achieved for today, review code and make sure stuff looks good.
-       
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
         FightingSystem fightSystem = new FightingSystem(player, dialougeSystem);
-        FightGui fightGui = new FightGui(fightSystem,player, dialougeSystem);
+        FightingGui fightGui = new FightingGui(fightSystem,player, dialougeSystem);
         RoomGui roomGui = new RoomGui(fightGui,saving,player);
         PlayerMovement movement = new PlayerMovement(roomGui, fightGui);
 
@@ -34,6 +25,22 @@ public class GameDriver
     }
 }
 
+//[1/3/2026 3:30 AM Log]: Todays goal is to connect objects together, its a mess!
+//[1/3/2026 3:44 AM Log]: RoomGUI is connected w/progress saving and player class *PUSHED*
+
+//[1/3/2026 5:27 PM Log]: All classes can connect more easily now, this reduces versatility of a class making code
+//easier to read
+//[1/3/2026 5:56 PM Log]: Some refactoring changes done, i dont remember what i did lmfao
+//[1/3/2026 6:02 PM Log]: Useless objects have been deleted.
+//[1/3/2026 6:11 PM Log]: Finished up connecting classes. *PUSHED*
+
+//1/4/2026 1:29 AM Log]: Every file in [ROOM GUI] file is now done.
+//RoomGUI -> Merged GIF and Image tile into one, refactorization changes complete. Documentation is also cleaner
+//RoomData -> More refactorization changes, documentation cleaner. Not much since its just a getter
+//PlayerMovement -> MORE REFACTORIZATION CHANGES WOW. ALSO DOCUMENTATION IS CLEANER.
+//[1/4/2026 1:36 AM Log]: Sprites are now seperated into folders for easier management
+
+//[1/4/2026 4:04 PM Log]: Just code... 
 
 
 
