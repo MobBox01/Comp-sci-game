@@ -8,12 +8,14 @@ public class FightingSystem
     private Player player;
     private Enemy enemy; 
     private Dialouge dialougeSystem;
+    private FightingMusic music;
 
-    public FightingSystem(Player playerPass, Dialouge dialougeSystemPass) 
+    public FightingSystem(Player playerPass, Dialouge dialougeSystemPass,FightingMusic fightingMusicPass) 
     {
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
         enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY", 0);
+        music = fightingMusicPass;
     }
 
     /**
@@ -22,13 +24,14 @@ public class FightingSystem
      */
     public void enemyEncounter()
     {
-        /*switch((int)(Math.random()*5))
+        switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(0, null, 0, null, 0);
-            case 3 -> enemy = new Enemy(0, null, 0, null, 0);
+            case 2 -> enemy = new Enemy(1, .4, 100, "f", 0);
+            case 3 -> enemy = new Enemy(3, .3, 2, "b", 0);
+            case 1 -> enemy = new Enemy(3, .1, 50, "Enemy Sniper", 0);
+            default -> enemy = new Enemy(1, .1, 0, "e", 0);
         }
-        */
-        enemy = new Enemy(3, .1, 50, "Enemy Sniper", 0);
+        music.fightingMusicStart();
         dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
@@ -82,6 +85,7 @@ public class FightingSystem
     {
         if(enemy.isAlive() == false)
         {
+            music.fightingMusicStop();
             dialougeSystem.setNewText("Peaceful...");
         }
         return enemy.isAlive();

@@ -31,13 +31,15 @@ public class RoomGui extends JFrame
 
     //Constants
     private static final int VOID = 0;
-    private static final int GRASS = 1;
-    private static final int GRASS_BLADES = 2;
+    private static final int CITY_TILE = 1;
+    private static final int CITY_TILE_Y = 2;
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
     private static final int LAST_ROOM = 11;
     private static final int VOID_HEART = -1;
     private static final int LIGHT_PRODUCER = -10;
+    private static final int CITY_1 = 100;
+    private static final int DESTROYEDCITY_1 = -100;
 
     /**
      * Sets up window and starting room
@@ -136,7 +138,7 @@ public class RoomGui extends JFrame
     {
         int targetTile = currentRoom[playerRow][playerCollumn + dx];
 
-        if (targetTile == GRASS || targetTile == GRASS_BLADES) 
+        if (targetTile == CITY_TILE || targetTile == CITY_TILE_Y) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
             tileUnderPlayer = targetTile;
@@ -166,7 +168,7 @@ public class RoomGui extends JFrame
     {
         int targetTile = currentRoom[playerRow - dy][playerCollumn];
 
-        if (targetTile == GRASS || targetTile == GRASS_BLADES) 
+        if (targetTile == CITY_TILE || targetTile == CITY_TILE_Y) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer;
             tileUnderPlayer = targetTile;
@@ -193,11 +195,13 @@ public class RoomGui extends JFrame
                 switch (currentRoom[r][c]) 
                 {
                     case VOID -> panelArray.get(index).setBackground(Color.BLACK);
-                    case GRASS -> setTileImage("Sprites/Walkable/GrassPlain.png", index);
-                    case GRASS_BLADES -> setTileImage("Sprites/Walkable/GrassBlades.png", index);
+                    case CITY_TILE -> setTileImage("Sprites/Walkable/Walkable.png", index);
+                    case CITY_TILE_Y -> setTileImage("Sprites/Walkable/Walkable_Y.png", index);
                     case VOID_HEART -> setTileImage("Sprites/Barriers/VoidHeart.gif", index);
-                    case PLAYER -> setTileImage("Sprites/Walkable/Logo.png", index);
+                    case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
                     case LIGHT_PRODUCER -> setTileImage("Sprites/Barriers/LightProducer.gif", index);
+                    case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
+                    case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
                     case NEXT_ROOM -> panelArray.get(index).setBackground(Color.BLUE);
                     case LAST_ROOM -> panelArray.get(index).setBackground(Color.CYAN);
                     default -> panelArray.get(index).setBackground(Color.RED);

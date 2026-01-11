@@ -2,6 +2,7 @@ import java.io.IOException;
 
 import FightingGui.Dialouge;
 import FightingGui.FightingGui;
+import FightingGui.FightingMusic;
 import FightingGui.FightingSystem;
 import RoomGui.PlayerMovement;
 import RoomGui.RoomGui;
@@ -12,10 +13,11 @@ public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
+        FightingMusic fightMusic = new FightingMusic();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
-        FightingSystem fightSystem = new FightingSystem(player, dialougeSystem);
+        FightingSystem fightSystem = new FightingSystem(player, dialougeSystem, fightMusic);
         FightingGui fightGui = new FightingGui(fightSystem,player, dialougeSystem);
         RoomGui roomGui = new RoomGui(fightGui,saving,player);
         PlayerMovement movement = new PlayerMovement(roomGui, fightGui);
