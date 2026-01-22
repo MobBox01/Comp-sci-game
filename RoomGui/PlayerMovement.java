@@ -51,7 +51,9 @@ public class PlayerMovement extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
+        
     }
+
 
     @Override
     public void keyTyped(KeyEvent e){}

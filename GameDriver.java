@@ -13,13 +13,16 @@ public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
+        //These are in order!
         FightingMusic fightMusic = new FightingMusic();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
+
         FightingSystem fightSystem = new FightingSystem(player, dialougeSystem, fightMusic);
         FightingGui fightGui = new FightingGui(fightSystem,player, dialougeSystem);
-        RoomGui roomGui = new RoomGui(fightGui,saving,player);
+        RoomGui roomGui = new RoomGui(fightGui,saving,player,dialougeSystem);
+
         PlayerMovement movement = new PlayerMovement(roomGui, fightGui);
 
         roomGui.addKeyListener(movement);

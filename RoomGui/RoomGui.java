@@ -2,6 +2,7 @@ package RoomGui;
 import FightingGui.FightingGui;
 import Saving.ProgressSaving;
 import Stats.Player;
+import FightingGui.Dialouge;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import javax.swing.*;
 
 public class RoomGui extends JFrame 
 {
-
+    
     //Classes & Arrays
     private int[][] currentRoom;
     private ArrayList<JPanel> panelArray = new ArrayList<>();
@@ -17,6 +18,9 @@ public class RoomGui extends JFrame
     private FightingGui fightingGui;
     private ProgressSaving progressSaving;
     private Player player;
+    private Dialouge dialougeSystem;
+    private String[] dialouge =
+    {"You've finally made it! Theres no time left we have to get there quickly. Traps have been disarmed however Void Mass may still attack.", "10 more zones to go... the light pumps are no longer functioning be aware!"};
 
     //Room Size - Constants
     private final int roomX = 10;
@@ -25,18 +29,16 @@ public class RoomGui extends JFrame
 
     //Rooms
     private int roomCounter = 0;
-    private int tileUnderPlayer = 1;
+    private int tileUnderPlayer = 27;
     private int playerRow;
     private int playerCollumn;
 
     //Constants
     private static final int VOID = 0;
-    private static final int CITY_TILE = 1;
-    private static final int CITY_TILE_Y = 2;
+    private static final int CONCRETE = 1;
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
     private static final int LAST_ROOM = 11;
-    private static final int VOID_HEART = -1;
     private static final int LIGHT_PRODUCER = -10;
     private static final int CITY_1 = 100;
     private static final int DESTROYEDCITY_1 = -100;
@@ -44,8 +46,9 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
+    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass,Dialouge dialougeSystemPass) 
     {
+        dialougeSystem = dialougeSystemPass;
         fightingGui = fightGuiPass;
         progressSaving = progressPass;
         player = playerPass;
@@ -54,15 +57,14 @@ public class RoomGui extends JFrame
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-
         setLayout(new GridLayout(roomX, roomY, 0, 0));
 
         for (int i = 0; i < roomTotalTiles; i++) 
         {
-            JPanel p = new JPanel();
-            p.setLayout(new BorderLayout());
-            panelArray.add(p);
-            add(p);
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            panelArray.add(panel);
+            add(panel);
         }
 
         currentRoom = roomContainer.obtainRoom(progressSaving.obtainSavePoint()[2]);
@@ -72,7 +74,6 @@ public class RoomGui extends JFrame
 
         setVisible(true);
     }
-
 
     /**
      * @param roomNumber Obtain the new room that player entered, then build it.
@@ -86,6 +87,10 @@ public class RoomGui extends JFrame
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
 
+        if(roomNumber == 0)
+        {
+            dialougeSystem.setNewText(dialouge[0]);
+        }
         buildRoom();
     }
 
@@ -138,7 +143,7 @@ public class RoomGui extends JFrame
     {
         int targetTile = currentRoom[playerRow][playerCollumn + dx];
 
-        if (targetTile == CITY_TILE || targetTile == CITY_TILE_Y) 
+        if (targetTile >= CONCRETE && targetTile <= 10) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
             tileUnderPlayer = targetTile;
@@ -168,7 +173,7 @@ public class RoomGui extends JFrame
     {
         int targetTile = currentRoom[playerRow - dy][playerCollumn];
 
-        if (targetTile == CITY_TILE || targetTile == CITY_TILE_Y) 
+        if (targetTile >= CONCRETE && targetTile <= 10) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer;
             tileUnderPlayer = targetTile;
@@ -195,15 +200,14 @@ public class RoomGui extends JFrame
                 switch (currentRoom[r][c]) 
                 {
                     case VOID -> panelArray.get(index).setBackground(Color.BLACK);
-                    case CITY_TILE -> setTileImage("Sprites/Walkable/Walkable.png", index);
-                    case CITY_TILE_Y -> setTileImage("Sprites/Walkable/Walkable_Y.png", index);
-                    case VOID_HEART -> setTileImage("Sprites/Barriers/VoidHeart.gif", index);
+                    case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
                     case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
                     case LIGHT_PRODUCER -> setTileImage("Sprites/Barriers/LightProducer.gif", index);
                     case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
                     case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
                     case NEXT_ROOM -> panelArray.get(index).setBackground(Color.BLUE);
                     case LAST_ROOM -> panelArray.get(index).setBackground(Color.CYAN);
+
                     default -> panelArray.get(index).setBackground(Color.RED);
                 }
                 index++;

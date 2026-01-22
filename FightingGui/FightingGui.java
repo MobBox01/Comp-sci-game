@@ -188,6 +188,10 @@ public class FightingGui extends JFrame
         {
             fightRoomLayout[2][0] = -125;
         }
+        else if(healthPercentage > 0)
+        {
+            fightRoomLayout[2][0] = -124;
+        }
         else if(healthPercentage <= 0)
         {
             fightRoomLayout[2][0] = -100;
@@ -252,12 +256,12 @@ public class FightingGui extends JFrame
                     case 2 -> setTile("Sprites/Selectors/Selected_Attack.png", index);
 
                     //HP
-                    case 3 -> setTile("Sprites/Selectors/Unselected_Health.png", index);
-                    case 4 -> setTile("Sprites/Selectors/Selected_Health.png", index);
+                    case 3 -> setTile("Sprites/Selectors/Unselected_Heal.png", index);
+                    case 4 -> setTile("Sprites/Selectors/Selected_Heal.png", index);
 
                     //DFN
-                    case 5 -> setTile("Sprites/Selectors/Unselected_Defense.png", index);
-                    case 6 -> setTile("Sprites/Selectors/Selected_Defense.png", index);
+                    case 5 -> setTile("Sprites/Selectors/Unselected_Defend.png", index);
+                    case 6 -> setTile("Sprites/Selectors/Selected_Defend.png", index);
 
                     case 300 -> setTile("", index);
 
@@ -265,6 +269,7 @@ public class FightingGui extends JFrame
                     case -175 -> setTile("Sprites/HealthStates/MC_75.png", index);
                     case -150 -> setTile("Sprites/HealthStates/MC_50.png", index);
                     case -125 -> setTile("Sprites/HealthStates/MC_25.png", index);
+                    case -124 -> setTile("Sprites/HealthStates/MC_Under25.png", index);
                     case -100 -> setTile("Sprites/HealthStates/MC_Dead.png", index);
 
                     //ERROR
