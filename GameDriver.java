@@ -29,25 +29,7 @@ public class GameDriver
         fightGui.addKeyListener(movement);
     }
 }
-
-//[1/3/2026 3:30 AM Log]: Todays goal is to connect objects together, its a mess!
-//[1/3/2026 3:44 AM Log]: RoomGUI is connected w/progress saving and player class *PUSHED*
-
-//[1/3/2026 5:27 PM Log]: All classes can connect more easily now, this reduces versatility of a class making code
-//easier to read
-//[1/3/2026 5:56 PM Log]: Some refactoring changes done, i dont remember what i did lmfao
-//[1/3/2026 6:02 PM Log]: Useless objects have been deleted.
-//[1/3/2026 6:11 PM Log]: Finished up connecting classes. *PUSHED*
-
-//1/4/2026 1:29 AM Log]: Every file in [ROOM GUI] file is now done.
-//RoomGUI -> Merged GIF and Image tile into one, refactorization changes complete. Documentation is also cleaner
-//RoomData -> More refactorization changes, documentation cleaner. Not much since its just a getter
-//PlayerMovement -> MORE REFACTORIZATION CHANGES WOW. ALSO DOCUMENTATION IS CLEANER.
-//[1/4/2026 1:36 AM Log]: Sprites are now seperated into folders for easier management
-
-//[1/4/2026 4:04 PM Log]: Just code... 
-
-
+//1/21/2026 LOG: Added new sprites, improved quality of game. New ideas still trying to be cooked up
 
 
 
