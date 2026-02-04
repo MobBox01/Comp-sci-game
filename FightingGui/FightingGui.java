@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import Elements.Dialouge;
 import Stats.Player;
 
 public class FightingGui extends JFrame 

@@ -1,4 +1,4 @@
-package FightingGui;
+package Elements;
 
 import java.awt.*;
 import javax.swing.*;

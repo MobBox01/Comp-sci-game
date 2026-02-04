@@ -2,11 +2,12 @@ package RoomGui;
 import FightingGui.FightingGui;
 import Saving.ProgressSaving;
 import Stats.Player;
-import FightingGui.Dialouge;
 
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import Elements.Dialouge;
 
 public class RoomGui extends JFrame 
 {

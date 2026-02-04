@@ -1,10 +1,10 @@
 import java.io.IOException;
 
-import FightingGui.Dialouge;
+import Elements.Dialouge;
+import Elements.FightingMusic;
+import Elements.PlayerMovement;
 import FightingGui.FightingGui;
-import FightingGui.FightingMusic;
 import FightingGui.FightingSystem;
-import RoomGui.PlayerMovement;
 import RoomGui.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Player;

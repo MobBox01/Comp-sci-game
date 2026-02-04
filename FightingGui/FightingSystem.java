@@ -1,5 +1,7 @@
 package FightingGui;
 
+import Elements.Dialouge;
+import Elements.FightingMusic;
 import Stats.Enemy;
 import Stats.Player;
 
