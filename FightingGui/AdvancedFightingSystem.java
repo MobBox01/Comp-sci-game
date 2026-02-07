@@ -2,7 +2,6 @@ package FightingGui;
 
 import Elements.Dialouge;
 import Elements.AudioPlayer;
-import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -29,11 +28,13 @@ public class AdvancedFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(1, .4, 100, "f", 0);
-            case 3 -> enemy = new Enemy(3, .3, 2, "b", 0);
-            case 1 -> enemy = new Enemy(3, .1, 50, "Enemy Sniper", 0);
-            default -> enemy = new Enemy(1, .1, 5, "e", 0);
+            case 2 -> enemy = new Enemy(1, .4, 100, "ADVANCED TEST", 0);
+            case 3 -> enemy = new Enemy(3, .3, 2, "ADVA", 0);
+            case 1 -> enemy = new Enemy(3, .1, 50, "ADVAN Sniper", 0);
+            default -> enemy = new Enemy(1, .1, 5, "BALLS", 0);
         }
+        audio.advancedFight();
+        player.fightingAdvanced();
         dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
@@ -85,7 +86,7 @@ public class AdvancedFightingSystem
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(enemy.isAlive() == false)
+        if(!enemy.isAlive())
         {
             dialougeSystem.setNewText("Peaceful...");
         }

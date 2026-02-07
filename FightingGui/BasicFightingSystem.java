@@ -69,8 +69,6 @@ public class BasicFightingSystem
         dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
     }
 
-
-
     /**
      * Heal a specified amount, default: 5 HP
      * TODO: Health should be a random % increase honestly
@@ -85,9 +83,9 @@ public class BasicFightingSystem
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(enemy.isAlive() == false)
+        if(!enemy.isAlive() && !player.isFightingAdvanced())
         {
-            dialougeSystem.setNewText("Peaceful...");
+            dialougeSystem.setNewText("Peaceful... BASIC");
         }
         return enemy.isAlive();
     }

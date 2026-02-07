@@ -11,6 +11,8 @@ public class Player
     private int level = 0;
     private int xp = 0;
 
+    private boolean fightingAdvanced = false;
+
     public Player(int[] info)
     {
         level = info[0];
@@ -105,6 +107,16 @@ public class Player
         return xp;
     }
 
+    public boolean isFightingAdvanced()
+    {
+        return fightingAdvanced;
+    }
+
+    public void fightingAdvanced()
+    {
+        fightingAdvanced = true;
+    }
+    
     @Override
     public String toString()
     {

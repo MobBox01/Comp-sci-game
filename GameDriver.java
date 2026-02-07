@@ -1,17 +1,13 @@
 import java.io.IOException;
 
 import Elements.Dialouge;
-<<<<<<< HEAD
 import Elements.AudioPlayer;
-import Elements.PlayerMovement;
+import Elements.PlayerInput;
+
 import FightingGui.FightingGui;
+import FightingGui.AdvancedFightingSystem;
 import FightingGui.BasicFightingSystem;
-=======
-import Elements.AudioPlayer;
-import Elements.PlayerMovement;
-import FightingGui.FightingGui;
-import FightingGui.FightingSystem;
->>>>>>> e532b7b00ec32ea5b7eb285b16d1a74185c51591
+
 import RoomHandling.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Player;
@@ -21,19 +17,24 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         //These are in order!
+        //Elements
         AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
 
-        BasicFightingSystem basicFightingSystem = new BasicFightingSystem(player, dialougeSystem, audio);
-        FightingGui fightGui = new FightingGui(basicFightingSystem,player, dialougeSystem);
-        RoomGui roomGui = new RoomGui(fightGui,saving,player,dialougeSystem, audio);
+        //Combat
+        BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
+        AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, dialougeSystem, audio);
+        FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
 
-        PlayerMovement movement = new PlayerMovement(roomGui, fightGui);
+        //Rooms
+        RoomGui roomGui = new RoomGui(fightGui, saving, player, dialougeSystem, audio);
 
-        roomGui.addKeyListener(movement);
-        fightGui.addKeyListener(movement);
+        PlayerInput input = new PlayerInput(roomGui, fightGui);
+
+        roomGui.addKeyListener(input);
+        fightGui.addKeyListener(input);
     }
 }
 //1/21/2026 LOG: Added new sprites, improved quality of game. New ideas still trying to be cooked up

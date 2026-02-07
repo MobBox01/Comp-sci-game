@@ -111,9 +111,13 @@ public class RoomGui extends JFrame
         if (dx != 0) movePlayerX(dx);
         if (dy != 0) movePlayerY(dy);
 
-        if((int)(Math.random()*1000) <= 30)
+        if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomCounter) == false)
         {
-            fightingGui.fightSet(true);
+            fightingGui.fightSet(true, "basic");
+        }
+        else if(((int) Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomCounter) == true)
+        {
+            fightingGui.fightSet(true, "advanced");
         }
         buildRoom();
     }
@@ -245,32 +249,3 @@ public class RoomGui extends JFrame
         panelArray.get(index).setBackground(Color.RED);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-     /**
-     * Set an animated GIF tile on the panel at index
-     * @param gifPath Path to the animated GIF
-     * @param index Index of the tile in the panel list
-     
-    private void setGifTile(String gifPath, int index)
-    {
-        ImageIcon gifIcon = new ImageIcon(gifPath); 
-        JLabel label = new JLabel(gifIcon);
-
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.CENTER);
-
-        panel.get(index).removeAll();
-        panel.get(index).add(label, BorderLayout.CENTER);
-        panel.get(index).setBackground(Color.RED);
-    }
-    */

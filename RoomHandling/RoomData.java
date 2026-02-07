@@ -57,4 +57,9 @@ public class RoomData
         return rooms.get(roomNumber);
     }
 
+    public boolean isAdvancedRooms(int roomNumber)
+    {
+        return roomNumber >= 0;
+    }
+
 }

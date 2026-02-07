@@ -10,10 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-<<<<<<< HEAD
-=======
 
->>>>>>> e532b7b00ec32ea5b7eb285b16d1a74185c51591
+import Elements.AudioPlayer;
 import Elements.Dialouge;
 import Stats.Player;
 
@@ -31,9 +29,11 @@ public class FightingGui extends JFrame
     //Classess & Arrays
     private Layout fightLayout = new Layout();
     private ArrayList<JPanel> panelArray = new ArrayList<>();
-    private BasicFightingSystem fightingSystem;
+    private BasicFightingSystem basic_FS;
+    private AdvancedFightingSystem advanced_FS;
     private Player player;
     private Dialouge dialougeSystem;
+    private AudioPlayer audio;
     private int[][] fightRoomLayout = fightLayout.getFightMapping();
 
     //Object ints
@@ -49,9 +49,11 @@ public class FightingGui extends JFrame
     private int storedTileChoice = UNSELECTED_ATTACK;
 
 
-    public FightingGui(BasicFightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
+    public FightingGui(BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass,Player playerPass,Dialouge dialougeSystemPass, AudioPlayer audioPass) throws IOException
     {
-        fightingSystem = fightSystemPass;
+        audio = audioPass;
+        advanced_FS = advanced_FS_Pass;
+        basic_FS = basicFS_Pass;
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
 
@@ -129,12 +131,26 @@ public class FightingGui extends JFrame
             {
                 findPlayer();
 
-                switch (fightRoomLayout[playerRow][playerCollumn]) 
+                if(basic_FS.isEnemyAlive())
                 {
-                    case 2 -> fightingSystem.attack();
-                    case 4 -> fightingSystem.heal();
-                    case 6 -> fightingSystem.defend(); 
+                    switch (fightRoomLayout[playerRow][playerCollumn]) 
+                    {
+                        case 2 -> basic_FS.attack();
+                        case 4 -> basic_FS.heal();
+                        case 6 -> basic_FS.defend(); 
+                    }
                 }
+
+                else if(advanced_FS.isEnemyAlive())
+                {
+                    switch (fightRoomLayout[playerRow][playerCollumn]) 
+                    {
+                        case 2 -> advanced_FS.attack();
+                        case 4 -> advanced_FS.heal();
+                        case 6 -> advanced_FS.defend(); 
+                    }
+                }
+
             }
         }
         healthStatus();
@@ -209,16 +225,17 @@ public class FightingGui extends JFrame
      * [ELSE-IF] Enemy isnt alive -> False TODO: Set a new decal to show that there is no enemy when peaceful
      * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
      */
-    public boolean basicFightCheck()
+    public boolean fightCheck()
     {
-        if(fightingSystem.isEnemyAlive())
+        if(basic_FS.isEnemyAlive() || advanced_FS.isEnemyAlive())
         {
             fightStatus = true;
         }
 
-        else if(!fightingSystem.isEnemyAlive())
+        else if(!basic_FS.isEnemyAlive() || !advanced_FS.isEnemyAlive())
         {
             fightStatus = false;
+            audio.fightMusicStop(player.isFightingAdvanced());
             setTitle("Enemy: None");
         }
 
@@ -230,17 +247,33 @@ public class FightingGui extends JFrame
         return fightStatus;
     }
 
-    public void fightSet(boolean e)
+    public void fightSet(boolean e, String level)
     {
+        switch(level)
+        {
+            case "basic" -> 
+            {
+                basic_FS.enemyEncounter();
+                setBasicEnemyInfo();
+            }
+            
+            case "advanced" ->
+            {
+                advanced_FS.enemyEncounter();
+                setAdvancedEnemyInfo();
+            }
+        }
         fightStatus = e;
-        //name = enemyName;
-        fightingSystem.enemyEncounter();
-        setEnemyInfo();
     }
 
-    private void setEnemyInfo()
+    private void setBasicEnemyInfo()
     {
-        setTitle("Enemy: " + fightingSystem.getCurrentName());
+        setTitle("Enemy: " + basic_FS.getCurrentName());
+    }
+
+    private void setAdvancedEnemyInfo()
+    {
+        setTitle("Enemy: " + advanced_FS.getCurrentName());
     }
 
     public void buildFightRoom()

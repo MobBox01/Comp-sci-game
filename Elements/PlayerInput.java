@@ -7,14 +7,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
-public class PlayerMovement extends JFrame implements KeyListener 
+public class PlayerInput extends JFrame implements KeyListener 
 {
     RoomGui roomGui;
     FightingGui fightingGui;
     
     boolean battleStatus;
 
-    public PlayerMovement(RoomGui roomGuiPass,FightingGui fightingGuiPass)
+    public PlayerInput(RoomGui roomGuiPass,FightingGui fightingGuiPass)
     {
         this.roomGui = roomGuiPass;
         this.fightingGui = fightingGuiPass;
@@ -33,7 +33,7 @@ public class PlayerMovement extends JFrame implements KeyListener
     public void keyPressed(KeyEvent keyEvent) 
     {
         
-        if(!fightingGui.basicFightCheck())
+        if(!fightingGui.fightCheck())
         {
             switch(keyEvent.getKeyCode())
             {
@@ -43,7 +43,7 @@ public class PlayerMovement extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> roomGui.movePlayer(0, -1);
             }
         }
-        else if(fightingGui.basicFightCheck())
+        else if(fightingGui.fightCheck())
         {
             switch (keyEvent.getKeyCode()) 
             {

@@ -4,30 +4,110 @@ import javax.sound.sampled.*;
 
 public class AudioPlayer 
 {
-    File file;
-    AudioInputStream audio;
-    Clip clip;
+    File fightFile;
+    AudioInputStream fightAudio;
+    Clip fightClip;
 
+    File roomFile;
+    AudioInputStream roomAudio;
+    Clip roomClip;
+
+    private int fightAudioChecker = 0;
+
+    /**
+     * Play the song for basic enemies
+     */
     public void basicFight()
     {
-        file = new File("Audio/EpicFight.wav");
+        setFightSong("Audio/BasicEnemies.wav");
+    }
+
+    /**
+     * Play the song for advanced enemies
+     */
+    public void advancedFight()
+    {
+        setFightSong("Audio/AdvancedEnemies.wav");
+    }
+
+    /**
+     * @param songPath String that has the path to Audio Folder or Files 
+     * <p>
+     * Create new Clip pointer.
+     */
+    private void setFightSong(String songPath)
+    {
+        fightFile = new File(songPath);
         try 
         {
-            audio = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audio);
+            fightAudio = AudioSystem.getAudioInputStream(fightFile);
+            fightClip = AudioSystem.getClip();
+            fightClip.open(fightAudio);
 
         } 
         catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) 
         {
             e.printStackTrace();
         }
-        clip.start();
+        fightClip.start();
+
+        areaMusicStop();
     }   
 
-    public void musicStop()
+    /**
+     * Stop area music
+     */
+    public void fightMusicStop(boolean advanced)
     {
-        clip.stop();
+        if(fightClip != null)
+        {
+            fightClip.stop();
+            fightClip.close();
+            fightClip = null;
+            if(advanced == false)
+            {
+                setAreaSound("Audio/BasicRooms.wav");
+            }
+            else if(advanced)
+            {
+                setAreaSound("Audio/AdvancedRooms.wav");
+            }
+        }
     }
 
+    /**
+     * @param songPath String that has the path to Audio Folder or Files 
+     * <p>
+     * Create new Clip pointer.
+     */
+    private void setAreaSound(String songPath)
+    {
+        roomFile = new File(songPath);
+        try 
+        {
+            roomAudio = AudioSystem.getAudioInputStream(roomFile);
+            roomClip = AudioSystem.getClip();
+            roomClip.open(roomAudio);
+
+        } 
+        catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) 
+        {
+            e.printStackTrace();
+        }
+        roomClip.start();
+    }  
+
+    
+    /**
+     * Stop fight music, enabled area music right after!
+     */
+    public void areaMusicStop()
+    {
+        if(roomClip != null)
+        {
+            roomClip.stop();
+            roomClip.close();
+            roomClip = null;
+        }
+    }
 }
