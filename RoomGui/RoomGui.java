@@ -2,11 +2,13 @@ package RoomGui;
 import FightingGui.FightingGui;
 import Saving.ProgressSaving;
 import Stats.Player;
-import FightingGui.Dialouge;
 
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import Elements.AudioPlayer;
+import Elements.Dialouge;
 
 public class RoomGui extends JFrame 
 {
@@ -19,6 +21,7 @@ public class RoomGui extends JFrame
     private ProgressSaving progressSaving;
     private Player player;
     private Dialouge dialougeSystem;
+    private AudioPlayer audio;
     private String[] dialouge =
     {"You've finally made it! Theres no time left we have to get there quickly. Traps have been disarmed however Void Mass may still attack.", "10 more zones to go... the light pumps are no longer functioning be aware!"};
 
@@ -46,8 +49,9 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass,Dialouge dialougeSystemPass) 
+    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass,Dialouge dialougeSystemPass, AudioPlayer audioPass) 
     {
+        audio = audioPass;
         dialougeSystem = dialougeSystemPass;
         fightingGui = fightGuiPass;
         progressSaving = progressPass;

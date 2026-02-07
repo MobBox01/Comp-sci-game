@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import Elements.Dialouge;
 import Stats.Player;
 
 public class FightingGui extends JFrame 
@@ -27,7 +27,7 @@ public class FightingGui extends JFrame
     //Classess & Arrays
     private Layout fightLayout = new Layout();
     private ArrayList<JPanel> panelArray = new ArrayList<>();
-    private FightingSystem fightingSystem;
+    private BasicFightingSystem fightingSystem;
     private Player player;
     private Dialouge dialougeSystem;
     private int[][] fightRoomLayout = fightLayout.getFightMapping();
@@ -45,7 +45,7 @@ public class FightingGui extends JFrame
     private int storedTileChoice = UNSELECTED_ATTACK;
 
 
-    public FightingGui(FightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
+    public FightingGui(BasicFightingSystem fightSystemPass,Player playerPass,Dialouge dialougeSystemPass) throws IOException
     {
         fightingSystem = fightSystemPass;
         player = playerPass;
@@ -205,7 +205,7 @@ public class FightingGui extends JFrame
      * [ELSE-IF] Enemy isnt alive -> False TODO: Set a new decal to show that there is no enemy when peaceful
      * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
      */
-    public boolean fightCheck()
+    public boolean basicFightCheck()
     {
         if(fightingSystem.isEnemyAlive())
         {

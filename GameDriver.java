@@ -1,10 +1,10 @@
 import java.io.IOException;
 
-import FightingGui.Dialouge;
+import Elements.Dialouge;
+import Elements.AudioPlayer;
+import Elements.PlayerMovement;
 import FightingGui.FightingGui;
-import FightingGui.FightingMusic;
-import FightingGui.FightingSystem;
-import RoomGui.PlayerMovement;
+import FightingGui.BasicFightingSystem;
 import RoomGui.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Player;
@@ -14,14 +14,14 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         //These are in order!
-        FightingMusic fightMusic = new FightingMusic();
+        AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
 
-        FightingSystem fightSystem = new FightingSystem(player, dialougeSystem, fightMusic);
-        FightingGui fightGui = new FightingGui(fightSystem,player, dialougeSystem);
-        RoomGui roomGui = new RoomGui(fightGui,saving,player,dialougeSystem);
+        BasicFightingSystem basicFightingSystem = new BasicFightingSystem(player, dialougeSystem, audio);
+        FightingGui fightGui = new FightingGui(basicFightingSystem,player, dialougeSystem);
+        RoomGui roomGui = new RoomGui(fightGui,saving,player,dialougeSystem, audio);
 
         PlayerMovement movement = new PlayerMovement(roomGui, fightGui);
 
