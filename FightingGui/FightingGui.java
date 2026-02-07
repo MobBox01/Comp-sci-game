@@ -10,6 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+<<<<<<< HEAD
+=======
+
+>>>>>>> e532b7b00ec32ea5b7eb285b16d1a74185c51591
 import Elements.Dialouge;
 import Stats.Player;
 

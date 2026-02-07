@@ -1,7 +1,7 @@
 package Elements;
 
 import FightingGui.FightingGui;
-import RoomGui.RoomGui;
+import RoomHandling.RoomGui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
