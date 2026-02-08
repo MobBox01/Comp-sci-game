@@ -9,6 +9,7 @@ import FightingGui.AdvancedFightingSystem;
 import FightingGui.BasicFightingSystem;
 
 import RoomHandling.RoomGui;
+
 import Saving.ProgressSaving;
 import Stats.Player;
 
@@ -16,7 +17,6 @@ public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
-        //These are in order!
         //Elements
         AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
@@ -29,7 +29,7 @@ public class GameDriver
         FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
 
         //Rooms
-        RoomGui roomGui = new RoomGui(fightGui, saving, player, dialougeSystem, audio);
+        RoomGui roomGui = new RoomGui(fightGui, saving, player);
 
         PlayerInput input = new PlayerInput(roomGui, fightGui);
 
@@ -37,9 +37,9 @@ public class GameDriver
         fightGui.addKeyListener(input);
     }
 }
-//1/21/2026 LOG: Added new sprites, improved quality of game. New ideas still trying to be cooked up
 
-
+//[2/7/2026]: Factoring changes, added in advanced and basic fighting systems and some object memory addressess
+//BUG: Advanced rooms have a enemy EACH tile you go on!
 
 
 

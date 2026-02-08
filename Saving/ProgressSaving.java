@@ -1,14 +1,15 @@
 package Saving;
+
 import java.io.*;
+
 import java.util.Scanner;
 
 public class ProgressSaving 
 {
-
     private Scanner fileScanner;
     private RandomAccessFile fileWriter;
-    private int[] info = new int[3];
 
+    private int[] info = new int[3];
 
     /**
      * @return Array to initialize player, room etc.

@@ -2,6 +2,7 @@ package FightingGui;
 
 import Elements.Dialouge;
 import Elements.AudioPlayer;
+
 import Stats.Enemy;
 import Stats.Player;
 
@@ -29,9 +30,9 @@ public class AdvancedFightingSystem
         switch((int)(Math.random()*5))
         {
             case 2 -> enemy = new Enemy(1, .4, 100, "ADVANCED TEST", 0);
-            case 3 -> enemy = new Enemy(3, .3, 2, "ADVA", 0);
+            case 3 -> enemy = new Enemy(3, .3, 2, "Atomize", 0);
             case 1 -> enemy = new Enemy(3, .1, 50, "ADVAN Sniper", 0);
-            default -> enemy = new Enemy(1, .1, 5, "BALLS", 0);
+            default -> enemy = new Enemy(1, .1, 5, "ThreeDemons", 0);
         }
         audio.advancedFight();
         player.fightingAdvanced();

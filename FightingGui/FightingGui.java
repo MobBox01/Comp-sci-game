@@ -3,8 +3,11 @@ package FightingGui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+
 import java.io.IOException;
+
 import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +16,7 @@ import javax.swing.JPanel;
 
 import Elements.AudioPlayer;
 import Elements.Dialouge;
+
 import Stats.Player;
 
 public class FightingGui extends JFrame 
@@ -22,21 +26,25 @@ public class FightingGui extends JFrame
     private final int roomY = 5;
     private final int roomTotalTiles = roomX*roomY;
 
+    //Player and Fight Identification
     private boolean fightStatus = false;
     private int playerRow;
     private int playerCollumn;
 
-    //Classess & Arrays
+    //Classess
     private Layout fightLayout = new Layout();
-    private ArrayList<JPanel> panelArray = new ArrayList<>();
     private BasicFightingSystem basic_FS;
     private AdvancedFightingSystem advanced_FS;
     private Player player;
     private Dialouge dialougeSystem;
     private AudioPlayer audio;
-    private int[][] fightRoomLayout = fightLayout.getFightMapping();
 
-    //Object ints
+    //Arrays
+    private int[][] fightRoomLayout = fightLayout.getFightMapping();
+    private ArrayList<JPanel> panelArray = new ArrayList<>();
+
+
+    //Selector ints
     private final int SELECTED_ATTACK = 2;
     private final int UNSELECTED_ATTACK = 1;
 
@@ -47,6 +55,9 @@ public class FightingGui extends JFrame
     private final int UNSELECTED_DEFENSE = 5;
 
     private int storedTileChoice = UNSELECTED_ATTACK;
+
+    //Selector ints
+
 
 
     public FightingGui(BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass,Player playerPass,Dialouge dialougeSystemPass, AudioPlayer audioPass) throws IOException
@@ -236,7 +247,9 @@ public class FightingGui extends JFrame
         {
             fightStatus = false;
             audio.fightMusicStop(player.isFightingAdvanced());
+            fightRoomLayout[1][2] = 400;
             setTitle("Enemy: None");
+            buildFightRoom();
         }
 
         if(!player.isAlive())
@@ -255,12 +268,14 @@ public class FightingGui extends JFrame
             {
                 basic_FS.enemyEncounter();
                 setBasicEnemyInfo();
+                setEnemyFrame();
             }
             
             case "advanced" ->
             {
                 advanced_FS.enemyEncounter();
                 setAdvancedEnemyInfo();
+                setEnemyFrame();
             }
         }
         fightStatus = e;
@@ -300,7 +315,9 @@ public class FightingGui extends JFrame
                     case 5 -> setTile("Sprites/Selectors/Unselected_Defend.png", index);
                     case 6 -> setTile("Sprites/Selectors/Selected_Defend.png", index);
 
-                    case 300 -> setTile("", index);
+                    case 300 -> setTile("Sprites/Enemies/Atomize.gif", index);
+                    case 301 -> setTile("Sprites/Enemies/ThreeDemons.png", index);
+                    case 400 -> setTile("Sprites/Enemies/Frame_Empty.gif", index);
 
                     case -200 -> setTile("Sprites/HealthStates/MC_Full.png", index);
                     case -175 -> setTile("Sprites/HealthStates/MC_75.png", index);
@@ -338,4 +355,12 @@ public class FightingGui extends JFrame
         panelArray.get(index).setBackground(Color.black);
     }
 
+    private void setEnemyFrame()
+    {
+        switch(advanced_FS.getCurrentName())
+        {
+            case "Atomize" -> fightRoomLayout[1][2] = 300;
+            case "ThreeDemons" -> fightRoomLayout[1][2] = 301;
+        }
+    }
 }

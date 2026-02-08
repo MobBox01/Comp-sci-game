@@ -14,16 +14,14 @@ public class RoomGui extends JFrame
 {
     
     //Classes & Arrays
-    private int[][] currentRoom;
-    private ArrayList<JPanel> panelArray = new ArrayList<>();
     private RoomData roomContainer = new RoomData();
     private FightingGui fightingGui;
     private ProgressSaving progressSaving;
     private Player player;
-    private Dialouge dialougeSystem;
-    private AudioPlayer audio;
-    private String[] dialouge =
-    {"You've finally made it! Theres no time left we have to get there quickly. Traps have been disarmed however Void Mass may still attack.", "10 more zones to go... the light pumps are no longer functioning be aware!"};
+
+    //Arrays
+    private int[][] currentRoom;
+    private ArrayList<JPanel> panelArray = new ArrayList<>();
 
     //Room Size - Constants
     private final int roomX = 10;
@@ -49,10 +47,8 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass,Dialouge dialougeSystemPass, AudioPlayer audioPass) 
+    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
     {
-        audio = audioPass;
-        dialougeSystem = dialougeSystemPass;
         fightingGui = fightGuiPass;
         progressSaving = progressPass;
         player = playerPass;
@@ -91,10 +87,6 @@ public class RoomGui extends JFrame
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
 
-        if(roomNumber == 0)
-        {
-            dialougeSystem.setNewText(dialouge[0]);
-        }
         buildRoom();
     }
 

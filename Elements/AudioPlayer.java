@@ -1,5 +1,7 @@
 package Elements;
+
 import java.io.*;
+
 import javax.sound.sampled.*;
 
 public class AudioPlayer 
@@ -11,8 +13,6 @@ public class AudioPlayer
     File roomFile;
     AudioInputStream roomAudio;
     Clip roomClip;
-
-    private int fightAudioChecker = 0;
 
     /**
      * Play the song for basic enemies

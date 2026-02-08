@@ -3,8 +3,8 @@ package Stats;
 public class Player
 {
     private int[] attack = {3,5,7,9,11};
-    private int[] health = {55,65,75,85,100};
-    private int[] maxHealth = {55,65,75,85,100};
+    private int[] health = {60000,65,75,85,100};
+    private int[] maxHealth = {60000,65,75,85,100};
 
     private double[] defense = {.1,.2,.3,.4,.5};
 
