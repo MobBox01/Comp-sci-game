@@ -86,7 +86,7 @@ public class BasicFightingSystem
     {
         if(!enemy.isAlive() && !player.isFightingAdvanced())
         {
-            dialougeSystem.setNewText("Peaceful... BASIC");
+            dialougeSystem.setNewText("Basic areas are peaceful...");
         }
         return enemy.isAlive();
     }

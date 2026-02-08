@@ -89,7 +89,7 @@ public class AdvancedFightingSystem
     {
         if(!enemy.isAlive())
         {
-            dialougeSystem.setNewText("Peaceful...");
+            dialougeSystem.setNewText("Ambush at any moment...");
         }
         return enemy.isAlive();
     }

@@ -7,9 +7,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-import Elements.AudioPlayer;
-import Elements.Dialouge;
-
 public class RoomGui extends JFrame 
 {
     
@@ -30,18 +27,23 @@ public class RoomGui extends JFrame
 
     //Rooms
     private int roomCounter = 0;
-    private int tileUnderPlayer = 27;
+    private int tileUnderPlayer = 1;
     private int playerRow;
     private int playerCollumn;
 
-    //Constants
-    private static final int VOID = 0;
+    //Walkable
     private static final int CONCRETE = 1;
+
+
+    //Special
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
-    private static final int LAST_ROOM = 11;
-    private static final int LIGHT_PRODUCER = -10;
+
+    //Props
     private static final int CITY_1 = 100;
+
+    //Destroyed Props
+    private static final int VOID = 0;
     private static final int DESTROYEDCITY_1 = -100;
 
     /**
@@ -96,7 +98,7 @@ public class RoomGui extends JFrame
      * <p>
      * [IF] User encounter square 10, move to next room
      * <p>
-     * [IF] USer encounters square 11, move back a room
+     * [IF] User encounters square 11, move back a room
      */
     public void movePlayer(int dx,int dy)
     {
@@ -107,7 +109,7 @@ public class RoomGui extends JFrame
         {
             fightingGui.fightSet(true, "basic");
         }
-        else if(((int) Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomCounter) == true)
+        else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomCounter) == true)
         {
             fightingGui.fightSet(true, "advanced");
         }
@@ -143,7 +145,7 @@ public class RoomGui extends JFrame
     {
         int targetTile = currentRoom[playerRow][playerCollumn + dx];
 
-        if (targetTile >= CONCRETE && targetTile <= 10) 
+        if (targetTile == CONCRETE) 
         {
             currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
             tileUnderPlayer = targetTile;
@@ -153,11 +155,6 @@ public class RoomGui extends JFrame
         else if(targetTile == NEXT_ROOM)
         {
             roomCounter++;
-            enteredRoom(roomCounter);
-        }
-        else if(targetTile == LAST_ROOM)
-        {
-            roomCounter--;
             enteredRoom(roomCounter);
         }
     }
@@ -202,11 +199,9 @@ public class RoomGui extends JFrame
                     case VOID -> panelArray.get(index).setBackground(Color.BLACK);
                     case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
                     case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
-                    case LIGHT_PRODUCER -> setTileImage("Sprites/Barriers/LightProducer.gif", index);
                     case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
                     case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
                     case NEXT_ROOM -> panelArray.get(index).setBackground(Color.BLUE);
-                    case LAST_ROOM -> panelArray.get(index).setBackground(Color.CYAN);
 
                     default -> panelArray.get(index).setBackground(Color.RED);
                 }
