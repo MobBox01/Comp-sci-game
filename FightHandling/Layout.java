@@ -1,4 +1,4 @@
-package FightingGui;
+package FightHandling;
 
 public class Layout 
 {

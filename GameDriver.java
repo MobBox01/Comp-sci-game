@@ -1,13 +1,12 @@
 import java.io.IOException;
 
+import BossFight.TBD;
 import Elements.Dialouge;
 import Elements.AudioPlayer;
 import Elements.PlayerInput;
-
-import FightingGui.FightingGui;
-import FightingGui.AdvancedFightingSystem;
-import FightingGui.BasicFightingSystem;
-
+import FightHandling.AdvancedFightingSystem;
+import FightHandling.BasicFightingSystem;
+import FightHandling.FightingGui;
 import RoomHandling.RoomGui;
 
 import Saving.ProgressSaving;
@@ -22,6 +21,7 @@ public class GameDriver
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
+        TBD bossFight = new TBD(player);
 
         //Combat
         BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
@@ -31,15 +31,12 @@ public class GameDriver
         //Rooms
         RoomGui roomGui = new RoomGui(fightGui, saving, player);
 
-        PlayerInput input = new PlayerInput(roomGui, fightGui);
+        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight);
 
         roomGui.addKeyListener(input);
         fightGui.addKeyListener(input);
     }
 }
-
-//[2/7/2026]: Factoring changes, added in advanced and basic fighting systems and some object memory addressess
-//BUG: Advanced rooms have a enemy EACH tile you go on!
 
 
 

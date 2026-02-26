@@ -1,11 +1,12 @@
 package RoomHandling;
-import FightingGui.FightingGui;
 import Saving.ProgressSaving;
 import Stats.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import FightHandling.FightingGui;
 
 public class RoomGui extends JFrame 
 {
@@ -155,6 +156,11 @@ public class RoomGui extends JFrame
         else if(targetTile == NEXT_ROOM)
         {
             roomCounter++;
+            enteredRoom(roomCounter);
+        }
+        else if(targetTile == 11)
+        {
+            roomCounter--;
             enteredRoom(roomCounter);
         }
     }

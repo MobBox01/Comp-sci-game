@@ -67,14 +67,23 @@ public class Player
     {
         return health[level];
     }
+
     /**
      * @param heal
      * Heals 100% of the healed amount
      * Avoids health overflow
+     * Random chance for heal to fail, and you will get less healing!
      */
-    public void amountHealed(int heal)
+    public void playerHeal(int heal)
     {
-        health[level] += heal;
+        if(((int)(Math.random()*100)) >= 30)
+        {
+            health[level] += (int)(heal*.5);
+        }
+        else
+        {
+            health[level] += heal;
+        }
 
         if(health[level] >= maxHealth[level])
         {

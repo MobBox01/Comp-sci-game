@@ -25,7 +25,7 @@ public class RoomData
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,100,100,-100,0,0,0},
         {0,0,0,0,0,0,0,0,0,0},
-        {0,1,90,1,0,1,1,1,1,0},
+        {0,11,90,1,1,1,1,1,1,0},
         {0,0,0,0,1,-100,0,1,1,0},
         {0,1,1,1,1,1,1,1,1,0},
         {0,0,0,1,0,0,0,0,0,0},
@@ -61,7 +61,8 @@ public class RoomData
 
     public boolean isAdvancedRooms(int roomNumber)
     {
-        return roomNumber >= 0;
+        
+        return roomNumber >= 1;
     }
 
 }

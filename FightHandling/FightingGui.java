@@ -1,4 +1,4 @@
-package FightingGui;
+package FightHandling;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -233,7 +233,7 @@ public class FightingGui extends JFrame
     /**
      * @return check if a fight is ongoing
      * [IF] Enemy is alive -> True
-     * [ELSE-IF] Enemy isnt alive -> False TODO: Set a new decal to show that there is no enemy when peaceful
+     * [ELSE-IF] Enemy isnt alive -> False
      * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
      */
     public boolean fightCheck()

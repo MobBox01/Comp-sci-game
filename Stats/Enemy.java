@@ -5,14 +5,12 @@ public class Enemy
 
     private int attack;
     private int health;
-    private int manaShield;
 
     private String name;
 
     private double defense;
 
     private final int maxHealth;
-    private final int maxShield;
 
     /**
      * @param Attack
@@ -21,15 +19,13 @@ public class Enemy
      * @param Name
      * @param Shield
      */
-    public Enemy(int Attack, Double Defense, int Health, String Name, int Shield)
+    public Enemy(int Attack, Double Defense, int Health, String Name)
     {
         attack = Attack;
         defense = Defense;
         health = Health;
         name = Name;
-        manaShield = Shield;
 
-        maxShield = Shield;
         maxHealth = Health;
     }
 
@@ -63,13 +59,7 @@ public class Enemy
      */
     public void heal(int heal)
     {
-        if(manaShield <= 0)
-        {
-            health += heal;
-            return; 
-        }
-        health += (int) (manaShield*defense) + heal;
-        manaShield -= (int)(manaShield*defense);
+
     }
 
     public int Attack()
@@ -82,7 +72,7 @@ public class Enemy
     @Override
     public String toString()
     {
-        return "\n[E-HEALTH]: " + health + "\n[E-DEFENSE]: " + defense + "\n[E-ATTACK]: " + attack + "\n[E-SHIELD]: " + manaShield + "\n\n[E-MAX-HEALTH]: " + maxHealth + "\n[E-MAX-SHIELD]: " + maxShield + "\n\n[E-ALIVE]: " + isAlive();
+        return "\n[E-HEALTH]: " + health + "\n[E-DEFENSE]: " + defense + "\n[E-ATTACK]: " + attack + "\n[E-MAX-HEALTH]: " + maxHealth + "\n\n[E-ALIVE]: " + isAlive();
 
     }
 }

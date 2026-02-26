@@ -1,23 +1,23 @@
-package FightingGui;
+package FightHandling;
 
-import Elements.Dialouge;
 import Elements.AudioPlayer;
+import Elements.Dialouge;
 
 import Stats.Enemy;
 import Stats.Player;
 
-public class AdvancedFightingSystem 
+public class BasicFightingSystem 
 {
     private Player player;
     private Enemy enemy; 
     private Dialouge dialougeSystem;
     private AudioPlayer audio;
 
-    public AdvancedFightingSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public BasicFightingSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
     {
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
-        enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY", 0);
+        enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY");
         audio = audioPass;
     }
 
@@ -29,13 +29,12 @@ public class AdvancedFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(1, .4, 100, "ADVANCED TEST", 0);
-            case 3 -> enemy = new Enemy(3, .3, 2, "Atomize", 0);
-            case 1 -> enemy = new Enemy(3, .1, 50, "ADVAN Sniper", 0);
-            default -> enemy = new Enemy(1, .1, 5, "ThreeDemons", 0);
+            case 2 -> enemy = new Enemy(3, .4, 100, "f");
+            case 3 -> enemy = new Enemy(6, .3, 2, "b");
+            case 1 -> enemy = new Enemy(5, .1, 50, "Enemy Sniper");
+            default -> enemy = new Enemy(4, .1, 5, "e");
         }
-        audio.advancedFight();
-        player.fightingAdvanced();
+        audio.basicFight();
         dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
@@ -52,12 +51,12 @@ public class AdvancedFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            dialougeSystem.setNewText("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth());
+            dialougeSystem.setNewText("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
         }
 
         else
         {
-            dialougeSystem.setNewText("PARRIED!\n" + "Your health: " + player.getHealth());
+            dialougeSystem.setNewText("PARRIED!\n" + "Your health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
         }
     }
 
@@ -68,28 +67,25 @@ public class AdvancedFightingSystem
     {
         enemy.damageRecieved(player.attackAction());
         player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.2)));
-        dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\nEnemy Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
+        dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
     }
-
-
 
     /**
      * Heal a specified amount, default: 5 HP
-     * TODO: Health should be a random % increase honestly
      */
     public void heal()
     {
-        player.amountHealed(10);
+        player.playerHeal(10);
         player.damageRecieved((int)(enemy.Attack()*.5));
-        dialougeSystem.setNewText("Your health: " + player.getHealth());
+        dialougeSystem.setNewText("Your health: " + player.getHealth() + "\n" + enemy.getName() + " health: " + enemy.getHealth());
     }
 
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(!enemy.isAlive())
+        if(!enemy.isAlive() && !player.isFightingAdvanced())
         {
-            dialougeSystem.setNewText("Ambush at any moment...");
+            dialougeSystem.setNewText("Basic areas are peaceful...");
         }
         return enemy.isAlive();
     }
