@@ -6,19 +6,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 
-import FightHandling.FightingGui;
-
 public class RoomGui extends JFrame 
 {
     
     //Classes & Arrays
-    private RoomData roomContainer = new RoomData();
-    private FightingGui fightingGui;
+    private RoomData roomData;
     private ProgressSaving progressSaving;
     private Player player;
 
     //Arrays
-    private int[][] currentRoom;
+    private int[][] roomLayout;
     private ArrayList<JPanel> panelArray = new ArrayList<>();
 
     //Room Size - Constants
@@ -35,7 +32,6 @@ public class RoomGui extends JFrame
     //Walkable
     private static final int CONCRETE = 1;
 
-
     //Special
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
@@ -50,9 +46,9 @@ public class RoomGui extends JFrame
     /**
      * Sets up window and starting room
     */
-    public RoomGui(FightingGui fightGuiPass,ProgressSaving progressPass,Player playerPass) 
+    public RoomGui(ProgressSaving progressPass,Player playerPass,RoomData roomDataPass) 
     {
-        fightingGui = fightGuiPass;
+        roomData = roomDataPass;
         progressSaving = progressPass;
         player = playerPass;
 
@@ -70,7 +66,7 @@ public class RoomGui extends JFrame
             add(panel);
         }
 
-        currentRoom = roomContainer.obtainRoom(progressSaving.obtainSavePoint()[2]);
+        roomLayout = roomData.obtainRoom(progressSaving.obtainSavePoint()[2]);
         roomCounter = progressSaving.obtainSavePoint()[2];
         findPlayer();
         buildRoom();
@@ -86,10 +82,9 @@ public class RoomGui extends JFrame
         System.out.println("Entered room number: {" + roomNumber + "}");
         setTitle("Room Number: [" + roomNumber + "] VOID GAME");
 
-        currentRoom = roomContainer.obtainRoom(roomNumber);
+        roomLayout = roomData.obtainRoom(roomNumber);
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
-
         buildRoom();
     }
 
@@ -106,27 +101,19 @@ public class RoomGui extends JFrame
         if (dx != 0) movePlayerX(dx);
         if (dy != 0) movePlayerY(dy);
 
-        if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomCounter) == false)
-        {
-            fightingGui.fightSet(true, "basic");
-        }
-        else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomCounter) == true)
-        {
-            fightingGui.fightSet(true, "advanced");
-        }
         buildRoom();
     }
 
     /**
      * Finds the players current (Row,Collumn) position in the 2D-Array.
-     */
+    */
     private void findPlayer()
     {
         for(int i = 0; i < roomX; i++)
         {
             for(int j = 0; j < roomY; j++)
             {
-                if(currentRoom[i][j] == PLAYER)
+                if(roomLayout[i][j] == PLAYER)
                 {
                     playerRow = i;
                     playerCollumn = j;
@@ -144,14 +131,14 @@ public class RoomGui extends JFrame
      */
     private void movePlayerX(int dx)
     {
-        int targetTile = currentRoom[playerRow][playerCollumn + dx];
+        int targetTile = roomLayout[playerRow][playerCollumn + dx];
 
         if (targetTile == CONCRETE) 
         {
-            currentRoom[playerRow][playerCollumn] = tileUnderPlayer; 
+            roomLayout[playerRow][playerCollumn] = tileUnderPlayer; 
             tileUnderPlayer = targetTile;
             playerCollumn += dx;
-            currentRoom[playerRow][playerCollumn] = PLAYER;
+            roomLayout[playerRow][playerCollumn] = PLAYER;
         }
         else if(targetTile == NEXT_ROOM)
         {
@@ -174,14 +161,14 @@ public class RoomGui extends JFrame
      */
     private void movePlayerY(int dy)
     {
-        int targetTile = currentRoom[playerRow - dy][playerCollumn];
+        int targetTile = roomLayout[playerRow - dy][playerCollumn];
 
         if (targetTile >= CONCRETE && targetTile <= 10) 
         {
-            currentRoom[playerRow][playerCollumn] = tileUnderPlayer;
+            roomLayout[playerRow][playerCollumn] = tileUnderPlayer;
             tileUnderPlayer = targetTile;
             playerRow -= dy;
-            currentRoom[playerRow][playerCollumn] = PLAYER;
+            roomLayout[playerRow][playerCollumn] = PLAYER;
         }
     }
 
@@ -200,7 +187,7 @@ public class RoomGui extends JFrame
             for (int c = 0; c < roomY; c++) 
             {
                 panelArray.get(index).removeAll();
-                switch (currentRoom[r][c]) 
+                switch (roomLayout[r][c]) 
                 {
                     case VOID -> panelArray.get(index).setBackground(Color.BLACK);
                     case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
@@ -240,5 +227,10 @@ public class RoomGui extends JFrame
         panelArray.get(index).removeAll();
         panelArray.get(index).add(labelComponent, BorderLayout.CENTER);
         panelArray.get(index).setBackground(Color.RED);
+    }
+
+    public int currentRoom()
+    {
+        return roomCounter;
     }
 }

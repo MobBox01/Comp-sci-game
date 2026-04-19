@@ -269,6 +269,7 @@ public class FightingGui extends JFrame
                 basic_FS.enemyEncounter();
                 setBasicEnemyInfo();
                 setEnemyFrame();
+                buildFightRoom();
             }
             
             case "advanced" ->
@@ -276,6 +277,7 @@ public class FightingGui extends JFrame
                 advanced_FS.enemyEncounter();
                 setAdvancedEnemyInfo();
                 setEnemyFrame();
+                buildFightRoom();
             }
         }
         fightStatus = e;

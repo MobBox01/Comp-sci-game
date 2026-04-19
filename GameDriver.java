@@ -7,6 +7,7 @@ import Elements.PlayerInput;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import FightHandling.FightingGui;
+import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
 
 import Saving.ProgressSaving;
@@ -22,19 +23,21 @@ public class GameDriver
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
         TBD bossFight = new TBD(player);
+        RoomData roomContainer = new RoomData();
 
         //Combat
         BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
         AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, dialougeSystem, audio);
         FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
-
+        
         //Rooms
-        RoomGui roomGui = new RoomGui(fightGui, saving, player);
+        RoomGui roomGui = new RoomGui(saving, player, roomContainer);
 
-        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight);
+        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer);
 
         roomGui.addKeyListener(input);
         fightGui.addKeyListener(input);
+
     }
 }
 

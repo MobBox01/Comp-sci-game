@@ -1,5 +1,6 @@
 package Elements;
 
+import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
 
 import java.awt.event.KeyEvent;
@@ -15,11 +16,13 @@ public class PlayerInput extends JFrame implements KeyListener
     RoomGui roomGui;
     FightingGui fightingGui;
     TBD bossFight;
+    RoomData roomContainer;
     
     boolean battleStatus;
 
-    public PlayerInput(RoomGui roomGuiPass,FightingGui fightingGuiPass,TBD bossFightingPass)
+    public PlayerInput(RoomGui roomGuiPass,FightingGui fightingGuiPass,TBD bossFightingPass,RoomData roomDataPass)
     {
+        this.roomContainer = roomDataPass;
         this.roomGui = roomGuiPass;
         this.fightingGui = fightingGuiPass;
         this.bossFight = bossFightingPass;
@@ -47,6 +50,15 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_UP -> roomGui.movePlayer(0, 1);
                 case KeyEvent.VK_DOWN -> roomGui.movePlayer(0, -1);
             }
+
+            if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == false)
+            {
+                fightingGui.fightSet(true, "basic");
+            }
+            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == true)
+            {
+                fightingGui.fightSet(true, "advanced");
+            }
         }
         else if(fightingGui.fightCheck())
         {
@@ -57,7 +69,7 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
-        else if(bossFight.isBossFight())
+        /*else if(bossFight.isBossFight())
         {//Dead code, as this is always false
             switch(keyEvent.getKeyCode())
             {
@@ -66,6 +78,7 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
+            */
         
     }
 

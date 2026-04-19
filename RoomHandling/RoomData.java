@@ -65,4 +65,9 @@ public class RoomData
         return roomNumber >= 1;
     }
 
+    public boolean isTutorialRoom(int roomNumber)
+    {
+        return roomNumber == 0;
+    }
+
 }
