@@ -1,7 +1,6 @@
 package RoomHandling;
 import Saving.ProgressSaving;
 import Stats.Player;
-
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -133,22 +132,25 @@ public class RoomGui extends JFrame
     {
         int targetTile = roomLayout[playerRow][playerCollumn + dx];
 
-        if (targetTile == CONCRETE) 
+        switch (targetTile) 
         {
-            roomLayout[playerRow][playerCollumn] = tileUnderPlayer; 
-            tileUnderPlayer = targetTile;
-            playerCollumn += dx;
-            roomLayout[playerRow][playerCollumn] = PLAYER;
-        }
-        else if(targetTile == NEXT_ROOM)
-        {
-            roomCounter++;
-            enteredRoom(roomCounter);
-        }
-        else if(targetTile == 11)
-        {
-            roomCounter--;
-            enteredRoom(roomCounter);
+            case 1 -> 
+            {
+                roomLayout[playerRow][playerCollumn] = tileUnderPlayer;
+                tileUnderPlayer = targetTile;
+                playerCollumn += dx;
+                roomLayout[playerRow][playerCollumn] = PLAYER;
+            }
+            case NEXT_ROOM -> 
+            {
+                roomCounter++;
+                enteredRoom(roomCounter);
+            }
+            case 11 -> 
+            {
+                roomCounter--;
+                enteredRoom(roomCounter);
+            }
         }
     }
 
@@ -163,12 +165,25 @@ public class RoomGui extends JFrame
     {
         int targetTile = roomLayout[playerRow - dy][playerCollumn];
 
-        if (targetTile >= CONCRETE && targetTile <= 10) 
+        switch(targetTile)
         {
-            roomLayout[playerRow][playerCollumn] = tileUnderPlayer;
-            tileUnderPlayer = targetTile;
-            playerRow -= dy;
-            roomLayout[playerRow][playerCollumn] = PLAYER;
+            case CONCRETE ->
+            {
+                roomLayout[playerRow][playerCollumn] = tileUnderPlayer;
+                tileUnderPlayer = targetTile;
+                playerRow -= dy;
+                roomLayout[playerRow][playerCollumn] = PLAYER;
+            }
+            case NEXT_ROOM -> 
+            {
+                roomCounter++;
+                enteredRoom(roomCounter);
+            }
+            case 11 -> 
+            {
+                roomCounter--;
+                enteredRoom(roomCounter);
+            }
         }
     }
 

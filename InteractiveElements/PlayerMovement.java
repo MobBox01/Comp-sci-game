@@ -52,6 +52,14 @@ public class PlayerMovement extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
+        else if(1 == 1)
+        {
+            switch(keyEvent.getKeyCode()) 
+            {
+                case KeyEvent.VK_LEFT-> System.out.println("Boss left");
+            }
+
+        }
         
     }
 

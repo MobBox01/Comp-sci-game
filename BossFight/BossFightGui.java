@@ -1,4 +1,4 @@
-package FightHandling;
+package BossFight;
 
 import javax.swing.*;
 

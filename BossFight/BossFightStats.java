@@ -1,12 +1,11 @@
 package FightHandling;
 
-import Elements.Dialouge;
 import Elements.AudioPlayer;
-
+import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
 
-public class BossFight 
+public class BossFightStats 
 {
     private Player player;
     private Enemy enemy; 
@@ -15,7 +14,7 @@ public class BossFight
 
     double charge = 0;
 
-    public BossFight(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public BossFightStats(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
     {
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
