@@ -1,23 +1,18 @@
 package FightHandling;
 
+import Elements.AudioPlayer;
+import Elements.Dialouge;
+import Stats.Player;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
-
 import java.io.IOException;
-
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import Elements.AudioPlayer;
-import Elements.Dialouge;
-
-import Stats.Player;
 
 public class FightingGui extends JFrame 
 {
@@ -94,7 +89,6 @@ public class FightingGui extends JFrame
     */
     public void movePlayer(int move_OR_selected)
     {
-
         findPlayer();
         switch(move_OR_selected)
         {
