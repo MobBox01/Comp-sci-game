@@ -1,14 +1,17 @@
-package FightHandling;
+package BossFight;
 
 import Elements.AudioPlayer;
 import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
+import javax.xml.stream.events.EndElement;
 
 public class BossFightStats 
 {
     private Player player;
-    private Enemy enemy; 
+    private Enemy evilKlus = new Enemy(0, 1, 0, getCurrentName());
+    private Enemy evilNies = new Enemy(0, 1, 0, getCurrentName());
+    private Enemy happilyEvilGurrito = new Enemy(0, 1, 0, getCurrentName());
     private Dialouge dialougeSystem;
     private AudioPlayer audio;
 
@@ -27,12 +30,7 @@ public class BossFightStats
      */
     public void bossEncounter(int bossLevel)
     {
-        switch(bossLevel)
-        {
-            case 1 -> enemy = new Enemy(10, .5, 100, "Happily Evil Gurrito");
-            case 2 -> enemy = new Enemy(20, .3, 200, "Evil BodyGuard Nies");
-            case 3 -> enemy = new Enemy(30, .1, 500, "Evil Boss Klus");
-        }
+
         dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 

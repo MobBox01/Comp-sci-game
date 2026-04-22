@@ -51,7 +51,7 @@ public class RoomGui extends JFrame
         progressSaving = progressPass;
         player = playerPass;
 
-        setTitle("Room Number: [0] VOID GAME");
+        setTitle("Room Number: [" + 0 + "] VOID GAME");
         setSize(750, 750);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
