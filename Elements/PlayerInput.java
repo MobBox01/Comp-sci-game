@@ -40,7 +40,6 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        
         if(!fightingGui.fightCheck() && !bossFight.isBossFight())
         {
             switch(keyEvent.getKeyCode())
@@ -51,11 +50,11 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> roomGui.movePlayer(0, -1);
             }
 
-            if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == false)
+            if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == false && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightingGui.fightSet(true, "basic");
             }
-            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == true)
+            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == true&& !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightingGui.fightSet(true, "advanced");
             }
