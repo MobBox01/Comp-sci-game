@@ -85,6 +85,7 @@ public class RoomGui extends JFrame
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
         buildRoom();
+
     }
 
     /**

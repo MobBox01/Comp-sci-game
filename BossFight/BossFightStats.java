@@ -4,18 +4,16 @@ import Elements.AudioPlayer;
 import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
-import javax.xml.stream.events.EndElement;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class BossFightStats 
 {
     private Player player;
-    private Enemy evilKlus = new Enemy(0, 1, 0, getCurrentName());
-    private Enemy evilNies = new Enemy(0, 1, 0, getCurrentName());
-    private Enemy happilyEvilGurrito = new Enemy(0, 1, 0, getCurrentName());
+    private Enemy evilKlus = new Enemy(0, 1.0, 0, "Evil Klus");
+    private Enemy evilNies = new Enemy(0, 1.0, 0, "Evil Nies");
+    private Enemy happilyEvilGurrito = new Enemy(0, 1.0, 0, "Happily Evil Gurrito");
     private Dialouge dialougeSystem;
     private AudioPlayer audio;
-
-    double charge = 0;
 
     public BossFightStats(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
     {
@@ -30,8 +28,7 @@ public class BossFightStats
      */
     public void bossEncounter(int bossLevel)
     {
-
-        dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
+        //"Rat.. You haven't done your CSA Homework... for this you must pay"
     }
 
     /**
@@ -39,41 +36,7 @@ public class BossFightStats
      */
     public void defend()
     {
-        int random = (int)(Math.random()*4);
 
-        if(random == 3)
-        {
-
-            int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
-            player.damageRecieved(damage);
-
-            dialougeSystem.setNewText("PARRY [FAILED]\nDamage taken: [" + damage*2 + "]\nYour health: [" + player.getHealth() + "]");
-            charge -= .2;
-            if(charge < 0)
-            {
-                charge = 0;
-            }
-        }
-        else if(random == 2)
-        {
-            int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
-            player.damageRecieved(damage*2);
-            dialougeSystem.setNewText("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nYour health: [" + player.getHealth() + "]");
-            charge -= .3;
-            if(charge < 0)
-            {
-                charge = 0;
-            }
-        }
-        else
-        {
-            dialougeSystem.setNewText("~~PARRIED~~\n" + "Your health: [" + player.getHealth() + "]");
-            charge += .2;
-            if(charge > 1)
-            {
-                charge = 1;
-            }
-        }
     }
 
     /**
@@ -82,17 +45,7 @@ public class BossFightStats
      */
     public void attack()
     {
-        if(player.healthPercentage() <= 40 && Math.random() < .5)
-        {
-            player.damageRecieved(enemy.Attack()*2);
-            dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
-        }
-        else
-        {
-            enemy.damageRecieved(player.attackAction());
-            player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.5)));
-            dialougeSystem.setNewText("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
-        }
+
     }
  
 
@@ -101,32 +54,17 @@ public class BossFightStats
     */
     public void heal()
     {
-        double rng = Math.random();
-        if(rng >= .3)
-        {
-            player.playerHeal(10);
-            dialougeSystem.setNewText("Healed: [" + 10 + "]\n" + enemy.getName() + " couldn't heal in time! Lucky you!");
-        }
-        else
-        {
-            player.playerHeal(10);
-            enemy.heal(20);
-            dialougeSystem.setNewText("Healed: [" + 10 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
-        }
+
     }
 
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(!enemy.isAlive())
-        {
-            dialougeSystem.setNewText("Ambush at any moment...");
-        }
-        return enemy.isAlive();
+        return false;
     }
 
     public String getCurrentName()
     {
-        return enemy.getName();
+        return null;
     }
 }

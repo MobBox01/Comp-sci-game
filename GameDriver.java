@@ -1,17 +1,15 @@
-import java.io.IOException;
-
-import BossFight.TBD;
-import Elements.Dialouge;
+import BossFight.BossFightGui;
 import Elements.AudioPlayer;
+import Elements.Dialouge;
 import Elements.PlayerInput;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import FightHandling.FightingGui;
 import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
-
 import Saving.ProgressSaving;
 import Stats.Player;
+import java.io.IOException;
 
 public class GameDriver
 {
@@ -22,7 +20,7 @@ public class GameDriver
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
-        TBD bossFight = new TBD(player);
+        BossFightGui bossFight = new BossFightGui();
         RoomData roomContainer = new RoomData();
 
         //Combat

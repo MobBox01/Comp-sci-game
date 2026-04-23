@@ -1,16 +1,17 @@
 package Stats;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class Enemy 
 {
-
     private int attack;
     private int health;
+    private final int maxHealth;
+
 
     private String name;
 
     private double defense;
 
-    private final int maxHealth;
 
     /**
      * @param Attack

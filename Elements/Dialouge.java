@@ -1,12 +1,12 @@
 package Elements;
 
 import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 public class Dialouge extends JFrame
 {
+    @SuppressWarnings("FieldMayBeFinal")
     private JTextArea textBox = new JTextArea();
 
     public Dialouge()
@@ -17,17 +17,7 @@ public class Dialouge extends JFrame
         setResizable(false);
         getContentPane().setBackground(Color.black);
         setLayout(new BorderLayout()); 
-        setNewText("Peaceful...");
-
-        setVisible(true);
-    }
-
-    /**
-     * @param newText -> String, Dialouge you want to put 
-     */
-    public void setNewText(String newText)
-    {
-        textBox.setText(newText);
+        
         textBox.setEditable(false);
         textBox.setFocusable(false);
         textBox.setBackground(Color.BLACK);
@@ -43,5 +33,14 @@ public class Dialouge extends JFrame
 
         revalidate();
         repaint();
+        setVisible(true);
+    }
+
+    /**
+     * @param newText -> String, Dialouge you want to put 
+     */
+    public void setNewText(String newText)
+    {
+        textBox.setText(newText);
     }
 }

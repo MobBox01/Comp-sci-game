@@ -1,5 +1,6 @@
 package Stats;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class Player
 {
     private int[] attack = {3,5,7,9,11};

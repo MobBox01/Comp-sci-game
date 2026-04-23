@@ -1,7 +1,6 @@
 package Elements;
 
 import java.io.*;
-
 import javax.sound.sampled.*;
 
 public class AudioPlayer 
@@ -35,6 +34,7 @@ public class AudioPlayer
      * <p>
      * Create new Clip pointer.
      */
+    @SuppressWarnings({"CallToPrintStackTrace"})
     private void setFightSong(String songPath)
     {
         fightFile = new File(songPath);
@@ -80,6 +80,7 @@ public class AudioPlayer
      * <p>
      * Create new Clip pointer.
      */
+    @SuppressWarnings("CallToPrintStackTrace")
     private void setAreaSound(String songPath)
     {
         roomFile = new File(songPath);

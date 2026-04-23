@@ -156,9 +156,9 @@ public class RoomData
         return roomNumber >= 1;
     }
 
-    public boolean isTutorialRoom(int roomNumber)
+    public boolean isBossRoom(int roomNumber)
     {
-        return roomNumber == 0;
+        return roomNumber == 5;
     }
 
 }

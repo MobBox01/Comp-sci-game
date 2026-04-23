@@ -1,31 +1,27 @@
 package Elements;
 
+import BossFight.BossFightGui;
+import FightHandling.FightingGui;
 import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.*;
-
-import BossFight.TBD;
-import FightHandling.FightingGui;
 
 public class PlayerInput extends JFrame implements KeyListener 
 {
     RoomGui roomGui;
     FightingGui fightingGui;
-    TBD bossFight;
     RoomData roomContainer;
-    
-    boolean battleStatus;
+    BossFightGui bossFight;
 
-    public PlayerInput(RoomGui roomGuiPass,FightingGui fightingGuiPass,TBD bossFightingPass,RoomData roomDataPass)
+    
+    public PlayerInput(RoomGui roomGuiPass, FightingGui fightingGuiPass,BossFightGui bossFightingPass, RoomData roomPass)
     {
-        this.roomContainer = roomDataPass;
         this.roomGui = roomGuiPass;
         this.fightingGui = fightingGuiPass;
         this.bossFight = bossFightingPass;
+        roomContainer = roomPass;
     }
 
     /**
@@ -40,7 +36,7 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!fightingGui.fightCheck() && !bossFight.isBossFight())
+        if(!fightingGui.fightCheck())
         {
             switch(keyEvent.getKeyCode())
             {
@@ -68,7 +64,7 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
-        /*else if(bossFight.isBossFight())
+        else if(bossFight.isBossFight())
         {//Dead code, as this is always false
             switch(keyEvent.getKeyCode())
             {
@@ -77,8 +73,6 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
-            */
-        
     }
 
 
