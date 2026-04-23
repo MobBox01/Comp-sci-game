@@ -12,6 +12,10 @@ public class BossFightGui extends JFrame
     private JLabel evilNies = new JLabel(new ImageIcon("Sprites/Boss/Nies.jpg"));
     private JLabel evilGurrito = new JLabel(new ImageIcon("Sprites/Boss/Gurrito.jpg"));
     private JTextArea textBox = new JTextArea();
+    private int[] options = new int
+    {
+
+    };
 
     
     public BossFightGui()
