@@ -10,6 +10,9 @@ public class EndingGui extends JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(0,0,1000,800);
 
+        happyNies.setBounds(WIDTH, WIDTH, WIDTH, HEIGHT);
+        
+        add(happyNies);
         repaint();
         revalidate();
         setVisible(false);

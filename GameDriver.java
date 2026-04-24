@@ -16,26 +16,26 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         //Elements
-        AudioPlayer audio = new AudioPlayer();
+        /*AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
-        Player player = new Player(saving.obtainSavePoint());
+        Player player = new Player(saving.obtainSavePoint());*/
         BossFightGui bossFight = new BossFightGui();
-        RoomData roomContainer = new RoomData();
+        //RoomData roomContainer = new RoomData();
 
+        bossFight.dialouge("You need to do your assigments");
         //Combat
-        BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
+        /*BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
         AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, dialougeSystem, audio);
         FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
-        
         //Rooms
-        RoomGui roomGui = new RoomGui(saving, player, roomContainer);
+        /*RoomGui roomGui = new RoomGui(saving, player, roomContainer);
 
         PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer);
 
         roomGui.addKeyListener(input);
         fightGui.addKeyListener(input);
-
+        */
     }
 }
 

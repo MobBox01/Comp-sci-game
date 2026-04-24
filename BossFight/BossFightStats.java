@@ -21,7 +21,7 @@ public class BossFightStats
         dialougeSystem = dialougeSystemPass;
         audio = audioPass;
     }
-
+    //You defeat evil nies, then evil gurrito, finally defeat mr klus
     /**
      * Initialize the new enemy
      * Set dialouge text for new enemy encounter
