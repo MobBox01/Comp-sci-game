@@ -13,21 +13,32 @@ public class BossFightGui extends JFrame
     private JLabel evilKlus = new JLabel(new ImageIcon("Sprites/Boss/Klus.jpg"));
     private JLabel evilNies = new JLabel(new ImageIcon("Sprites/Boss/Nies.jpg"));
     private JLabel evilGurrito = new JLabel(new ImageIcon("Sprites/Boss/Gurrito.jpg"));
+    private JLabel opFull = new JLabel(new ImageIcon("Sprites/HealthStates/OP_Full.png"));
     private JTextArea textBox = new JTextArea();
-    int[] fightLayout = {-200,2,3,5};
+    private JLabel option = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+    int[] fightLayout = {-200,1};
+    boolean isDialougeBusy = true;
 
-    public BossFightGui()
+    private BossFightSystem bossFightSystem;
+
+    public BossFightGui(BossFightSystem BossFightSystemPass)
     {
+        bossFightSystem = BossFightSystemPass;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        evilKlus.setBounds(500, 200, 144, 300);
-        evilNies.setBounds(0,0,144,364);
-        evilGurrito.setBounds(1000, 0,144,192);
+        opFull.setBounds(50,250,201,201);
+        evilKlus.setBounds(500, 100, 144, 300);
+        evilNies.setBounds(300,100,144,364);
+        evilGurrito.setBounds(700, 100,192,144);
+        option.setBounds(650,450,610,220);
 
         add(evilKlus);
         add(evilNies);
         add(evilGurrito);
+        add(opFull);
+        add(option);
+
         setBackground(Color.BLACK);
         setTitle("Holy crap its Evil Klus");
         setLayout(null);
@@ -40,7 +51,7 @@ public class BossFightGui extends JFrame
         textBox.setFont(new Font("DialogInput", Font.BOLD, 20));
         textBox.setLineWrap(true);
         textBox.setWrapStyleWord(true);
-        textBox.setBounds(100,500,200,200);
+        textBox.setBounds(800,300,450,300);
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
@@ -57,11 +68,35 @@ public class BossFightGui extends JFrame
     //TODO:Work on player movement after implementing option graphics
     public void movePlayer(int key)
     {
+        System.out.println("movement");
+        switch (key) 
+        {
+            case 1 ->
+            {
+                if(fightLayout[1] == 3) 
+                {}
+                else 
+                {
+                    fightLayout[1] += 1;
+                }
+            }
+            case -1 ->
+            {
+                if(fightLayout[1] == 1) 
+                {}
+                else 
+                {
+                    fightLayout[1] -= 1;
+                }
+            }
+        }
+
+        repaintOptions();
     }
 
     public boolean isBossFight()
     {
-        return false;
+        return true;
     }
 
     public void setNewText(String newText)
@@ -69,9 +104,11 @@ public class BossFightGui extends JFrame
         textBox.setText(newText);
     }
 
-    public  void dialouge(String newText)
+    public void dialouge(String newText)
     {
         setNewText("");
+        isDialougeBusy = true;
+        System.out.println("Set to true");
         String[] chars = newText.split("");
         for(String e: chars)
         {
@@ -86,5 +123,26 @@ public class BossFightGui extends JFrame
 
             textBox.append(e);
         }
+        isDialougeBusy = false;
+        System.out.println("Set to " + isDialougeBusy);
+    }
+
+    public boolean dialougeStatus()
+    {
+        System.out.println("Status: " + isDialougeBusy);
+        return isDialougeBusy;
+    }
+
+    public void repaintOptions()
+    {
+        switch(fightLayout[1])
+        {
+            case 1 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+            case 2 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
+            case 3 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
+        }
+
+        repaint();
+        revalidate();
     }
 }

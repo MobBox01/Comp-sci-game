@@ -6,7 +6,7 @@ import Stats.Enemy;
 import Stats.Player;
 
 @SuppressWarnings("FieldMayBeFinal")
-public class BossFightStats 
+public class BossFightSystem 
 {
     private Player player;
     private Enemy evilKlus = new Enemy(0, 1.0, 0, "Evil Klus");
@@ -15,7 +15,7 @@ public class BossFightStats
     private Dialouge dialougeSystem;
     private AudioPlayer audio;
 
-    public BossFightStats(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public BossFightSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
     {
         player = playerPass;
         dialougeSystem = dialougeSystemPass;

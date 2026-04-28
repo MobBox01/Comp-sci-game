@@ -36,7 +36,7 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!fightingGui.fightCheck())
+        /*if(!fightingGui.fightCheck())
         {
             switch(keyEvent.getKeyCode())
             {
@@ -64,13 +64,14 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
-        else if(bossFight.isBossFight())
-        {//Dead code, as this is always false
+            */
+        if(bossFight.isBossFight() && bossFight.dialougeStatus() == false)
+        {
             switch(keyEvent.getKeyCode())
             {
-                case KeyEvent.VK_LEFT -> fightingGui.movePlayer(-1);
-                case KeyEvent.VK_RIGHT -> fightingGui.movePlayer(1);
-                case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
+                case KeyEvent.VK_LEFT -> bossFight.movePlayer(-1);
+                case KeyEvent.VK_RIGHT -> bossFight.movePlayer(1);
+                //case KeyEvent.VK_ENTER -> bossFight.movePlayer(90);
             }
         }
     }

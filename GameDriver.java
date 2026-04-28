@@ -1,13 +1,19 @@
 import BossFight.BossFightGui;
+import BossFight.BossFightSystem;
+
 import Elements.AudioPlayer;
 import Elements.Dialouge;
 import Elements.PlayerInput;
+
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import FightHandling.FightingGui;
+
 import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
+
 import Saving.ProgressSaving;
+
 import Stats.Player;
 import java.io.IOException;
 
@@ -16,26 +22,30 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         //Elements
-        /*AudioPlayer audio = new AudioPlayer();
+        AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
         Dialouge dialougeSystem = new Dialouge();
-        Player player = new Player(saving.obtainSavePoint());*/
-        BossFightGui bossFight = new BossFightGui();
-        //RoomData roomContainer = new RoomData();
+        Player player = new Player(saving.obtainSavePoint());
+        RoomData roomContainer = new RoomData();
+        BossFightSystem bossSystem = new BossFightSystem(player, dialougeSystem, audio);
 
-        bossFight.dialouge("You need to do your assigments");
         //Combat
-        /*BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
+        BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
         AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, dialougeSystem, audio);
+
         FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
+        BossFightGui bossFight = new BossFightGui(bossSystem);
+
+
         //Rooms
-        /*RoomGui roomGui = new RoomGui(saving, player, roomContainer);
+        RoomGui roomGui = new RoomGui(saving, player, roomContainer);
 
         PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer);
 
-        roomGui.addKeyListener(input);
+        roomGui.addKeyListener(input);        
         fightGui.addKeyListener(input);
-        */
+        bossFight.addKeyListener(input);
+        bossFight.dialouge("hello guys its me markiplier");
     }
 }
 
