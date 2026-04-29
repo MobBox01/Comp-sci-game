@@ -36,7 +36,6 @@ public class GameDriver
         FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
         BossFightGui bossFight = new BossFightGui(bossSystem);
 
-
         //Rooms
         RoomGui roomGui = new RoomGui(saving, player, roomContainer);
 
@@ -45,7 +44,6 @@ public class GameDriver
         roomGui.addKeyListener(input);        
         fightGui.addKeyListener(input);
         bossFight.addKeyListener(input);
-        bossFight.dialouge("hello guys its me markiplier");
     }
 }
 

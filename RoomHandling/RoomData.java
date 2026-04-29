@@ -5,7 +5,7 @@ public class RoomData
 {
     private ArrayList<int[][]> rooms = new ArrayList<>();
 
-
+    private int roomNumber;
     private int[][] room0=
     {
         {0,0,0,0,0,0,0,0,0,0},
@@ -142,21 +142,21 @@ public class RoomData
     }
 
     /**
-     * @param roomNumber
+     * @param roomNuroomNumbermber
      * @return 2D-Array which is the layout of the room
      */
     public int[][] obtainRoom(int roomNumber)
     {
+        this.roomNumber = roomNumber;
         return rooms.get(roomNumber);
     }
 
-    public boolean isAdvancedRooms(int roomNumber)
+    public boolean isAdvancedRooms()
     {
-        
-        return roomNumber >= 1;
+        return roomNumber >= 3;
     }
 
-    public boolean isBossRoom(int roomNumber)
+    public boolean isBossRoom()
     {
         return roomNumber == 5;
     }

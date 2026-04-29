@@ -36,7 +36,7 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        /*if(!fightingGui.fightCheck())
+        if(!fightingGui.fightCheck() && !roomContainer.isBossRoom())
         {
             switch(keyEvent.getKeyCode())
             {
@@ -46,16 +46,16 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> roomGui.movePlayer(0, -1);
             }
 
-            if((int)(Math.random()*1000) <= 30 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == false && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            if((int)(Math.random()*1000) <= 30 && !roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightingGui.fightSet(true, "basic");
             }
-            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms(roomGui.currentRoom()) == true&& !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightingGui.fightSet(true, "advanced");
             }
         }
-        else if(fightingGui.fightCheck())
+        else if(fightingGui.fightCheck() && !roomContainer.isBossRoom())
         {
             switch (keyEvent.getKeyCode()) 
             {
@@ -64,8 +64,7 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> fightingGui.movePlayer(90);
             }
         }
-            */
-        if(bossFight.isBossFight() && bossFight.dialougeStatus() == false)
+        else if(roomContainer.isBossRoom() && bossFight.dialougeStatus() == false)
         {
             switch(keyEvent.getKeyCode())
             {
@@ -73,6 +72,12 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_RIGHT -> bossFight.movePlayer(1);
                 //case KeyEvent.VK_ENTER -> bossFight.movePlayer(90);
             }
+        }
+        if(!bossFight.isVisible() && roomContainer.isBossRoom())
+        {
+            bossFight.setVisible(true);
+            roomGui.setVisible(false);
+            fightingGui.setVisible(false);
         }
     }
 

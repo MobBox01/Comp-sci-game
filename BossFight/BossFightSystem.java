@@ -8,11 +8,17 @@ import Stats.Player;
 @SuppressWarnings("FieldMayBeFinal")
 public class BossFightSystem 
 {
+    @SuppressWarnings("unused")
     private Player player;
+    @SuppressWarnings("unused")
     private Enemy evilKlus = new Enemy(0, 1.0, 0, "Evil Klus");
+    @SuppressWarnings("unused")
     private Enemy evilNies = new Enemy(0, 1.0, 0, "Evil Nies");
+    @SuppressWarnings("unused")
     private Enemy happilyEvilGurrito = new Enemy(0, 1.0, 0, "Happily Evil Gurrito");
+    @SuppressWarnings("unused")
     private Dialouge dialougeSystem;
+    @SuppressWarnings("unused")
     private AudioPlayer audio;
 
     public BossFightSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
@@ -45,7 +51,7 @@ public class BossFightSystem
      */
     public void attack()
     {
-
+        
     }
  
 

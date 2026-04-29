@@ -17,8 +17,9 @@ public class BossFightGui extends JFrame
     private JTextArea textBox = new JTextArea();
     private JLabel option = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
     int[] fightLayout = {-200,1};
-    boolean isDialougeBusy = true;
+    boolean isDialougeBusy = false;
 
+    @SuppressWarnings("unused")
     private BossFightSystem bossFightSystem;
 
     public BossFightGui(BossFightSystem BossFightSystemPass)
@@ -58,33 +59,27 @@ public class BossFightGui extends JFrame
         add(textBox);
 
         setNewText("E");
-        //TODO: Set up graphics 
-        //TODO: Set up movable graphics
         revalidate();
         repaint();
-        setVisible(true);
     }
 
-    //TODO:Work on player movement after implementing option graphics
-    public void movePlayer(int key)
+    /**
+    * @param move_OR_selected -> Move the player <b>[IF]</b> the enter key is pressed preform a action
+    */
+    public void movePlayer(int move_OR_selected)
     {
-        System.out.println("movement");
-        switch (key) 
+        switch(move_OR_selected) 
         {
             case 1 ->
             {
-                if(fightLayout[1] == 3) 
-                {}
-                else 
+                if(fightLayout[1]+1 != 4)
                 {
                     fightLayout[1] += 1;
                 }
             }
             case -1 ->
             {
-                if(fightLayout[1] == 1) 
-                {}
-                else 
+                if(fightLayout[1] - 1 != 0)
                 {
                     fightLayout[1] -= 1;
                 }
@@ -94,42 +89,51 @@ public class BossFightGui extends JFrame
         repaintOptions();
     }
 
-    public boolean isBossFight()
-    {
-        return true;
-    }
-
-    public void setNewText(String newText)
+    /**
+     * @param newText -> Sets the text; No usage of rebounds or timers.
+     */
+    private void setNewText(String newText)
     {
         textBox.setText(newText);
     }
 
+    /**
+    * @param newText -> text appears at a fixed 200 milisecond rate.
+    * there is a <b>REBOUND'</b> so you have to wait for the text to finish 
+    * before doing anything else.
+    * <p>   
+    * <b>REBOUND':</b> A variable that is set to true and only becomes false once the method/wait is done
+    * This prevents you from repeating a method or movement
+    */
     public void dialouge(String newText)
     {
         setNewText("");
         isDialougeBusy = true;
-        System.out.println("Set to true");
         String[] chars = newText.split("");
-        for(String e: chars)
-        {
-            try
+        int[] i = {0};
+        Timer timer = new Timer(200, time -> 
             {
-                Thread.sleep(100);
+                textBox.append(chars[i[0]]);
+                i[0] += 1;
+                if(i[0] == chars.length-1)
+                {
+                    ((Timer)time.getSource()).stop();
+                    isDialougeBusy = false;
+                }
             }
-            catch(InterruptedException f)
-            {
-                System.out.println(f);
-            }
+        );
 
-            textBox.append(e);
-        }
-        isDialougeBusy = false;
-        System.out.println("Set to " + isDialougeBusy);
+        timer.start();
     }
 
+    /**
+    * @return 
+    * <b>[FALSE]:</b> If dialouge is not still being written
+    * <p>
+    * <b>[TRUE"]:</b> If dialouge is still being written
+    */
     public boolean dialougeStatus()
     {
-        System.out.println("Status: " + isDialougeBusy);
         return isDialougeBusy;
     }
 
@@ -137,10 +141,20 @@ public class BossFightGui extends JFrame
     {
         switch(fightLayout[1])
         {
-            case 1 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
-            case 2 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
-            case 3 -> option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
+            case 1 -> 
+            {
+                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+            }
+            case 2 -> 
+            {
+                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
+            }
+            case 3 -> 
+            {
+                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
+            }
         }
+        dialouge("TEST!!!");
 
         repaint();
         revalidate();
