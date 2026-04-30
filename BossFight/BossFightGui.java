@@ -38,6 +38,7 @@ public class BossFightGui extends JFrame
         add(evilGurrito);
         add(opFull);
         add(option);
+        
 
         setBackground(Color.BLACK);
         setTitle("Holy crap its Evil Klus");
@@ -118,7 +119,7 @@ public class BossFightGui extends JFrame
         isDialougeBusy = true;
         setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(100, time -> 
+        Timer timer = new Timer(50, time -> 
             {
                 if(i[0] == newText.length())
                 {

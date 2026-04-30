@@ -4,8 +4,8 @@ package Stats;
 public class Player
 {
     private int[] attack = {5,7,9,15,30};
-    private int[] health = {55,65,75,85,300};
-    private int[] maxHealth = {55,65,75,85,30};
+    private int[] health = {75,100,125,150,200};
+    private int[] maxHealth = {75,100,125,150,200};
 
     private double[] defense = {.1,.2,.3,.4,.5};
 
@@ -132,7 +132,7 @@ public class Player
 
     public int addCharge(int amount)
     {
-        if(charge >= 100)
+        if((charge+amount) >= 100)
         {
             return charge = 100;
         }
@@ -142,7 +142,7 @@ public class Player
 
     public int substractCharge(int amount)
     {
-        if(charge <= 0)
+        if((charge-amount) <= 0)
         {
             return charge = 0;
         }

@@ -10,10 +10,11 @@ import javax.swing.*;
 
 public class PlayerInput extends JFrame implements KeyListener 
 {
-    RoomGui roomGui;
-    FightingGui fightingGui;
-    RoomData roomContainer;
-    BossFightGui bossFight;
+    private RoomGui roomGui;
+    private FightingGui fightingGui;
+    private RoomData roomContainer;
+    private BossFightGui bossFight;
+    private boolean debounce = false; 
 
     
     public PlayerInput(RoomGui roomGuiPass, FightingGui fightingGuiPass,BossFightGui bossFightingPass, RoomData roomPass)
@@ -36,8 +37,9 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!fightingGui.fightCheck() && !roomContainer.isBossRoom())
+        if(!fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce)
         {
+            debounceStart();
             switch(keyEvent.getKeyCode())
             {
                 case KeyEvent.VK_LEFT -> roomGui.movePlayer(-1, 0);
@@ -55,8 +57,9 @@ public class PlayerInput extends JFrame implements KeyListener
                 fightingGui.fightSet(true, "advanced");
             }
         }
-        else if(fightingGui.fightCheck() && !roomContainer.isBossRoom())
+        else if(fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce)
         {
+            debounceStart();
             switch (keyEvent.getKeyCode()) 
             {
                 case KeyEvent.VK_LEFT -> fightingGui.movePlayer(-1);
@@ -79,6 +82,19 @@ public class PlayerInput extends JFrame implements KeyListener
             roomGui.setVisible(false);
             fightingGui.setVisible(false);
         }
+    }
+
+    public void debounceStart()
+    {
+        debounce = true;
+        Timer timer = new Timer(100, time ->
+            {
+                ((Timer)time.getSource()).setRepeats(false);
+                debounce = false;
+            }
+        );
+
+        timer.start();
     }
 
 

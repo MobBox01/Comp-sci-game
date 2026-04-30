@@ -1,8 +1,7 @@
 package FightHandling;
 
-import Elements.Dialouge;
 import Elements.AudioPlayer;
-
+import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -30,8 +29,8 @@ public class AdvancedFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(100,7,60,.2,"Atomize");
-            default -> enemy = new Enemy(200, 10,69,.1,"ThreeDemons");
+            case 2 -> enemy = new Enemy(50,3,60,.1,"Atomize");
+            default -> enemy = new Enemy(100, 4,69,.1,"ThreeDemons");
         }
         audio.advancedFight();
         player.fightingAdvanced();
@@ -85,10 +84,10 @@ public class AdvancedFightingSystem
         else if(player.getHealth() == 1)
         {
             dialougeSystem.setNewText("You felt a god like presense behind you. With 1 health remaining the enemy infront of you has been killed.");
-            enemy.damageRecieved(-9999999);
-            player.playerHeal(9999);
-            player.substractCharge(99999);
-            player.gainedXp(400);
+            enemy.damageRecieved(-666666);
+            player.playerHeal(666666);
+            player.substractCharge(666666);
+            player.gainedXp(666);
         }
         else
         {
@@ -109,7 +108,7 @@ public class AdvancedFightingSystem
         {
             player.playerHeal(10);
             dialougeSystem.setNewText("Healed: [" + 10 + "]\n" + enemy.getName() + " couldn't heal in time! Lucky you!");
-
+            player.substractCharge(4);
         }
         else if(rng < .3 && rng > .2)
         {
@@ -117,16 +116,18 @@ public class AdvancedFightingSystem
             player.damageRecieved(attack);
             enemy.heal(10);
             dialougeSystem.setNewText(enemy.getName() + " has broke out the match constraints! You were distracted healing...\n" + enemy.getName() + " has healed [10] HP!\n" + enemy.getName() + " has dealt: [" + attack + "] damage!\nHealth remaining: [" + player.getHealth() + "]");
+            player.substractCharge(10);
         }
         else if(rng > .8 && rng < .9 && player.getCharge() >= 50)
         {
             dialougeSystem.setNewText("You have been blessed.However.. Since you have above 50 charge.... Charge has been reset, you feel amazing and healed up to the max!");
+            player.substractCharge(666);
         }
         else
         {
-            player.playerHeal(10);
-            enemy.heal(20);
-            dialougeSystem.setNewText("Healed: [" + 10 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
+            player.playerHeal(20);
+            enemy.heal(10);
+            dialougeSystem.setNewText("Healed: [" + 20 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
         }
     }
 
