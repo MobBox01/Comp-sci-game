@@ -8,17 +8,11 @@ import Stats.Player;
 @SuppressWarnings("FieldMayBeFinal")
 public class BossFightSystem 
 {
-    @SuppressWarnings("unused")
     private Player player;
-    @SuppressWarnings("unused")
-    private Enemy evilKlus = new Enemy(0, 1.0, 0, "Evil Klus");
-    @SuppressWarnings("unused")
-    private Enemy evilNies = new Enemy(0, 1.0, 0, "Evil Nies");
-    @SuppressWarnings("unused")
-    private Enemy happilyEvilGurrito = new Enemy(0, 1.0, 0, "Happily Evil Gurrito");
-    @SuppressWarnings("unused")
+    private Enemy evilKlus = new Enemy(1000,0, 0, .5, "Evil Klus");
+    private Enemy evilNies = new Enemy(1000, 10,1, 0., "Evil Nies");
+    private Enemy evilGurrito = new Enemy(1,0, 10, 70., "Evil Gurrito");
     private Dialouge dialougeSystem;
-    @SuppressWarnings("unused")
     private AudioPlayer audio;
 
     public BossFightSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
@@ -40,27 +34,35 @@ public class BossFightSystem
     /**
      * 1/2 chance for failure, reduce incoming attack by 40%
      */
-    public void defend()
+    public String defend()
     {
-
+        return "Debug: Boss Defend option";
     }
 
     /**
      * Attack the enemy
      * If less then or equal to 40% HP; 50% chance of being counter attacked with x2 damage
      */
-    public void attack()
+    public String attack()
     {
-        
+        int damage = player.attackAction();
+        if(evilGurrito.isAlive())
+        {
+            evilGurrito.damageRecieved(damage);
+
+            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]";
+        }
+
+        return "Debug: Boss Attack Action";
     }
  
 
     /**
      * Heal a specified amount, default: 5 HP
     */
-    public void heal()
+    public String heal()
     {
-
+        return "Debug: Boss Heal Action";
     }
 
     //GETTERS

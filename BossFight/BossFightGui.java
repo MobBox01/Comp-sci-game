@@ -19,7 +19,6 @@ public class BossFightGui extends JFrame
     int[] fightLayout = {-200,1};
     boolean isDialougeBusy = false;
 
-    @SuppressWarnings("unused")
     private BossFightSystem bossFightSystem;
 
     public BossFightGui(BossFightSystem BossFightSystemPass)
@@ -30,7 +29,7 @@ public class BossFightGui extends JFrame
 
         opFull.setBounds(50,250,201,201);
         evilKlus.setBounds(500, 100, 144, 300);
-        evilNies.setBounds(300,100,144,364);
+        evilNies.setBounds(300,50,144,364);
         evilGurrito.setBounds(700, 100,192,144);
         option.setBounds(650,450,610,220);
 
@@ -52,7 +51,7 @@ public class BossFightGui extends JFrame
         textBox.setFont(new Font("DialogInput", Font.BOLD, 20));
         textBox.setLineWrap(true);
         textBox.setWrapStyleWord(true);
-        textBox.setBounds(800,300,450,300);
+        textBox.setBounds(800,300,450,100);
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
@@ -84,6 +83,15 @@ public class BossFightGui extends JFrame
                     fightLayout[1] -= 1;
                 }
             }
+            case 90 ->
+            {
+                switch(fightLayout[1])
+                {
+                    case 1 -> dialouge(bossFightSystem.attack());
+                    case 2 -> dialouge(bossFightSystem.heal());
+                    case 3 -> dialouge(bossFightSystem.defend());
+                }
+            }
         }
 
         repaintOptions();
@@ -98,7 +106,7 @@ public class BossFightGui extends JFrame
     }
 
     /**
-    * @param newText -> text appears at a fixed 200 milisecond rate.
+    * @param newText -> text appears at a fixed 100 milisecond rate.
     * there is a <b>REBOUND'</b> so you have to wait for the text to finish 
     * before doing anything else.
     * <p>   
@@ -107,18 +115,20 @@ public class BossFightGui extends JFrame
     */
     public void dialouge(String newText)
     {
-        setNewText("");
         isDialougeBusy = true;
-        String[] chars = newText.split("");
+        setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(200, time -> 
+        Timer timer = new Timer(100, time -> 
             {
-                textBox.append(chars[i[0]]);
-                i[0] += 1;
-                if(i[0] == chars.length-1)
+                if(i[0] == newText.length())
                 {
                     ((Timer)time.getSource()).stop();
                     isDialougeBusy = false;
+                }
+                else
+                {
+                    textBox.append(newText.substring(i[0],i[0]+1));
+                    i[0] += 1;
                 }
             }
         );
@@ -154,7 +164,6 @@ public class BossFightGui extends JFrame
                 option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
             }
         }
-        dialouge("TEST!!!");
 
         repaint();
         revalidate();

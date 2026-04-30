@@ -3,14 +3,16 @@ package Stats;
 @SuppressWarnings("FieldMayBeFinal")
 public class Player
 {
-    private int[] attack = {3,5,7,9,11};
-    private int[] health = {55,65,75,85,100};
-    private int[] maxHealth = {55,65,75,85,100};
+    private int[] attack = {5,7,9,15,30};
+    private int[] health = {55,65,75,85,300};
+    private int[] maxHealth = {55,65,75,85,30};
 
     private double[] defense = {.1,.2,.3,.4,.5};
 
     private int level = 0;
     private int xp = 0;
+
+    private int charge = 0;
 
     private boolean fightingAdvanced = false;
 
@@ -127,6 +129,32 @@ public class Player
         fightingAdvanced = true;
     }
     
+
+    public int addCharge(int amount)
+    {
+        if(charge >= 100)
+        {
+            return charge = 100;
+        }
+
+        return (charge += amount);
+    }
+
+    public int substractCharge(int amount)
+    {
+        if(charge <= 0)
+        {
+            return charge = 0;
+        }
+
+        return (charge -= amount);
+    }
+
+    public int getCharge()
+    {
+        return charge;
+    }
+
     @Override
     public String toString()
     {

@@ -153,7 +153,7 @@ public class RoomData
 
     public boolean isAdvancedRooms()
     {
-        return roomNumber >= 3;
+        return roomNumber >= 2;
     }
 
     public boolean isBossRoom()

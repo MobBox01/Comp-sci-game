@@ -70,7 +70,7 @@ public class PlayerInput extends JFrame implements KeyListener
             {
                 case KeyEvent.VK_LEFT -> bossFight.movePlayer(-1);
                 case KeyEvent.VK_RIGHT -> bossFight.movePlayer(1);
-                //case KeyEvent.VK_ENTER -> bossFight.movePlayer(90);
+                case KeyEvent.VK_ENTER -> bossFight.movePlayer(90);
             }
         }
         if(!bossFight.isVisible() && roomContainer.isBossRoom())

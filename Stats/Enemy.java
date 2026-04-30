@@ -6,7 +6,7 @@ public class Enemy
     private int attack;
     private int health;
     private final int maxHealth;
-
+    private final int reward;
 
     private String name;
 
@@ -20,12 +20,13 @@ public class Enemy
      * @param Name
      * @param Shield
      */
-    public Enemy(int Attack, Double Defense, int Health, String Name)
+    public Enemy(int Health, int Attack, int reward, Double Defense, String Name)
     {
         attack = Attack;
         defense = Defense;
         health = Health;
         name = Name;
+        this.reward = reward;
 
         maxHealth = Health;
     }
@@ -63,6 +64,11 @@ public class Enemy
 
     }
 
+    public int xpReward()
+    {
+        return reward;
+    }
+    
     public int Attack()
     {
         double increase = ((int)(Math.random() * 10))/100;

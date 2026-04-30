@@ -17,7 +17,7 @@ public class BasicFightingSystem
     {
         player = playerPass;
         dialougeSystem = dialougeSystemPass;
-        enemy = new Enemy(0, 1.0, 0, "HOLDER ENEMY");
+        enemy = new Enemy(0,0, 1, .1, "HOLDER ENEMY");
         audio = audioPass;
     }
 
@@ -29,10 +29,8 @@ public class BasicFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(3, .4, 100, "f");
-            case 3 -> enemy = new Enemy(6, .3, 2, "b");
-            case 1 -> enemy = new Enemy(5, .1, 50, "Enemy Sniper");
-            default -> enemy = new Enemy(4, .1, 5, "e");
+
+            default -> enemy = new Enemy(20,3,30,.1,"TBD");
         }
         audio.basicFight();
         dialougeSystem.setNewText("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
