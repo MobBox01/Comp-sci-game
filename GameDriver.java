@@ -1,19 +1,14 @@
 import BossFight.BossFightGui;
 import BossFight.BossFightSystem;
-
 import Elements.AudioPlayer;
 import Elements.Dialouge;
 import Elements.PlayerInput;
-
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import FightHandling.FightingGui;
-
 import RoomHandling.RoomData;
 import RoomHandling.RoomGui;
-
 import Saving.ProgressSaving;
-
 import Stats.Player;
 import java.io.IOException;
 
@@ -39,14 +34,19 @@ public class GameDriver
         //Rooms
         RoomGui roomGui = new RoomGui(saving, player, roomContainer);
 
-        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer);
+        //Input
+        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer,dialougeSystem);
 
         roomGui.addKeyListener(input);        
         fightGui.addKeyListener(input);
         bossFight.addKeyListener(input);
     }
 }
-
+/**
+ * 5/1/2026 Log: 
+ * Made the dialouge text box utilize a timer to display text at a 10-20 milisecond interval this should be fast enough that 
+ * you can see it.
+ */
 
 
 

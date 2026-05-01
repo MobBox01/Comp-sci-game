@@ -14,15 +14,17 @@ public class PlayerInput extends JFrame implements KeyListener
     private FightingGui fightingGui;
     private RoomData roomContainer;
     private BossFightGui bossFight;
+    private Dialouge dialougeSystem;
     private boolean debounce = false; 
 
     
-    public PlayerInput(RoomGui roomGuiPass, FightingGui fightingGuiPass,BossFightGui bossFightingPass, RoomData roomPass)
+    public PlayerInput(RoomGui roomGuiPass, FightingGui fightingGuiPass,BossFightGui bossFightingPass, RoomData roomPass,Dialouge dialougeSystemPass)
     {
         this.roomGui = roomGuiPass;
         this.fightingGui = fightingGuiPass;
         this.bossFight = bossFightingPass;
-        roomContainer = roomPass;
+        this.roomContainer = roomPass;
+        this.dialougeSystem = dialougeSystemPass;
     }
 
     /**
@@ -37,7 +39,7 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce)
+        if(!fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce && !dialougeSystem.isDialougeActive())
         {
             debounceStart();
             switch(keyEvent.getKeyCode())
@@ -57,7 +59,7 @@ public class PlayerInput extends JFrame implements KeyListener
                 fightingGui.fightSet(true, "advanced");
             }
         }
-        else if(fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce)
+        else if(fightingGui.fightCheck() && !roomContainer.isBossRoom() && !debounce && !dialougeSystem.isDialougeActive())
         {
             debounceStart();
             switch (keyEvent.getKeyCode()) 

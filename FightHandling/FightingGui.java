@@ -168,7 +168,6 @@ public class FightingGui extends JFrame
      * [1] -> Right
      * <p>
      * [-1] -> Left
-     
     private void movePlayerX(int dx)
     {
 
@@ -220,7 +219,7 @@ public class FightingGui extends JFrame
         else if(healthPercentage <= 0)
         {
             fightRoomLayout[2][0] = -100;
-            dialougeSystem.setNewText("You have died...\n=={GAMER-OVER}==");
+            dialougeSystem.dialouge("You have died...\n=={GAMER-OVER}==");
         }
     }
 

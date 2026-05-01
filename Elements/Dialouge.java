@@ -8,6 +8,7 @@ public class Dialouge extends JFrame
 {
     @SuppressWarnings("FieldMayBeFinal")
     private JTextArea textBox = new JTextArea();
+    private boolean isDialougeBusy = false;
 
     public Dialouge()
     {
@@ -36,11 +37,37 @@ public class Dialouge extends JFrame
         setVisible(true);
     }
 
-    /**
-     * @param newText -> String, Dialouge you want to put 
-     */
     public void setNewText(String newText)
     {
         textBox.setText(newText);
     }
+
+    public void dialouge(String newText)
+    {
+        isDialougeBusy = true;
+        setNewText("");
+        int[] i = {0};
+        Timer timer = new Timer(10, time -> 
+            {
+                if(i[0] == newText.length())
+                {
+                    ((Timer)time.getSource()).stop();
+                    isDialougeBusy = false;
+                }
+                else
+                {
+                    textBox.append(newText.substring(i[0],i[0]+1));
+                    i[0] += 1;
+                }
+            }
+        );
+
+        timer.start();
+    }
+
+    public boolean isDialougeActive()
+    {
+        return isDialougeBusy;
+    }
+
 }
