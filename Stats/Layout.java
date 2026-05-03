@@ -1,11 +1,22 @@
-package RoomHandling;
+package Stats;
 import java.util.ArrayList;
 
-public class RoomData 
+public class Layout 
 {
     private ArrayList<int[][]> rooms = new ArrayList<>();
 
     private int roomNumber;
+
+    private int[][] fightLayout =
+    {
+        {0,0,0,0,0},
+        {0,0,400,0,0},
+        {-200,0,0,0,0},
+        {0,2,3,5,0},
+        {0,0,0,0,0}
+    };
+
+    
     private int[][] room0=
     {
         {0,0,0,0,0,0,0,0,0,0},
@@ -130,7 +141,7 @@ public class RoomData
     
     //300 >= x -> Big multi tile props 
 
-    public RoomData()
+    public Layout()
     {
         rooms.add(room0);
         rooms.add(room1);
@@ -159,6 +170,11 @@ public class RoomData
     public boolean isBossRoom()
     {
         return roomNumber == 5;
+    }
+
+    public int[][] getFightMapping()
+    {
+        return fightLayout;
     }
 
 }

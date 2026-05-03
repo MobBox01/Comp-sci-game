@@ -1,7 +1,7 @@
 package Elements;
 
 import BossFight.BossFightGui;
-import RoomHandling.RoomData;
+import Stats.Layout;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,13 +9,13 @@ import javax.swing.*;
 
 public class PlayerInput extends JFrame implements KeyListener 
 {
-    private RoomData roomContainer;
+    private Layout roomContainer;
     private BossFightGui bossFight;
     private boolean debounce = false; 
     private MainWindow window;
 
     
-    public PlayerInput(MainWindow windowPass,BossFightGui bossFightingPass, RoomData roomPass)
+    public PlayerInput(MainWindow windowPass,BossFightGui bossFightingPass, Layout roomPass)
     {
         window = windowPass;
         this.bossFight = bossFightingPass;

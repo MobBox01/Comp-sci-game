@@ -1,6 +1,8 @@
 package Elements;
 import Saving.ProgressSaving;
 import Stats.Player;
+import Stats.Layout;
+
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
@@ -8,35 +10,31 @@ import javax.swing.text.DefaultCaret;
 
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
-import FightHandling.Layout;
-import RoomHandling.RoomData;
 
 public class MainWindow extends JFrame 
 {
     
     //Classes & Arrays
-    private RoomData roomData;
+    private Layout roomData;
     private ProgressSaving progressSaving;
     private Player player;
     private AdvancedFightingSystem advanced_FS;
     private BasicFightingSystem basic_FS;
     private AudioPlayer audio;
+    private JTextArea textBox = new JTextArea();
 
     //Arrays
     private int[][] roomLayout;
     private ArrayList<JPanel> roomArray = new ArrayList<>();
     private ArrayList<JPanel> fightArray = new ArrayList<>();
 
-    //Room Size - Constants
-    private JTextArea textBox = new JTextArea();
+    //Room Layout Size
     private boolean isDialougeBusy = false;
     private final int roomSizeX = 10;
     private final int roomSizeY = 10;
     private final int roomTotalTileCount = roomSizeX*roomSizeY;
-    JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
-    JPanel dialougeContainer = new JPanel(new BorderLayout());
 
-    //Fighting Container
+    //Fighting Layout Size
     private final int fightRoomX = 5;
     private final int fightRoomY = 5;
     private final int fightTotalTileCount = fightRoomX*fightRoomY;
@@ -61,25 +59,32 @@ public class MainWindow extends JFrame
     private static final int VOID = 0;
     private static final int DESTROYEDCITY_1 = -100;
 
-    private boolean fightStatus = false;
+    //Fight layout
     private int selectorRow;
     private int selectorCollumn;
-    private Layout fightLayout = new Layout();
-    private int[][] fightRoomLayout = fightLayout.getFightMapping();
-    private final int SELECTED_ATTACK = 2;
-    private final int UNSELECTED_ATTACK = 1;
-    private final int SELECTED_HEALTH = 4;
-    private final int UNSELECTED_HEALTH = 3;
-    private final int SELECTED_DEFENSE = 6;
-    private final int UNSELECTED_DEFENSE = 5;
-    private int storedTileChoice = UNSELECTED_ATTACK;
-    JPanel fightContainer = new JPanel(new GridLayout(fightRoomX,fightRoomY));
+    private int[][] fightRoomLayout = roomData.getFightMapping();
 
+    //Selectors
+    private final int UNSELECTED_ATTACK = 1;
+    private final int SELECTED_ATTACK = 2;
+    private final int UNSELECTED_HEALTH = 3;
+    private final int SELECTED_HEALTH = 4;
+    private final int UNSELECTED_DEFENSE = 5;
+    private final int SELECTED_DEFENSE = 6;
+
+    //Fight Status
+    private int storedTileChoice = UNSELECTED_ATTACK;
+    private boolean fightStatus = false;
+
+    //Containers
+    JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
+    JPanel fightContainer = new JPanel(new GridLayout(fightRoomX,fightRoomY));
+    JPanel dialougeContainer = new JPanel(new BorderLayout());
 
     /**
      * Sets up window and starting room
     */
-    public MainWindow(ProgressSaving progressPass,Player playerPass,RoomData roomDataPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass, AudioPlayer audioPass)
+    public MainWindow(ProgressSaving progressPass,Player playerPass,Layout roomDataPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass, AudioPlayer audioPass)
     {
         audio = audioPass;
         advanced_FS = advanced_FS_Pass;
@@ -89,7 +94,7 @@ public class MainWindow extends JFrame
         progressSaving = progressPass;
         player = playerPass;
 
-        //750x750
+        //Frame
         setTitle("Room Number: [" + 0 + "] VOID GAME");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBackground(Color.black);
@@ -100,11 +105,16 @@ public class MainWindow extends JFrame
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
+        //Containers
         roomContainer.setBounds(0,0,750,750); 
         roomContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         fightContainer.setBounds(750,0,550,550);
         fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        
+        dialougeContainer.setBounds(750,550,550,200);
+        dialougeContainer.add(textBox, BorderLayout.CENTER);
+        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -126,9 +136,7 @@ public class MainWindow extends JFrame
         }
         findPlayer();
 
-        dialougeContainer.setBounds(750,550,550,200);
-        dialougeContainer.add(textBox, BorderLayout.CENTER);
-        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
         textBox.setEditable(false);
         textBox.setFocusable(false);
         textBox.setBackground(Color.BLACK);

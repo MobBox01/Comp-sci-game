@@ -5,9 +5,10 @@ import Elements.MainWindow;
 import Elements.PlayerInput;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
-import RoomHandling.RoomData;
 import Saving.ProgressSaving;
 import Stats.Player;
+import Stats.Layout;
+
 import java.io.IOException;
 
 public class GameDriver
@@ -18,7 +19,7 @@ public class GameDriver
         AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
         Player player = new Player(saving.obtainSavePoint());
-        RoomData roomContainer = new RoomData();
+        Layout roomContainer = new Layout();
         BossFightSystem bossSystem = new BossFightSystem(player, audio);
 
         //Combat
@@ -37,7 +38,6 @@ public class GameDriver
 
         window.addKeyListener(input);
         bossFight.addKeyListener(input);
-
     }
 }
 
