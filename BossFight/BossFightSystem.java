@@ -1,7 +1,6 @@
 package BossFight;
 
 import Elements.AudioPlayer;
-import Elements.Dialouge;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -9,16 +8,17 @@ import Stats.Player;
 public class BossFightSystem 
 {
     private Player player;
+    @SuppressWarnings("unused")
     private Enemy evilKlus = new Enemy(1000,0, 0, .5, "Evil Klus");
+    @SuppressWarnings("unused")
     private Enemy evilNies = new Enemy(1000, 10,1, 0., "Evil Nies");
     private Enemy evilGurrito = new Enemy(1,0, 10, 70., "Evil Gurrito");
-    private Dialouge dialougeSystem;
+    @SuppressWarnings("unused")
     private AudioPlayer audio;
 
-    public BossFightSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public BossFightSystem(Player playerPass,AudioPlayer audioPass) 
     {
         player = playerPass;
-        dialougeSystem = dialougeSystemPass;
         audio = audioPass;
     }
     //You defeat evil nies, then evil gurrito, finally defeat mr klus

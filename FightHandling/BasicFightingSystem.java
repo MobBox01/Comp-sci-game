@@ -1,7 +1,7 @@
 package FightHandling;
 
 import Elements.AudioPlayer;
-import Elements.Dialouge;
+import Elements.MainWindow;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -9,13 +9,13 @@ public class BasicFightingSystem
 {
     private Player player;
     private Enemy enemy; 
-    private Dialouge dialougeSystem;
+    private MainWindow window;
     private AudioPlayer audio;
 
-    public BasicFightingSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public BasicFightingSystem(Player playerPass,MainWindow windowPass,AudioPlayer audioPass) 
     {
         player = playerPass;
-        dialougeSystem = dialougeSystemPass;
+        window = windowPass;
         enemy = new Enemy(0,0, 1, .1, "HOLDER ENEMY");
         audio = audioPass;
     }
@@ -32,7 +32,7 @@ public class BasicFightingSystem
             default -> enemy = new Enemy(20,3,30,.1,"TBD");
         }
         audio.basicFight();
-        dialougeSystem.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
+        window.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
     /**
@@ -48,12 +48,12 @@ public class BasicFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            dialougeSystem.dialouge("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
+            window.dialouge("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
         }
 
         else
         {
-            dialougeSystem.dialouge("PARRIED!\n" + "Your health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
+            window.dialouge("PARRIED!\n" + "Your health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
         }
     }
 
@@ -64,7 +64,7 @@ public class BasicFightingSystem
     {
         enemy.damageRecieved(player.attackAction());
         player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.2)));
-        dialougeSystem.dialouge("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
+        window.dialouge("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
     }
 
     /**
@@ -74,7 +74,7 @@ public class BasicFightingSystem
     {
         player.playerHeal(10);
         player.damageRecieved((int)(enemy.Attack()*.5));
-        dialougeSystem.dialouge("Your health: " + player.getHealth() + "\n" + enemy.getName() + " health: " + enemy.getHealth());
+        window.dialouge("Your health: " + player.getHealth() + "\n" + enemy.getName() + " health: " + enemy.getHealth());
     }
 
     //GETTERS
@@ -82,7 +82,7 @@ public class BasicFightingSystem
     {
         if(!enemy.isAlive() && !player.isFightingAdvanced())
         {
-            dialougeSystem.setNewText("Basic Area");
+            window.setNewText("Basic Area");
         }
         return enemy.isAlive();
     }
@@ -92,5 +92,8 @@ public class BasicFightingSystem
         return enemy.getName();
     }
 
-
+    public void setWindow(MainWindow e)
+    {
+        window = e;
+    }
 }

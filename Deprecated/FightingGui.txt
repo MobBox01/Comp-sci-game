@@ -1,7 +1,9 @@
-package FightHandling;
+package Deprecated;
 
 import Elements.AudioPlayer;
-import Elements.Dialouge;
+import FightHandling.AdvancedFightingSystem;
+import FightHandling.BasicFightingSystem;
+import FightHandling.Layout;
 import Stats.Player;
 import java.awt.BorderLayout;
 import java.awt.Color;

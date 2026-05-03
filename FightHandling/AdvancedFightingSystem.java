@@ -1,7 +1,7 @@
 package FightHandling;
 
 import Elements.AudioPlayer;
-import Elements.Dialouge;
+import Elements.MainWindow;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -9,14 +9,14 @@ public class AdvancedFightingSystem
 {
     private Player player;
     private Enemy enemy; 
-    private Dialouge dialougeSystem;
     private AudioPlayer audio;
+    private MainWindow window;
 
 
-    public AdvancedFightingSystem(Player playerPass, Dialouge dialougeSystemPass,AudioPlayer audioPass) 
+    public AdvancedFightingSystem(Player playerPass,MainWindow windowPass,AudioPlayer audioPass) 
     {
         player = playerPass;
-        dialougeSystem = dialougeSystemPass;
+        window = windowPass;
         enemy = new Enemy(0,0, 1, .1, "HOLDER ENEMY");
         audio = audioPass;
     }
@@ -34,7 +34,7 @@ public class AdvancedFightingSystem
         }
         audio.advancedFight();
         player.fightingAdvanced();
-        dialougeSystem.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
+        window.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
     /**
@@ -50,7 +50,7 @@ public class AdvancedFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            dialougeSystem.dialouge("PARRY [FAILED]\nDamage taken: [" + damage*2 + "]\nYour health: [" + player.getHealth() + "]");
+            window.dialouge("PARRY [FAILED]\nDamage taken: [" + damage*2 + "]\nYour health: [" + player.getHealth() + "]");
             player.addCharge(2);
         }
         else if(random == 2)
@@ -58,12 +58,12 @@ public class AdvancedFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage*3);
             player.substractCharge(4);
-            dialougeSystem.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nYour health: [" + player.getHealth() + "]\nCurrent Critical Charge: " + player.getCharge() + "\n Enemy health remaining: [" + enemy.getHealth() + "]");
+            window.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nYour health: [" + player.getHealth() + "]\nCurrent Critical Charge: " + player.getCharge() + "\n Enemy health remaining: [" + enemy.getHealth() + "]");
         }
         else
         {
             player.addCharge(5);
-            dialougeSystem.dialouge("~~PARRIED~~\n" + "Your health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\nEnemy health remaining: [" + enemy.getHealth() + "]");
+            window.dialouge("~~PARRIED~~\n" + "Your health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\nEnemy health remaining: [" + enemy.getHealth() + "]");
         }
     }
 
@@ -78,12 +78,12 @@ public class AdvancedFightingSystem
         if(player.healthPercentage() <= 40 && Math.random() < .5)
         {
             player.damageRecieved(enemy.Attack()*2);
-            dialougeSystem.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has hit you with a critical! Damage taken: " +  (enemy.Attack()*2) + "Heal up!\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has hit you with a critical! Damage taken: " +  (enemy.Attack()*2) + "Heal up!\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
 
         }
         else if(player.getHealth() == 1)
         {
-            dialougeSystem.dialouge("You felt a god like presense behind you. With 1 health remaining the enemy infront of you has been killed.");
+            window.dialouge("You felt a god like presense behind you. With 1 health remaining the enemy infront of you has been killed.");
             enemy.damageRecieved(-666666);
             player.playerHeal(666666);
             player.substractCharge(666666);
@@ -93,7 +93,7 @@ public class AdvancedFightingSystem
         {
             enemy.damageRecieved(player.attackAction()+additional+slightCrit);
             player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.5)));
-            dialougeSystem.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has attacked! Damage taken: " +  (enemy.Attack()) + "\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has attacked! Damage taken: " +  (enemy.Attack()) + "\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
         }
     }
  
@@ -107,7 +107,7 @@ public class AdvancedFightingSystem
         if(rng >= .3)
         {
             player.playerHeal(10);
-            dialougeSystem.dialouge("Healed: [" + 10 + "]\n" + enemy.getName() + " couldn't heal in time! Lucky you!");
+            window.dialouge("Healed: [" + 10 + "]\n" + enemy.getName() + " couldn't heal in time! Lucky you!");
             player.substractCharge(4);
         }
         else if(rng < .3 && rng > .2)
@@ -115,19 +115,19 @@ public class AdvancedFightingSystem
             int attack = enemy.Attack()*2;
             player.damageRecieved(attack);
             enemy.heal(10);
-            dialougeSystem.dialouge(enemy.getName() + " has broke out the match constraints! You were distracted healing...\n" + enemy.getName() + " has healed [10] HP!\n" + enemy.getName() + " has dealt: [" + attack + "] damage!\nHealth remaining: [" + player.getHealth() + "]");
+            window.dialouge(enemy.getName() + " has broke out the match constraints! You were distracted healing...\n" + enemy.getName() + " has healed [10] HP!\n" + enemy.getName() + " has dealt: [" + attack + "] damage!\nHealth remaining: [" + player.getHealth() + "]");
             player.substractCharge(10);
         }
         else if(rng > .8 && rng < .9 && player.getCharge() >= 50)
         {
-            dialougeSystem.dialouge("You have been blessed.However.. Since you have above 50 charge.... Charge has been reset, you feel amazing and healed up to the max!");
+            window.dialouge("You have been blessed.However.. Since you have above 50 charge.... Charge has been reset, you feel amazing and healed up to the max!");
             player.substractCharge(666);
         }
         else
         {
             player.playerHeal(20);
             enemy.heal(10);
-            dialougeSystem.dialouge("Healed: [" + 20 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
+            window.dialouge("Healed: [" + 20 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
         }
     }
 
@@ -136,7 +136,7 @@ public class AdvancedFightingSystem
     {
         if(!enemy.isAlive())
         {
-            dialougeSystem.setNewText("Advanced Area");
+            window.setNewText("Advanced Area");
             player.gainedXp(enemy.xpReward());
         }
         return enemy.isAlive();
@@ -145,5 +145,10 @@ public class AdvancedFightingSystem
     public String getCurrentName()
     {
         return enemy.getName();
+    }
+
+    public void setWindow(MainWindow e)
+    {
+        window = e;
     }
 }

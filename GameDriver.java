@@ -1,13 +1,11 @@
 import BossFight.BossFightGui;
 import BossFight.BossFightSystem;
 import Elements.AudioPlayer;
-import Elements.Dialouge;
+import Elements.MainWindow;
 import Elements.PlayerInput;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
-import FightHandling.FightingGui;
 import RoomHandling.RoomData;
-import RoomHandling.RoomGui;
 import Saving.ProgressSaving;
 import Stats.Player;
 import java.io.IOException;
@@ -19,34 +17,29 @@ public class GameDriver
         //Elements
         AudioPlayer audio = new AudioPlayer();
         ProgressSaving saving = new ProgressSaving();
-        Dialouge dialougeSystem = new Dialouge();
         Player player = new Player(saving.obtainSavePoint());
         RoomData roomContainer = new RoomData();
-        BossFightSystem bossSystem = new BossFightSystem(player, dialougeSystem, audio);
+        BossFightSystem bossSystem = new BossFightSystem(player, audio);
 
         //Combat
-        BasicFightingSystem basic_FS = new BasicFightingSystem(player, dialougeSystem, audio);
-        AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, dialougeSystem, audio);
+        BasicFightingSystem basic_FS = new BasicFightingSystem(player, null, audio);
+        AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, null, audio);
+        
 
-        FightingGui fightGui = new FightingGui(basic_FS, advanced_FS, player, dialougeSystem,audio);
+        MainWindow window = new MainWindow(saving, player, roomContainer, basic_FS, advanced_FS, audio);
+
+        basic_FS.setWindow(window);
+        advanced_FS.setWindow(window);
+
+
         BossFightGui bossFight = new BossFightGui(bossSystem);
+        PlayerInput input = new PlayerInput(window, bossFight, roomContainer);
 
-        //Rooms
-        RoomGui roomGui = new RoomGui(saving, player, roomContainer);
-
-        //Input
-        PlayerInput input = new PlayerInput(roomGui, fightGui,bossFight,roomContainer,dialougeSystem);
-
-        roomGui.addKeyListener(input);        
-        fightGui.addKeyListener(input);
+        window.addKeyListener(input);
         bossFight.addKeyListener(input);
+
     }
 }
-/**
- * 5/1/2026 Log: 
- * Made the dialouge text box utilize a timer to display text at a 10-20 milisecond interval this should be fast enough that 
- * you can see it.
- */
 
 
 

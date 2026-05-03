@@ -1,9 +1,11 @@
-package RoomHandling;
+package Deprecated;
 import Saving.ProgressSaving;
 import Stats.Player;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
+
+import RoomHandling.RoomData;
 
 public class RoomGui extends JFrame 
 {
