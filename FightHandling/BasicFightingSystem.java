@@ -31,7 +31,7 @@ public class BasicFightingSystem
 
             default -> enemy = new Enemy(20,3,30,.1,"TBD");
         }
-        audio.basicFight();
+        //audio.basicFight();
         window.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
@@ -82,7 +82,7 @@ public class BasicFightingSystem
     {
         if(!enemy.isAlive() && !player.isFightingAdvanced())
         {
-            window.setNewText("Basic Area");
+            window.setNewText("Basic Area, Basic Enemies, Peaceful...");
         }
         return enemy.isAlive();
     }

@@ -20,7 +20,6 @@ public class MainWindow extends JFrame
     private Player player;
     private AdvancedFightingSystem advanced_FS;
     private BasicFightingSystem basic_FS;
-    private AudioPlayer audio;
     private JTextArea textBox = new JTextArea();
 
     //Arrays
@@ -62,7 +61,7 @@ public class MainWindow extends JFrame
     //Fight layout
     private int selectorRow;
     private int selectorCollumn;
-    private int[][] fightRoomLayout = roomData.getFightMapping();
+    private int[][] fightRoomLayout;
 
     //Selectors
     private final int UNSELECTED_ATTACK = 1;
@@ -74,7 +73,6 @@ public class MainWindow extends JFrame
 
     //Fight Status
     private int storedTileChoice = UNSELECTED_ATTACK;
-    private boolean fightStatus = false;
 
     //Containers
     JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
@@ -84,9 +82,8 @@ public class MainWindow extends JFrame
     /**
      * Sets up window and starting room
     */
-    public MainWindow(ProgressSaving progressPass,Player playerPass,Layout roomDataPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass, AudioPlayer audioPass)
+    public MainWindow(ProgressSaving progressPass,Player playerPass,Layout roomDataPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass)
     {
-        audio = audioPass;
         advanced_FS = advanced_FS_Pass;
         basic_FS = basicFS_Pass;
         player = playerPass;
@@ -94,8 +91,9 @@ public class MainWindow extends JFrame
         progressSaving = progressPass;
         player = playerPass;
 
+        fightRoomLayout = roomData.getFightMapping();
+
         //Frame
-        setTitle("Room Number: [" + 0 + "] VOID GAME");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBackground(Color.black);
         setForeground(Color.black);
@@ -111,10 +109,6 @@ public class MainWindow extends JFrame
 
         fightContainer.setBounds(750,0,550,550);
         fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-        
-        dialougeContainer.setBounds(750,550,550,200);
-        dialougeContainer.add(textBox, BorderLayout.CENTER);
-        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -136,6 +130,9 @@ public class MainWindow extends JFrame
         }
         findPlayer();
 
+        dialougeContainer.setBounds(750,550,550,200);
+        dialougeContainer.add(textBox, BorderLayout.CENTER);
+        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         textBox.setEditable(false);
         textBox.setFocusable(false);
@@ -147,7 +144,7 @@ public class MainWindow extends JFrame
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
-
+        setTitle("| ~The~ ~Concealing~ ~Light~ | Room: {" + roomCounter + "} | ");
         buildFightContainer();
         buildRoomContainer();
         add(roomContainer);
@@ -162,13 +159,12 @@ public class MainWindow extends JFrame
     public void enteredRoom(int roomNumber)
     {
         System.out.println("Entered room number: {" + roomNumber + "}");
-        setTitle("Room Number: [" + roomNumber + "] VOID GAME");
-
         roomLayout = roomData.obtainRoom(roomNumber);
         findPlayer();
         progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
-        buildRoomContainer();
+        setTitle("The Concealing Light | Room: {" + roomCounter + "}");
 
+        buildRoomContainer();
     }
 
     /**
@@ -462,7 +458,7 @@ public class MainWindow extends JFrame
         else if(healthPercentage <= 0)
         {
             fightRoomLayout[2][0] = -100;
-            //dialougeSystem.dialouge("You have died...\n=={GAMER-OVER}==");
+            dialouge("You have died...\n=={GAMER-OVER}==");
         }
     }
 
@@ -529,70 +525,8 @@ public class MainWindow extends JFrame
         fightArray.get(index).add(labelComponent, BorderLayout.CENTER);  
         fightArray.get(index).setBackground(Color.black);
     }
-    /**
-     * @return check if a fight is ongoing
-     * [IF] Enemy is alive -> True
-     * [ELSE-IF] Enemy isnt alive -> False
-     * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
-     */
-    public boolean fightCheck()
-    {
-        if(basic_FS.isEnemyAlive() || advanced_FS.isEnemyAlive())
-        {
-            fightStatus = true;
-        }
 
-        else if(!basic_FS.isEnemyAlive() || !advanced_FS.isEnemyAlive())
-        {
-            fightStatus = false;
-            audio.fightMusicStop(player.isFightingAdvanced());
-            fightRoomLayout[1][2] = 400;
-            setTitle("Enemy: None");
-            buildFightContainer();
-        }
-
-        if(!player.isAlive())
-        {
-            JOptionPane.showMessageDialog(null,"YOU DIED","GAME OVER",JOptionPane.ERROR_MESSAGE);
-            System.exit(0);
-        }
-        return fightStatus;
-    }
-
-    public void fightSet(boolean e, String level)
-    {
-        switch(level)
-        {
-            case "basic" -> 
-            {
-                basic_FS.enemyEncounter();
-                setBasicEnemyInfo();
-                setEnemyFrame();
-                buildFightContainer();
-            }
-            
-            case "advanced" ->
-            {
-                advanced_FS.enemyEncounter();
-                setAdvancedEnemyInfo();
-                setEnemyFrame();
-                buildFightContainer();
-            }
-        }
-        fightStatus = e;
-    }
-
-    private void setBasicEnemyInfo()
-    {
-        setTitle("Enemy: " + basic_FS.getCurrentName());
-    }
-
-    private void setAdvancedEnemyInfo()
-    {
-        setTitle("Enemy: " + advanced_FS.getCurrentName());
-    }
-
-    private void setEnemyFrame()
+    public void setAdvancedEnemyFrame()
     {
         switch(advanced_FS.getCurrentName())
         {
@@ -601,7 +535,25 @@ public class MainWindow extends JFrame
         }
     }
 
-//-----------------------
+    public void setBasicEnemyFrame()
+    {
+        switch(basic_FS.getCurrentName())
+        {
+            case "Atomize" -> fightRoomLayout[1][2] = 300;
+            case "ThreeDemons" -> fightRoomLayout[1][2] = 301;
+        }
+    }
+
+    public void setfightRoomFrame(int e)
+    {
+        fightRoomLayout[1][2] = 400;
+    }
+
+//-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E
+
+//-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E
+
+//-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E
 
     public void setNewText(String newText)
     {
@@ -613,7 +565,7 @@ public class MainWindow extends JFrame
         isDialougeBusy = true;
         setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(10, time -> 
+        Timer timer = new Timer(30, time -> 
             {
                 if(i[0] == newText.length())
                 {
@@ -637,13 +589,3 @@ public class MainWindow extends JFrame
     }
 
 }
-
-
-
-
-
-        
-
-
-
-

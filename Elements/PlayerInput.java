@@ -1,7 +1,10 @@
 package Elements;
 
 import BossFight.BossFightGui;
+import FightHandling.AdvancedFightingSystem;
+import FightHandling.BasicFightingSystem;
 import Stats.Layout;
+import Stats.Player;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,13 +16,23 @@ public class PlayerInput extends JFrame implements KeyListener
     private BossFightGui bossFight;
     private boolean debounce = false; 
     private MainWindow window;
+    private AudioPlayer audio;
+    private BasicFightingSystem basic_FS;
+    private AdvancedFightingSystem advanced_FS;
+    private Player player;
 
+    private boolean fightStatus = false;
+    private boolean alreadyChecked = false;
     
-    public PlayerInput(MainWindow windowPass,BossFightGui bossFightingPass, Layout roomPass)
+    public PlayerInput(MainWindow windowPass,BossFightGui bossFightingPass, Layout roomPass,AudioPlayer audioPass, BasicFightingSystem basic_FSPass, AdvancedFightingSystem advanced_FSPass,Player playerPass)
     {
-        window = windowPass;
+        this.player = playerPass;
+        this.basic_FS = basic_FSPass;
+        this.advanced_FS = advanced_FSPass;
+        this.window = windowPass;
         this.bossFight = bossFightingPass;
         this.roomContainer = roomPass;
+        this.audio = audioPass;
     }
 
     /**
@@ -34,7 +47,7 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!window.fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
+        if(!fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
         {
             debounceStart();
             switch(keyEvent.getKeyCode())
@@ -47,14 +60,16 @@ public class PlayerInput extends JFrame implements KeyListener
 
             if((int)(Math.random()*1000) <= 30 && !roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
-                window.fightSet(true, "basic");
+                fightSet(0);
+                audio.setFightAudio(0);
             }
             else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
-                window.fightSet(true, "advanced");
+                fightSet(1);
+                audio.setFightAudio(1);
             }
         }
-        else if(window.fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
+        else if(fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
         {
             debounceStart();
             switch (keyEvent.getKeyCode()) 
@@ -77,6 +92,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             bossFight.setVisible(true);
             window.setVisible(false);
+            audio.setFightAudio(2);
         }
     }
 
@@ -91,6 +107,63 @@ public class PlayerInput extends JFrame implements KeyListener
         );
 
         timer.start();
+    }
+
+    public void fightSet(int complexity)
+    {
+        switch(complexity)
+        {
+            case 0 -> 
+            {
+                basic_FS.enemyEncounter();
+                window.setBasicEnemyFrame();
+                window.buildFightContainer();
+            }
+            
+            case 1 ->
+            {
+                advanced_FS.enemyEncounter();
+                window.setAdvancedEnemyFrame();
+                window.buildFightContainer();
+            }
+        }
+    }
+    /**
+     * @return check if a fight is ongoing
+     * [IF] Enemy is alive -> True
+     * [ELSE-IF] Enemy isnt alive -> False
+     * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
+     */
+    public boolean fightCheck()
+    {
+        if(basic_FS.isEnemyAlive() || advanced_FS.isEnemyAlive())
+        {
+            alreadyChecked = false;
+            fightStatus = true;
+        }
+        else if(!basic_FS.isEnemyAlive() && !roomContainer.isAdvancedRooms() && !alreadyChecked)
+        {
+            alreadyChecked = true;
+            fightStatus = false;
+            window.setfightRoomFrame(400);
+            window.buildFightContainer();
+            audio.setRoomAudio(0);
+        }
+        else if(!advanced_FS.isEnemyAlive() && !roomContainer.isBossRoom() && !alreadyChecked)
+        {
+            alreadyChecked = true;
+            fightStatus = false;
+            window.setfightRoomFrame(400);
+            window.buildFightContainer();
+            audio.setRoomAudio(1);
+        }
+
+        if(!player.isAlive())
+        {
+            JOptionPane.showMessageDialog(null,"YOU DIED","GAME OVER",JOptionPane.ERROR_MESSAGE);
+            System.exit(0);
+        }
+        return fightStatus;
     }
 
 

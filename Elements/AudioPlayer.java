@@ -5,110 +5,60 @@ import javax.sound.sampled.*;
 
 public class AudioPlayer 
 {
-    File fightFile;
-    AudioInputStream fightAudio;
-    Clip fightClip;
+    String[] fightComplexityPath = {"Audio/BasicEnemies.wav", "Audio/AdvancedEnemies.wav", "Audio/Boss.wav"};
+    String[] roomComplexityPath = {"Audio/BasicRooms.wav", "Audio/AdvancedRooms.wav"};
+    Clip currentClip;
+    AudioInputStream audioInput;
 
-    File roomFile;
-    AudioInputStream roomAudio;
-    Clip roomClip;
-
-    /**
-     * Play the song for basic enemies
-     */
-    public void basicFight()
-    {
-        setFightSong("Audio/BasicEnemies.wav");
-    }
-
-    /**
-     * Play the song for advanced enemies
-     */
-    public void advancedFight()
-    {
-        setFightSong("Audio/AdvancedEnemies.wav");
-    }
-
-    /**
-     * @param songPath String that has the path to Audio Folder or Files 
-     * <p>
-     * Create new Clip pointer.
-     */
-    @SuppressWarnings({"CallToPrintStackTrace"})
-    private void setFightSong(String songPath)
-    {
-        fightFile = new File(songPath);
+    public void setFightAudio(int fightComplexity)
+    {  
         try 
         {
-            fightAudio = AudioSystem.getAudioInputStream(fightFile);
-            fightClip = AudioSystem.getClip();
-            fightClip.open(fightAudio);
+            if(currentClip != null)
+            {
+                currentClip.stop();
+                currentClip.close();
+                currentClip = null;
+                audioInput.close();
+                audioInput = null;
+            }
 
+            audioInput = AudioSystem.getAudioInputStream(new File(fightComplexityPath[fightComplexity]));
+            currentClip = AudioSystem.getClip();
+            currentClip.open(audioInput);
+            currentClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+            currentClip.start();
         } 
         catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) 
         {
             e.printStackTrace();
         }
-        fightClip.start();
-
-        areaMusicStop();
-    }   
-
-    /**
-     * Stop area music
-     */
-    public void fightMusicStop(boolean advanced)
-    {
-        if(fightClip != null)
-        {
-            fightClip.stop();
-            fightClip.close();
-            fightClip = null;
-            if(advanced == false)
-            {
-                setAreaSound("Audio/BasicRooms.wav");
-            }
-            else if(advanced)
-            {
-                setAreaSound("Audio/AdvancedRooms.wav");
-            }
-        }
     }
 
-    /**
-     * @param songPath String that has the path to Audio Folder or Files 
-     * <p>
-     * Create new Clip pointer.
-     */
-    @SuppressWarnings("CallToPrintStackTrace")
-    private void setAreaSound(String songPath)
+    public void setRoomAudio(int roomComplexity)
     {
-        roomFile = new File(songPath);
         try 
         {
-            roomAudio = AudioSystem.getAudioInputStream(roomFile);
-            roomClip = AudioSystem.getClip();
-            roomClip.open(roomAudio);
+            if(currentClip != null)
+            {
+                currentClip.stop();
+                currentClip.close();
+                currentClip = null;
+                audioInput.close();
+                audioInput = null;
+            }
 
+            audioInput = AudioSystem.getAudioInputStream(new File(roomComplexityPath[roomComplexity]));
+            currentClip = AudioSystem.getClip();
+            currentClip.open(audioInput);
+            currentClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+            currentClip.start();
         } 
         catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) 
         {
             e.printStackTrace();
-        }
-        roomClip.start();
-    }  
-
-    
-    /**
-     * Stop fight music, enabled area music right after!
-     */
-    public void areaMusicStop()
-    {
-        if(roomClip != null)
-        {
-            roomClip.stop();
-            roomClip.close();
-            roomClip = null;
         }
     }
 }

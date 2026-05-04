@@ -3,7 +3,7 @@ package Stats;
 @SuppressWarnings("FieldMayBeFinal")
 public class Player
 {
-    private int[] attack = {5,7,9,15,30};
+    private int[] attack = {10,20,30,40,50};
     private int[] health = {75,100,125,150,200};
     private int[] maxHealth = {75,100,125,150,200};
 

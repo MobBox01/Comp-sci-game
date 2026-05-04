@@ -1,6 +1,5 @@
 package BossFight;
 
-import Elements.AudioPlayer;
 import Stats.Enemy;
 import Stats.Player;
 
@@ -8,18 +7,13 @@ import Stats.Player;
 public class BossFightSystem 
 {
     private Player player;
-    @SuppressWarnings("unused")
-    private Enemy evilKlus = new Enemy(1000,0, 0, .5, "Evil Klus");
-    @SuppressWarnings("unused")
-    private Enemy evilNies = new Enemy(1000, 10,1, 0., "Evil Nies");
-    private Enemy evilGurrito = new Enemy(1,0, 10, 70., "Evil Gurrito");
-    @SuppressWarnings("unused")
-    private AudioPlayer audio;
+    private Enemy evilKlus = new Enemy(50,20, 666, .8, "Evil Klus");
+    private Enemy evilNies = new Enemy(150, 10,666, .4, "Evil Nies");
+    private Enemy evilGurrito = new Enemy(200,5, 666, 0.2, "Evil Gurrito");
 
-    public BossFightSystem(Player playerPass,AudioPlayer audioPass) 
+    public BossFightSystem(Player playerPass) 
     {
         player = playerPass;
-        audio = audioPass;
     }
     //You defeat evil nies, then evil gurrito, finally defeat mr klus
     /**
@@ -52,7 +46,18 @@ public class BossFightSystem
 
             return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]";
         }
+        else if(evilNies.isAlive())
+        {
+            evilNies.damageRecieved(damage);
 
+            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilNies.getHealth() + "]";
+        }
+        else if(evilKlus.isAlive())
+        {
+            evilKlus.damageRecieved(damage);
+
+            return "You have dealt: " + damage + "\nEvil Klus remaining HP: [" + evilKlus.getHealth() + "]";
+        }
         return "Debug: Boss Attack Action";
     }
  
@@ -66,7 +71,7 @@ public class BossFightSystem
     }
 
     //GETTERS
-    public boolean isEnemyAlive()
+    public boolean isBossFightOver()
     {
         return false;
     }

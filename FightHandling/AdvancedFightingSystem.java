@@ -29,10 +29,10 @@ public class AdvancedFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-            case 2 -> enemy = new Enemy(50,3,60,.1,"Atomize");
-            default -> enemy = new Enemy(100, 4,69,.1,"ThreeDemons");
+            case 2 -> enemy = new Enemy(60,5,60,.2,"Atomize");
+            default -> enemy = new Enemy(100, 6,69,.3,"Three Demons");
         }
-        audio.advancedFight();
+        //audio.advancedFight();
         player.fightingAdvanced();
         window.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
@@ -50,7 +50,7 @@ public class AdvancedFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage);
 
-            window.dialouge("PARRY [FAILED]\nDamage taken: [" + damage*2 + "]\nYour health: [" + player.getHealth() + "]");
+            window.dialouge("PARRY ![FAILED]!\nDamage taken: [" + damage*2 + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n"+ enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
             player.addCharge(2);
         }
         else if(random == 2)
@@ -58,12 +58,12 @@ public class AdvancedFightingSystem
             int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
             player.damageRecieved(damage*3);
             player.substractCharge(4);
-            window.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nYour health: [" + player.getHealth() + "]\nCurrent Critical Charge: " + player.getCharge() + "\n Enemy health remaining: [" + enemy.getHealth() + "]");
+            window.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
         }
         else
         {
             player.addCharge(5);
-            window.dialouge("~~PARRIED~~\n" + "Your health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\nEnemy health remaining: [" + enemy.getHealth() + "]");
+            window.dialouge("~~PARRIED~~\n" + "Your health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
         }
     }
 
@@ -78,7 +78,7 @@ public class AdvancedFightingSystem
         if(player.healthPercentage() <= 40 && Math.random() < .5)
         {
             player.damageRecieved(enemy.Attack()*2);
-            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has hit you with a critical! Damage taken: " +  (enemy.Attack()*2) + "Heal up!\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has hit you with a critical! Damage taken: [" +  (enemy.Attack()*2) + "] Heal up!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]\n" + enemy.getName() + "health remaining: [" + enemy.getHealth() + "]");
 
         }
         else if(player.getHealth() == 1)
@@ -93,7 +93,7 @@ public class AdvancedFightingSystem
         {
             enemy.damageRecieved(player.attackAction()+additional+slightCrit);
             player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.5)));
-            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: " + enemy.getHealth() + "\n" + enemy.getName() + " has attacked! Damage taken: " +  (enemy.Attack()) + "\nYour health: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            window.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " Enemy health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + enemy.Attack() + "] damage!\nHealth remaining: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
         }
     }
  
@@ -107,7 +107,7 @@ public class AdvancedFightingSystem
         if(rng >= .3)
         {
             player.playerHeal(10);
-            window.dialouge("Healed: [" + 10 + "]\n" + enemy.getName() + " couldn't heal in time! Lucky you!");
+            window.dialouge(enemy.getName() + " couldn't heal in time! Lucky you!\nHealed [" + 10 + "] HP!\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
             player.substractCharge(4);
         }
         else if(rng < .3 && rng > .2)
@@ -115,19 +115,20 @@ public class AdvancedFightingSystem
             int attack = enemy.Attack()*2;
             player.damageRecieved(attack);
             enemy.heal(10);
-            window.dialouge(enemy.getName() + " has broke out the match constraints! You were distracted healing...\n" + enemy.getName() + " has healed [10] HP!\n" + enemy.getName() + " has dealt: [" + attack + "] damage!\nHealth remaining: [" + player.getHealth() + "]");
+            window.dialouge(enemy.getName() + " has broke out the match constraints! You were distracted...\n" + enemy.getName() + " has healed [10] HP!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + attack + "] damage!\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]");
             player.substractCharge(10);
         }
         else if(rng > .8 && rng < .9 && player.getCharge() >= 50)
         {
-            window.dialouge("You have been blessed.However.. Since you have above 50 charge.... Charge has been reset, you feel amazing and healed up to the max!");
+            window.dialouge("You have been blessed.However.. Since you have above 50 charge.... Charge has been reset, you feel amazing and healed up to the max! Enemy has recieved 10 damage.");
             player.substractCharge(666);
+            enemy.damageRecieved(10);
         }
         else
         {
             player.playerHeal(20);
             enemy.heal(10);
-            window.dialouge("Healed: [" + 20 + "]\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 20 + "]\n" + enemy.getName() + "'s health: [" + enemy.getHealth() + "]\nYour Healh: [" + player.getHealth() + "]");
+            window.dialouge("Healed [" + 20 + "] HP!\n!!" + enemy.getName() + " healed in time!! \n" + enemy.getName() + " healed: [" + 10 + "]\n Your health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + "remaining health: [" + enemy.getHealth() + "]");
         }
     }
 
@@ -136,7 +137,7 @@ public class AdvancedFightingSystem
     {
         if(!enemy.isAlive())
         {
-            window.setNewText("Advanced Area");
+            window.setNewText("Advanced Area, Advanced Enemies, Tension... Cities burn.");
             player.gainedXp(enemy.xpReward());
         }
         return enemy.isAlive();

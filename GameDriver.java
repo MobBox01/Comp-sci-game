@@ -20,21 +20,21 @@ public class GameDriver
         ProgressSaving saving = new ProgressSaving();
         Player player = new Player(saving.obtainSavePoint());
         Layout roomContainer = new Layout();
-        BossFightSystem bossSystem = new BossFightSystem(player, audio);
+        BossFightSystem bossSystem = new BossFightSystem(player);
 
         //Combat
         BasicFightingSystem basic_FS = new BasicFightingSystem(player, null, audio);
         AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, null, audio);
         
 
-        MainWindow window = new MainWindow(saving, player, roomContainer, basic_FS, advanced_FS, audio);
+        MainWindow window = new MainWindow(saving, player, roomContainer, basic_FS, advanced_FS);
 
         basic_FS.setWindow(window);
         advanced_FS.setWindow(window);
 
 
         BossFightGui bossFight = new BossFightGui(bossSystem);
-        PlayerInput input = new PlayerInput(window, bossFight, roomContainer);
+        PlayerInput input = new PlayerInput(window, bossFight, roomContainer, audio, basic_FS, advanced_FS, player);
 
         window.addKeyListener(input);
         bossFight.addKeyListener(input);
