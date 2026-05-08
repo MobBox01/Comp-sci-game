@@ -6,9 +6,8 @@ import Elements.PlayerInput;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import Saving.ProgressSaving;
-import Stats.Player;
 import Stats.Layout;
-
+import Stats.Player;
 import java.io.IOException;
 
 public class GameDriver
@@ -20,7 +19,6 @@ public class GameDriver
         ProgressSaving saving = new ProgressSaving();
         Player player = new Player(saving.obtainSavePoint());
         Layout roomContainer = new Layout();
-        BossFightSystem bossSystem = new BossFightSystem(player);
 
         //Combat
         BasicFightingSystem basic_FS = new BasicFightingSystem(player, null, audio);
@@ -32,12 +30,15 @@ public class GameDriver
         basic_FS.setWindow(window);
         advanced_FS.setWindow(window);
 
+        BossFightSystem bossSystem = new BossFightSystem(player);
 
-        BossFightGui bossFight = new BossFightGui(bossSystem);
-        PlayerInput input = new PlayerInput(window, bossFight, roomContainer, audio, basic_FS, advanced_FS, player);
+        BossFightGui bossFightGui = new BossFightGui(bossSystem);
+        bossSystem.setGuiConnection(bossFightGui);
+
+        PlayerInput input = new PlayerInput(window, bossFightGui, roomContainer, audio, basic_FS, advanced_FS, player);
 
         window.addKeyListener(input);
-        bossFight.addKeyListener(input);
+        bossFightGui.addKeyListener(input);
     }
 }
 

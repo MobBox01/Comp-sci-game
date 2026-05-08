@@ -10,6 +10,7 @@ public class BossFightSystem
     private Enemy evilKlus = new Enemy(50,20, 666, .8, "Evil Klus");
     private Enemy evilNies = new Enemy(150, 10,666, .4, "Evil Nies");
     private Enemy evilGurrito = new Enemy(200,5, 666, 0.2, "Evil Gurrito");
+    private BossFightGui bossFightGui;
 
     public BossFightSystem(Player playerPass) 
     {
@@ -40,11 +41,22 @@ public class BossFightSystem
     public String attack()
     {
         int damage = player.attackAction();
+        double dialougeRandom = Math.random();
+        String extraDialouge = "";
         if(evilGurrito.isAlive())
         {
-            evilGurrito.damageRecieved(damage);
+            if(dialougeRandom >= .75)
+            { 
+                extraDialouge = "You need to do your homework, ferreto, i shall not let you pass";
+            }
+            else if(dialougeRandom >= .50)
+            {
+                extraDialouge = "TBD";
+            }
 
-            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]";
+            evilGurrito.damageRecieved(damage);
+            
+            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge;
         }
         else if(evilNies.isAlive())
         {
@@ -79,5 +91,10 @@ public class BossFightSystem
     public String getCurrentName()
     {
         return null;
+    }
+
+    public void setGuiConnection(BossFightGui e)
+    {
+        bossFightGui = e;
     }
 }

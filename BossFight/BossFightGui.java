@@ -52,7 +52,7 @@ public class BossFightGui extends JFrame
         textBox.setFont(new Font("DialogInput", Font.BOLD, 20));
         textBox.setLineWrap(true);
         textBox.setWrapStyleWord(true);
-        textBox.setBounds(800,300,450,100);
+        textBox.setBounds(800,250,500,200);
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
@@ -119,7 +119,7 @@ public class BossFightGui extends JFrame
         isDialougeBusy = true;
         setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(50, time -> 
+        Timer timer = new Timer(20, time -> 
             {
                 if(i[0] == newText.length())
                 {
