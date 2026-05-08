@@ -5,7 +5,6 @@ import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import Stats.Layout;
 import Stats.Player;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
@@ -58,12 +57,12 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> window.movePlayer(0, -1);
             }
 
-            if((int)(Math.random()*1000) <= 30 && !roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            if((int)(Math.random()*4000) <= 30 && !roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightSet(0);
                 audio.setFightAudio(0);
             }
-            else if((int)(Math.random()*1000) <= 50 && roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            else if((int)(Math.random()*2000) <= 50 && roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightSet(1);
                 audio.setFightAudio(1);
@@ -91,6 +90,7 @@ public class PlayerInput extends JFrame implements KeyListener
         if(!bossFight.isVisible() && roomContainer.isBossRoom())
         {
             bossFight.setVisible(true);
+
             window.setVisible(false);
             audio.setFightAudio(2);
         }

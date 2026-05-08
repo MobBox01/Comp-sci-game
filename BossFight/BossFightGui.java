@@ -32,14 +32,14 @@ public class BossFightGui extends JFrame
         evilNies.setBounds(300,50,144,364);
         evilGurrito.setBounds(700, 100,192,144);
         option.setBounds(650,450,610,220);
-
+        
         add(evilKlus);
         add(evilNies);
         add(evilGurrito);
         add(opFull);
         add(option);
         
-
+//MAx resoltion: 784 x 1382 pixels
         setBackground(Color.BLACK);
         setTitle("Holy crap its Evil Klus");
         setLayout(null);
