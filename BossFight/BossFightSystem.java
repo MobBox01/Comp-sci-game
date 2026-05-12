@@ -10,7 +10,7 @@ public class BossFightSystem
     private Enemy evilKlus = new Enemy(1,20, 666, .8, "Evil Klus");
     private Enemy evilNies = new Enemy(1, 10,666, .4, "Evil Nies");
     private Enemy evilGurrito = new Enemy(1,5, 666, 0.2, "Evil Gurrito");
-    private BossFightWindow bossFightGui;
+    private BossFightWindow bossFightWindow;
 
     public BossFightSystem(Player playerPass) 
     {
@@ -95,7 +95,7 @@ public class BossFightSystem
 
     public void setGuiConnection(BossFightWindow e)
     {
-        bossFightGui = e;
+        bossFightWindow = e;
     }
 
     public boolean isGurritoDead()

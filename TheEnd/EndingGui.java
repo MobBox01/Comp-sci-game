@@ -3,8 +3,9 @@ import javax.swing.*;
 
 public class EndingGui extends JFrame
 {
-    JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyNies.jpeg"));
-    JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpeg"));
+    JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyNies.jpg"));
+    JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
+    JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
     
     public EndingGui()
     {
