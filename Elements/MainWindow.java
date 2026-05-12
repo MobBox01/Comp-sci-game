@@ -1,21 +1,19 @@
 package Elements;
+import FightHandling.AdvancedFightingSystem;
+import FightHandling.BasicFightingSystem;
 import Saving.ProgressSaving;
-import Stats.Player;
 import Stats.Layout;
-
+import Stats.Player;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-
-import FightHandling.AdvancedFightingSystem;
-import FightHandling.BasicFightingSystem;
-
+@SuppressWarnings("FieldMayBeFinal")
 public class MainWindow extends JFrame 
 {
     
     //Classes & Arrays
-    private Layout roomData;
+    private Layout layout;
     private ProgressSaving progressSaving;
     private Player player;
     private AdvancedFightingSystem advanced_FS;
@@ -39,7 +37,6 @@ public class MainWindow extends JFrame
     private final int fightTotalTileCount = fightRoomX*fightRoomY;
     
     //Rooms
-    private int roomCounter = 0;
     private int tileUnderPlayer = 1;
     private int playerRow;
     private int playerCollumn;
@@ -82,16 +79,17 @@ public class MainWindow extends JFrame
     /**
      * Sets up window and starting room
     */
-    public MainWindow(ProgressSaving progressPass,Player playerPass,Layout roomDataPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass)
+    @SuppressWarnings("OverridableMethodCallInConstructor")
+    public MainWindow(ProgressSaving progressPass,Player playerPass,Layout layoutPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass)
     {
         advanced_FS = advanced_FS_Pass;
         basic_FS = basicFS_Pass;
         player = playerPass;
-        roomData = roomDataPass;
+        layout = layoutPass;
         progressSaving = progressPass;
         player = playerPass;
 
-        fightRoomLayout = roomData.getFightMapping();
+        fightRoomLayout = layout.getFightMapping();
 
         //Frame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -107,7 +105,7 @@ public class MainWindow extends JFrame
         roomContainer.setBounds(0,0,750,750); 
         roomContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        fightContainer.setBounds(750,0,550,550);
+        fightContainer.setBounds(roomContainer.getWidth(),0,550,550);
         fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
@@ -117,9 +115,8 @@ public class MainWindow extends JFrame
             roomArray.add(panel);
             roomContainer.add(panel);
         }
-
-        roomLayout = roomData.obtainRoom(progressSaving.obtainSavePoint()[2]);
-        roomCounter = progressSaving.obtainSavePoint()[2];
+        layout.setRoomNumber(progressSaving.obtainSavePoint()[2]);
+        roomLayout = layout.obtainRoom();
 
         for(int i = 0; i < fightTotalTileCount; i++)
         {
@@ -130,7 +127,8 @@ public class MainWindow extends JFrame
         }
         findPlayer();
 
-        dialougeContainer.setBounds(750,550,550,200);
+        //Dialouge
+        dialougeContainer.setBounds(roomContainer.getWidth(),550,550,200);
         dialougeContainer.add(textBox, BorderLayout.CENTER);
         dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -144,7 +142,9 @@ public class MainWindow extends JFrame
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
-        setTitle("| ~The~ ~Concealing~ ~Light~ | Room: {" + roomCounter + "} | ");
+
+        //Visibility
+        setTitle("| ~The~ ~Concealing~ ~Light~ | Room: {" + layout.getRoomNumber() + "} | ");
         buildFightContainer();
         buildRoomContainer();
         add(roomContainer);
@@ -156,13 +156,13 @@ public class MainWindow extends JFrame
     /**
      * @param roomNumber Obtain the new room that player entered, then build it.
      */
-    public void enteredRoom(int roomNumber)
+    public void enteredRoom()
     {
-        System.out.println("Entered room number: {" + roomNumber + "}");
-        roomLayout = roomData.obtainRoom(roomNumber);
+        System.out.println("Entered room number: {" + layout.getRoomNumber() + "}");
+        roomLayout = layout.obtainRoom();
         findPlayer();
-        progressSaving.setSavePoint(player.getLevel(),player.getXP(),roomNumber);
-        setTitle("The Concealing Light | Room: {" + roomCounter + "}");
+        progressSaving.setSavePoint(player.getLevel(),player.getXP(),layout.getRoomNumber());
+        setTitle("The Concealing Light | Room: {" + layout.getRoomNumber() + "}");
 
         buildRoomContainer();
     }
@@ -235,13 +235,13 @@ public class MainWindow extends JFrame
             }
             case NEXT_ROOM -> 
             {
-                roomCounter++;
-                enteredRoom(roomCounter);
+                layout.changeRoomNumber(1);
+                enteredRoom();
             }
             case 11 -> 
             {
-                roomCounter--;
-                enteredRoom(roomCounter);
+                layout.changeRoomNumber(-1);
+                enteredRoom();
             }
         }
     }
@@ -268,13 +268,13 @@ public class MainWindow extends JFrame
             }
             case NEXT_ROOM -> 
             {
-                roomCounter++;
-                enteredRoom(roomCounter);
+                layout.changeRoomNumber(1);
+                enteredRoom();
             }
             case 11 -> 
             {
-                roomCounter--;
-                enteredRoom(roomCounter);
+                layout.changeRoomNumber(-1);
+                enteredRoom();
             }
         }
     }
@@ -339,10 +339,6 @@ public class MainWindow extends JFrame
         roomArray.get(index).setBackground(Color.RED);
     }
 
-    public int currentRoom()
-    {
-        return roomCounter;
-    }
 
 //-------F--I--G--H--T--I--N--G-------F--I--G--H--T--I--N--G-------F--I--G--H--T--I--N--G-------F--I--G--H--T--I--N--G
 

@@ -1,5 +1,6 @@
 package BossFight;
 
+import Stats.Layout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -8,21 +9,32 @@ import javax.swing.text.DefaultCaret;
 
 
 @SuppressWarnings("FieldMayBeFinal")
-public class BossFightGui extends JFrame
+public class BossFightWindow extends JFrame
 {
     private JLabel evilKlus = new JLabel(new ImageIcon("Sprites/Boss/Klus.jpg"));
     private JLabel evilNies = new JLabel(new ImageIcon("Sprites/Boss/Nies.jpg"));
     private JLabel evilGurrito = new JLabel(new ImageIcon("Sprites/Boss/Gurrito.jpg"));
     private JLabel opFull = new JLabel(new ImageIcon("Sprites/HealthStates/OP_Full.png"));
     private JTextArea textBox = new JTextArea();
+    private Layout layout;
     private JLabel option = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
     int[] fightLayout = {-200,1};
+    boolean isBossDialougeBusy = false;
+    private String[] bossFinalWords = 
+    {
+        "Evil Klus: Ah, you've defeated all of us................\n\nPress Enter to continue...",
+        "Evil Gurrito: well this is awkward..........................\n\nPress Enter to continue...",
+        "Converted to Happiness Mr Nies: Dihydrogen monoxide is very scary\n\nPress Enter to continue...",
+        "(Previous Evil) Happy gang: Ferreto, we will let you pass for changing our world views.\n\nPress Enter to continue..."
+    };
+    private int currentStatement = 0;
     boolean isDialougeBusy = false;
-
+    boolean moveOn = false;
     private BossFightSystem bossFightSystem;
 
-    public BossFightGui(BossFightSystem BossFightSystemPass)
+    public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass)
     {
+        this.layout = layoutPass;
         bossFightSystem = BossFightSystemPass;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,29 +80,32 @@ public class BossFightGui extends JFrame
     */
     public void movePlayer(int move_OR_selected)
     {
-        switch(move_OR_selected) 
+        if(!isBossDialougeBusy)
         {
-            case 1 ->
+            switch(move_OR_selected) 
             {
-                if(fightLayout[1]+1 != 4)
+                case 1 ->
                 {
-                    fightLayout[1] += 1;
+                    if(fightLayout[1]+1 != 4)
+                    {
+                        fightLayout[1] += 1;
+                    }
                 }
-            }
-            case -1 ->
-            {
-                if(fightLayout[1] - 1 != 0)
+                case -1 ->
                 {
-                    fightLayout[1] -= 1;
+                    if(fightLayout[1] - 1 != 0)
+                    {
+                        fightLayout[1] -= 1;
+                    }
                 }
-            }
-            case 90 ->
-            {
-                switch(fightLayout[1])
+                case 90 ->
                 {
-                    case 1 -> dialouge(bossFightSystem.attack());
-                    case 2 -> dialouge(bossFightSystem.heal());
-                    case 3 -> dialouge(bossFightSystem.defend());
+                    switch(fightLayout[1])
+                    {
+                        case 1 -> dialouge(bossFightSystem.attack());
+                        case 2 -> dialouge(bossFightSystem.heal());
+                        case 3 -> dialouge(bossFightSystem.defend());
+                    }
                 }
             }
         }
@@ -120,6 +135,28 @@ public class BossFightGui extends JFrame
         setNewText("");
         int[] i = {0};
         Timer timer = new Timer(20, time -> 
+            {
+                if(i[0] == newText.length())
+                {
+                    ((Timer)time.getSource()).stop();
+                    isDialougeBusy = false;
+                }
+                else
+                {
+                    textBox.append(newText.substring(i[0],i[0]+1));
+                    i[0] += 1;
+                }
+            }
+        );
+
+        timer.start();
+    }
+    public void slowDialouge(String newText)
+    {
+        isDialougeBusy = true;
+        setNewText("");
+        int[] i = {0};
+        Timer timer = new Timer(1, time -> 
             {
                 if(i[0] == newText.length())
                 {
@@ -168,5 +205,37 @@ public class BossFightGui extends JFrame
 
         repaint();
         revalidate();
+    }
+
+    public void defeat()
+    {
+        if(bossFightSystem.isGurritoDead())
+        {
+        }
+        if(bossFightSystem.isNiesDead())
+        {
+        }
+        if(bossFightSystem.isKlusDead())
+        {
+        }
+    }
+
+    public void defeatedSequence()
+    {   
+        if(currentStatement > bossFinalWords.length-1)
+        {
+            moveOn = true;
+            layout.changeRoomNumber(1);
+        }
+        else
+        {
+            currentStatement++;
+            slowDialouge(bossFinalWords[currentStatement]);
+        }
+    }
+
+    public boolean moveOn()
+    {
+        return moveOn;
     }
 }

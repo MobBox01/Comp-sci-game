@@ -1,23 +1,21 @@
 package FightHandling;
 
-import Elements.AudioPlayer;
 import Elements.MainWindow;
 import Stats.Enemy;
 import Stats.Player;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class BasicFightingSystem 
 {
     private Player player;
     private Enemy enemy; 
     private MainWindow window;
-    private AudioPlayer audio;
 
-    public BasicFightingSystem(Player playerPass,MainWindow windowPass,AudioPlayer audioPass) 
+    public BasicFightingSystem(Player playerPass,MainWindow windowPass) 
     {
         player = playerPass;
         window = windowPass;
         enemy = new Enemy(0,0, 1, .1, "HOLDER ENEMY");
-        audio = audioPass;
     }
 
     /**
@@ -53,7 +51,7 @@ public class BasicFightingSystem
 
         else
         {
-            window.dialouge("PARRIED!\n" + "Your health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
+            window.dialouge("PARRIED!\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
         }
     }
 

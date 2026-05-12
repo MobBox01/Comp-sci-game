@@ -1,5 +1,5 @@
-import BossFight.BossFightGui;
 import BossFight.BossFightSystem;
+import BossFight.BossFightWindow;
 import Elements.AudioPlayer;
 import Elements.MainWindow;
 import Elements.PlayerInput;
@@ -15,30 +15,32 @@ public class GameDriver
     public static void main(String[] args) throws IOException
     {
         //Elements
-        AudioPlayer audio = new AudioPlayer();
-        ProgressSaving saving = new ProgressSaving();
-        Player player = new Player(saving.obtainSavePoint());
-        Layout roomContainer = new Layout();
+        AudioPlayer audioPlayer = new AudioPlayer();
+        ProgressSaving progressSaving = new ProgressSaving();
+        Player player = new Player(progressSaving.obtainSavePoint());
+        Layout layout = new Layout();
 
         //Combat
-        BasicFightingSystem basic_FS = new BasicFightingSystem(player, null, audio);
-        AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, null, audio);
+        BasicFightingSystem basic_FS = new BasicFightingSystem(player, null);
+        AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, null);
         
+        //MainGui
+        MainWindow window = new MainWindow(progressSaving, player, layout, basic_FS, advanced_FS);
 
-        MainWindow window = new MainWindow(saving, player, roomContainer, basic_FS, advanced_FS);
-
+        //Other
         basic_FS.setWindow(window);
-        advanced_FS.setWindow(window);
+        advanced_FS.setMainWindow(window);
 
-        BossFightSystem bossSystem = new BossFightSystem(player);
+        //Boss Fight
+        BossFightSystem bossFightSystem = new BossFightSystem(player);
+        BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout);
+        bossFightSystem.setGuiConnection(bossFightWindow);
 
-        BossFightGui bossFightGui = new BossFightGui(bossSystem);
-        bossSystem.setGuiConnection(bossFightGui);
-
-        PlayerInput input = new PlayerInput(window, bossFightGui, roomContainer, audio, basic_FS, advanced_FS, player);
+        //Inputs
+        PlayerInput input = new PlayerInput(window, bossFightWindow, bossFightSystem, layout, audioPlayer, basic_FS, advanced_FS, player);
 
         window.addKeyListener(input);
-        bossFightGui.addKeyListener(input);
+        bossFightWindow.addKeyListener(input);
     }
 }
 

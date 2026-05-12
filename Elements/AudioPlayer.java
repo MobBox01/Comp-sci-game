@@ -10,6 +10,7 @@ public class AudioPlayer
     Clip currentClip;
     AudioInputStream audioInput;
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void setFightAudio(int fightComplexity)
     {  
         try 
@@ -36,6 +37,7 @@ public class AudioPlayer
         }
     }
 
+    @SuppressWarnings("CallToPrintStackTrace")
     public void setRoomAudio(int roomComplexity)
     {
         try 

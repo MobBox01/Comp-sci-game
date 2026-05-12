@@ -1,6 +1,7 @@
 package Elements;
 
-import BossFight.BossFightGui;
+import BossFight.BossFightSystem;
+import BossFight.BossFightWindow;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import Stats.Layout;
@@ -9,13 +10,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.*;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class PlayerInput extends JFrame implements KeyListener 
 {
-    private Layout roomContainer;
-    private BossFightGui bossFight;
+    private Layout layout;
+    private BossFightWindow bossFightWindow;
+    private BossFightSystem bossFightSystem;
     private boolean debounce = false; 
-    private MainWindow window;
-    private AudioPlayer audio;
+    private MainWindow mainWindow;
+    private AudioPlayer audioPlayer;
     private BasicFightingSystem basic_FS;
     private AdvancedFightingSystem advanced_FS;
     private Player player;
@@ -23,15 +26,16 @@ public class PlayerInput extends JFrame implements KeyListener
     private boolean fightStatus = false;
     private boolean alreadyChecked = false;
     
-    public PlayerInput(MainWindow windowPass,BossFightGui bossFightingPass, Layout roomPass,AudioPlayer audioPass, BasicFightingSystem basic_FSPass, AdvancedFightingSystem advanced_FSPass,Player playerPass)
+    public PlayerInput(MainWindow windowPass,BossFightWindow bossFightingPass,BossFightSystem bossFightSystemPass, Layout layoutPass,AudioPlayer audioPlayerPass, BasicFightingSystem basic_FSPass, AdvancedFightingSystem advanced_FSPass,Player playerPass)
     {
+        this.bossFightSystem = bossFightSystemPass;
         this.player = playerPass;
         this.basic_FS = basic_FSPass;
         this.advanced_FS = advanced_FSPass;
-        this.window = windowPass;
-        this.bossFight = bossFightingPass;
-        this.roomContainer = roomPass;
-        this.audio = audioPass;
+        this.mainWindow = windowPass;
+        this.bossFightWindow = bossFightingPass;
+        this.layout = layoutPass;
+        this.audioPlayer = audioPlayerPass;
     }
 
     /**
@@ -46,53 +50,63 @@ public class PlayerInput extends JFrame implements KeyListener
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
-        if(!fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
+        if(!fightCheck() && !layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive())
         {
             debounceStart();
             switch(keyEvent.getKeyCode())
             {
-                case KeyEvent.VK_LEFT -> window.movePlayer(-1, 0);
-                case KeyEvent.VK_RIGHT -> window.movePlayer(1,0);
-                case KeyEvent.VK_UP -> window.movePlayer(0, 1);
-                case KeyEvent.VK_DOWN -> window.movePlayer(0, -1);
+                case KeyEvent.VK_LEFT -> mainWindow.movePlayer(-1, 0);
+                case KeyEvent.VK_RIGHT -> mainWindow.movePlayer(1,0);
+                case KeyEvent.VK_UP -> mainWindow.movePlayer(0, 1);
+                case KeyEvent.VK_DOWN -> mainWindow.movePlayer(0, -1);
             }
 
-            if((int)(Math.random()*4000) <= 30 && !roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            if((int)(Math.random()*4000) <= 30 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightSet(0);
-                audio.setFightAudio(0);
+                audioPlayer.setFightAudio(0);
             }
-            else if((int)(Math.random()*2000) <= 50 && roomContainer.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            else if((int)(Math.random()*2000) <= 50 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
             {
                 fightSet(1);
-                audio.setFightAudio(1);
+                audioPlayer.setFightAudio(1);
             }
         }
-        else if(fightCheck() && !roomContainer.isBossRoom() && !debounce && !window.isDialougeActive())
+        else if(fightCheck() && !layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive())
         {
             debounceStart();
             switch (keyEvent.getKeyCode()) 
             {
-                case KeyEvent.VK_LEFT -> window.moveSelector(-1);
-                case KeyEvent.VK_RIGHT -> window.moveSelector(1);
-                case KeyEvent.VK_ENTER -> window.moveSelector(90);
+                case KeyEvent.VK_LEFT -> mainWindow.moveSelector(-1);
+                case KeyEvent.VK_RIGHT -> mainWindow.moveSelector(1);
+                case KeyEvent.VK_ENTER -> mainWindow.moveSelector(90);
             }
         }
-        else if(roomContainer.isBossRoom() && bossFight.dialougeStatus() == false)
+        else if(layout.isBossRoom() && bossFightWindow.dialougeStatus() == false && !bossFightSystem.isBossFightOver())
         {
             switch(keyEvent.getKeyCode())
             {
-                case KeyEvent.VK_LEFT -> bossFight.movePlayer(-1);
-                case KeyEvent.VK_RIGHT -> bossFight.movePlayer(1);
-                case KeyEvent.VK_ENTER -> bossFight.movePlayer(90);
+                case KeyEvent.VK_LEFT -> bossFightWindow.movePlayer(-1);
+                case KeyEvent.VK_RIGHT -> bossFightWindow.movePlayer(1);
+                case KeyEvent.VK_ENTER -> bossFightWindow.movePlayer(90);
             }
         }
-        if(!bossFight.isVisible() && roomContainer.isBossRoom())
+        else if(bossFightSystem.isBossFightOver() && !bossFightWindow.dialougeStatus() && !bossFightWindow.moveOn())
         {
-            bossFight.setVisible(true);
-
-            window.setVisible(false);
-            audio.setFightAudio(2);
+            bossFightWindow.defeatedSequence();
+        }
+        else if(bossFightSystem.isBossFightOver() && bossFightWindow.moveOn())
+        {
+            bossFightWindow.setVisible(false);
+            mainWindow.setVisible(true);
+            mainWindow.enteredRoom();
+            audioPlayer.setRoomAudio(1);
+        }
+        if(!bossFightWindow.isVisible() && layout.isBossRoom())
+        {
+            bossFightWindow.setVisible(true);
+            mainWindow.setVisible(false);
+            audioPlayer.setFightAudio(2);
         }
     }
 
@@ -116,15 +130,15 @@ public class PlayerInput extends JFrame implements KeyListener
             case 0 -> 
             {
                 basic_FS.enemyEncounter();
-                window.setBasicEnemyFrame();
-                window.buildFightContainer();
+                mainWindow.setBasicEnemyFrame();
+                mainWindow.buildFightContainer();
             }
             
             case 1 ->
             {
                 advanced_FS.enemyEncounter();
-                window.setAdvancedEnemyFrame();
-                window.buildFightContainer();
+                mainWindow.setAdvancedEnemyFrame();
+                mainWindow.buildFightContainer();
             }
         }
     }
@@ -141,21 +155,21 @@ public class PlayerInput extends JFrame implements KeyListener
             alreadyChecked = false;
             fightStatus = true;
         }
-        else if(!basic_FS.isEnemyAlive() && !roomContainer.isAdvancedRooms() && !alreadyChecked)
+        else if(!basic_FS.isEnemyAlive() && !layout.isAdvancedRooms() && !alreadyChecked)
         {
             alreadyChecked = true;
             fightStatus = false;
-            window.setfightRoomFrame(400);
-            window.buildFightContainer();
-            audio.setRoomAudio(0);
+            mainWindow.setfightRoomFrame(400);
+            mainWindow.buildFightContainer();
+            audioPlayer.setRoomAudio(0);
         }
-        else if(!advanced_FS.isEnemyAlive() && !roomContainer.isBossRoom() && !alreadyChecked)
+        else if(!advanced_FS.isEnemyAlive() && !layout.isBossRoom() && !alreadyChecked)
         {
             alreadyChecked = true;
             fightStatus = false;
-            window.setfightRoomFrame(400);
-            window.buildFightContainer();
-            audio.setRoomAudio(1);
+            mainWindow.setfightRoomFrame(400);
+            mainWindow.buildFightContainer();
+            audioPlayer.setRoomAudio(1);
         }
 
         if(!player.isAlive())
@@ -171,7 +185,4 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyTyped(KeyEvent e){}
     @Override
     public void keyReleased(KeyEvent e){}
-
-
-    
 }

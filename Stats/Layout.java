@@ -1,6 +1,7 @@
 package Stats;
 import java.util.ArrayList;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class Layout 
 {
     private ArrayList<int[][]> rooms = new ArrayList<>();
@@ -114,7 +115,7 @@ public class Layout
         {0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0}
     };
-
+    
     /**
     TEMPLATE, ADJUST TO HOWEVER YOU WISH = 
     {
@@ -156,10 +157,19 @@ public class Layout
      * @param roomNuroomNumbermber
      * @return 2D-Array which is the layout of the room
      */
-    public int[][] obtainRoom(int roomNumber)
+    public int[][] obtainRoom()
     {
-        this.roomNumber = roomNumber;
         return rooms.get(roomNumber);
+    }
+
+    public void changeRoomNumber(int change)
+    {
+        roomNumber += change;
+    }
+
+    public void setRoomNumber(int set)
+    {
+        roomNumber = set;
     }
 
     public boolean isAdvancedRooms()
@@ -170,6 +180,11 @@ public class Layout
     public boolean isBossRoom()
     {
         return roomNumber == 5;
+    }
+
+    public int getRoomNumber()
+    {
+        return roomNumber;
     }
 
     public int[][] getFightMapping()
