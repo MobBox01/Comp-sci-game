@@ -230,9 +230,9 @@ public class BossFightWindow extends JFrame
     {   
         if(currentStatement > bossFinalWords.length-1)
         {
+            layout.changeRoomNumber(1);
             mainWindow.enteredRoom();
             audioPlayer.setRoomAudio(1);            
-            layout.changeRoomNumber(1);
             setVisible(false);
             mainWindow.setVisible(true);
         }

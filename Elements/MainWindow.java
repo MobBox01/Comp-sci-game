@@ -301,6 +301,7 @@ public class MainWindow extends JFrame
                     case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
                     case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
                     case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
+                    case 200 -> setTileImage("Sprites/Barriers/Forest.png", index);
                     case NEXT_ROOM -> roomArray.get(index).setBackground(Color.BLUE);
 
                     default -> roomArray.get(index).setBackground(Color.RED);

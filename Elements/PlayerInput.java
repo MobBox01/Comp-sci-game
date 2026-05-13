@@ -61,12 +61,12 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_DOWN -> mainWindow.movePlayer(0, -1);
             }
 
-            if((int)(Math.random()*4000) <= 30 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            if((int)(Math.random()*4000) <= 30 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
             {
                 fightSet(0);
                 audioPlayer.setFightAudio(0);
             }
-            else if((int)(Math.random()*2000) <= 50 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER))
+            else if((int)(Math.random()*2000) <= 50 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
             {
                 fightSet(1);
                 audioPlayer.setFightAudio(1);

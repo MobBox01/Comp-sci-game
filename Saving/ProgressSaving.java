@@ -1,7 +1,6 @@
 package Saving;
 
 import java.io.*;
-
 import java.util.Scanner;
 
 public class ProgressSaving 
@@ -48,6 +47,8 @@ public class ProgressSaving
             info[0] = level;
             info[1] = xp;
             info[2] = roomNumber;
+
+            
             fileWriter = new RandomAccessFile("Saving/SaveFile.txt", "rw");
             fileWriter.setLength(0);
 
