@@ -10,6 +10,7 @@ public class BasicFightingSystem
     private Player player;
     private Enemy enemy; 
     private MainWindow window;
+    private canRewardBeGiven = true;
 
     public BasicFightingSystem(Player playerPass,MainWindow windowPass) 
     {
@@ -78,9 +79,11 @@ public class BasicFightingSystem
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(!enemy.isAlive() && !player.isFightingAdvanced())
+        if(!enemy.isAlive() && !player.isFightingAdvanced() && canRewardBeGiven)
         {
             window.setNewText("Basic Area, Basic Enemies, Peaceful...");
+            player.gainedXp(enemy.getXP);
+            canRewardBeGiven = false;
         }
         return enemy.isAlive();
     }
