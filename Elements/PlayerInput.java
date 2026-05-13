@@ -91,16 +91,9 @@ public class PlayerInput extends JFrame implements KeyListener
                 case KeyEvent.VK_ENTER -> bossFightWindow.movePlayer(90);
             }
         }
-        else if(bossFightSystem.isBossFightOver() && !bossFightWindow.dialougeStatus() && !bossFightWindow.moveOn())
+        else if(bossFightSystem.isBossFightOver() && !bossFightWindow.dialougeStatus() && !bossFightWindow.moveOn() && keyEvent.getKeyCode() == KeyEvent.VK_ENTER)
         {
             bossFightWindow.defeatedSequence();
-        }
-        else if(bossFightSystem.isBossFightOver() && bossFightWindow.moveOn())
-        {
-            bossFightWindow.setVisible(false);
-            mainWindow.setVisible(true);
-            mainWindow.enteredRoom();
-            audioPlayer.setRoomAudio(1);
         }
         if(!bossFightWindow.isVisible() && layout.isBossRoom())
         {

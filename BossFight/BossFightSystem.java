@@ -28,7 +28,7 @@ public class BossFightSystem
 
     /**
      * 1/2 chance for failure, reduce incoming attack by 40%
-     */
+    */
     public String defend()
     {
         return "Debug: Boss Defend option";

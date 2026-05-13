@@ -10,6 +10,7 @@ public class AdvancedFightingSystem
     private Player player;
     private Enemy enemy; 
     private MainWindow mainWindow;
+    private boolean canRewardBeGiven = true;
 
 
     public AdvancedFightingSystem(Player playerPass,MainWindow mainWindowPass) 
@@ -25,6 +26,7 @@ public class AdvancedFightingSystem
      */
     public void enemyEncounter()
     {
+        canRewardBeGiven = true;
         switch((int)(Math.random()*5))
         {
             case 2 -> enemy = new Enemy(60,5,60,.2,"Atomize");
@@ -42,26 +44,26 @@ public class AdvancedFightingSystem
     {
         int random = (int)(Math.random()*5);
 
-        if(random == 3)
-        {
-
-            int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
-            player.damageRecieved(damage);
-
-            mainWindow.dialouge("PARRY ![FAILED]!\nDamage taken: [" + damage*2 + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n"+ enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
-            player.addCharge(2);
-        }
-        else if(random == 2)
-        {
-            int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
-            player.damageRecieved(damage*3);
-            player.substractCharge(4);
-            mainWindow.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
-        }
-        else
-        {
-            player.addCharge(5);
-            mainWindow.dialouge("~~PARRIED~~\nYour health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
+        switch (random) {
+            case 3 ->
+                {
+                    int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
+                    player.damageRecieved(damage);
+                    mainWindow.dialouge("PARRY ![FAILED]!\nDamage taken: [" + damage*2 + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n"+ enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
+                    player.addCharge(2);
+                }
+            case 2 ->
+                {
+                    int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
+                    player.damageRecieved(damage*3);
+                    player.substractCharge(4);
+                    mainWindow.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
+                }
+            default ->
+            {
+                player.addCharge(5);
+                mainWindow.dialouge("~~PARRIED~~\nYour health: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
+            }
         }
     }
 
@@ -133,10 +135,11 @@ public class AdvancedFightingSystem
     //GETTERS
     public boolean isEnemyAlive()
     {
-        if(!enemy.isAlive())
+        if(!enemy.isAlive() && canRewardBeGiven && !mainWindow.isDialougeActive())
         {
             mainWindow.setNewText("Advanced Area, Advanced Enemies, Tension... Cities burn.");
             player.gainedXp(enemy.xpReward());
+            canRewardBeGiven = false;
         }
         return enemy.isAlive();
     }

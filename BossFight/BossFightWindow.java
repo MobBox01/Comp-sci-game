@@ -1,5 +1,7 @@
 package BossFight;
 
+import Elements.AudioPlayer;
+import Elements.MainWindow;
 import Stats.Layout;
 import java.awt.Color;
 import java.awt.Font;
@@ -31,9 +33,13 @@ public class BossFightWindow extends JFrame
     boolean isDialougeBusy = false;
     boolean moveOn = false;
     private BossFightSystem bossFightSystem;
+    private MainWindow mainWindow;
+    private AudioPlayer audioPlayer;
 
-    public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass)
+    public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass,AudioPlayer audioPlayerPass,MainWindow mainWindowPass)
     {
+        this.mainWindow = mainWindowPass;
+        this.audioPlayer = audioPlayerPass;
         this.layout = layoutPass;
         bossFightSystem = BossFightSystemPass;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -224,13 +230,16 @@ public class BossFightWindow extends JFrame
     {   
         if(currentStatement > bossFinalWords.length-1)
         {
-            moveOn = true;
+            mainWindow.enteredRoom();
+            audioPlayer.setRoomAudio(1);            
             layout.changeRoomNumber(1);
+            setVisible(false);
+            mainWindow.setVisible(true);
         }
         else
         {
-            currentStatement++;
             slowDialouge(bossFinalWords[currentStatement]);
+            currentStatement++;
         }
     }
 

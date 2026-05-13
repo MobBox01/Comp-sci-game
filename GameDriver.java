@@ -24,21 +24,18 @@ public class GameDriver
         BasicFightingSystem basic_FS = new BasicFightingSystem(player, null);
         AdvancedFightingSystem advanced_FS = new AdvancedFightingSystem(player, null);
         
-        //MainGui
+        //Main Window
         MainWindow window = new MainWindow(progressSaving, player, layout, basic_FS, advanced_FS);
-
-        //Other
         basic_FS.setWindow(window);
         advanced_FS.setMainWindow(window);
 
         //Boss Fight
         BossFightSystem bossFightSystem = new BossFightSystem(player);
-        BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout);
+        BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window);
         bossFightSystem.setGuiConnection(bossFightWindow);
 
         //Inputs
         PlayerInput input = new PlayerInput(window, bossFightWindow, bossFightSystem, layout, audioPlayer, basic_FS, advanced_FS, player);
-
         window.addKeyListener(input);
         bossFightWindow.addKeyListener(input);
     }
