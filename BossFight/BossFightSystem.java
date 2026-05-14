@@ -100,15 +100,15 @@ public class BossFightSystem
 
     public boolean isGurritoDead()
     {
-        return evilGurrito.isAlive();
+        return !evilGurrito.isAlive();
     }
     
     public boolean isNiesDead()
     {
-        return evilNies.isAlive();
+        return !evilNies.isAlive();
     }
     public boolean isKlusDead()
     {
-        return evilKlus.isAlive();
+        return !evilKlus.isAlive();
     }
 }

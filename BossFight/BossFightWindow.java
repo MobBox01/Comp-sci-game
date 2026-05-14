@@ -20,8 +20,8 @@ public class BossFightWindow extends JFrame
     private JTextArea textBox = new JTextArea();
     private Layout layout;
     private JLabel option = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
-    int[] fightLayout = {-200,1};
-    boolean isBossDialougeBusy = false;
+    private int[] fightLayout = {-200,1};
+    private boolean isBossDialougeBusy = false;
     private String[] bossFinalWords = 
     {
         "Evil Klus: Ah, you've defeated all of us................\n\nPress Enter to continue...",
@@ -30,8 +30,8 @@ public class BossFightWindow extends JFrame
         "(Previous Evil) Happy gang: Ferreto, we will let you pass for changing our world views.\n\nPress Enter to continue..."
     };
     private int currentStatement = 0;
-    boolean isDialougeBusy = false;
-    boolean moveOn = false;
+    private boolean isDialougeBusy = false;
+    private boolean moveOn = false;
     private BossFightSystem bossFightSystem;
     private MainWindow mainWindow;
     private AudioPlayer audioPlayer;
@@ -208,23 +208,24 @@ public class BossFightWindow extends JFrame
                 option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
             }
         }
+        if(bossFightSystem.isGurritoDead())
+        {
+            evilGurrito.setIcon(new ImageIcon("Sprites/Boss/DefeatedGurrito.jpg"));
+        }
+        if(bossFightSystem.isNiesDead())
+        {
+            evilNies.setIcon(new ImageIcon("Sprites/Boss/DefeatedNies.jpg"));
+        }
+        if(bossFightSystem.isKlusDead())
+        {
+            evilKlus.setIcon(new ImageIcon("Sprites/Boss/DefeatedKlus.jpg"));
+        }
 
         repaint();
         revalidate();
     }
 
-    public void defeat()
-    {
-        if(bossFightSystem.isGurritoDead())
-        {
-        }
-        if(bossFightSystem.isNiesDead())
-        {
-        }
-        if(bossFightSystem.isKlusDead())
-        {
-        }
-    }
+
 
     public void defeatedSequence()
     {   

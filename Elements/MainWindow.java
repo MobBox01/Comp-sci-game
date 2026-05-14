@@ -48,38 +48,34 @@ public class MainWindow extends JFrame
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
 
-    //Props
+    //Props; Positive
     private static final int CITY_1 = 100;
 
-    //Destroyed Props
+    //Destroyed Props; Negative
     private static final int VOID = 0;
-    private static final int DESTROYEDCITY_1 = -100;
+    private static final int DESTROYED_CITY_1 = -100;
 
     //Fight layout
     private int selectorRow;
     private int selectorCollumn;
-    private int[][] fightRoomLayout;
-
-    //Selectors
-    private final int UNSELECTED_ATTACK = 1;
-    private final int SELECTED_ATTACK = 2;
-    private final int UNSELECTED_HEALTH = 3;
-    private final int SELECTED_HEALTH = 4;
-    private final int UNSELECTED_DEFENSE = 5;
-    private final int SELECTED_DEFENSE = 6;
-
-    //Fight Status
-    private int storedTileChoice = UNSELECTED_ATTACK;
 
     //Containers
     JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
-    JPanel fightContainer = new JPanel(new GridLayout(fightRoomX,fightRoomY));
+    JPanel fightContainer = new JPanel(null);
     JPanel dialougeContainer = new JPanel(new BorderLayout());
+    JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Attack.png"));
+    private int[] fightLayout = {100,1};
 
-    /**
-     * Sets up window and starting room
-    */
+
     @SuppressWarnings("OverridableMethodCallInConstructor")
+    /**
+     * @param progressPass
+     * @param playerPass
+     * @param layoutPass
+     * @param basicFS_Pass
+     * @param advanced_FS_Pass
+     * Deals with setting up the MainWindow object.
+     */
     public MainWindow(ProgressSaving progressPass,Player playerPass,Layout layoutPass,BasicFightingSystem basicFS_Pass, AdvancedFightingSystem advanced_FS_Pass)
     {
         advanced_FS = advanced_FS_Pass;
@@ -89,7 +85,8 @@ public class MainWindow extends JFrame
         progressSaving = progressPass;
         player = playerPass;
 
-        fightRoomLayout = layout.getFightMapping();
+        
+
 
         //Frame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -107,6 +104,13 @@ public class MainWindow extends JFrame
 
         fightContainer.setBounds(roomContainer.getWidth(),0,550,550);
         fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        fightContainer.setBackground(Color.black);
+        fightContainer.setForeground(Color.black);
+        fightContainer.add(selector);
+        selector.setBounds(125,350,303,101);
+        fightContainer.revalidate();
+        fightContainer.repaint();
+
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -117,14 +121,6 @@ public class MainWindow extends JFrame
         }
         layout.setRoomNumber(progressSaving.obtainSavePoint()[2]);
         roomLayout = layout.obtainRoom();
-
-        for(int i = 0; i < fightTotalTileCount; i++)
-        {
-            JPanel panel = new JPanel();
-            panel.setLayout(new BorderLayout());
-            fightArray.add(panel);
-            fightContainer.add(panel);
-        }
         findPlayer();
 
         //Dialouge
@@ -145,7 +141,6 @@ public class MainWindow extends JFrame
 
         //Visibility
         setTitle("| ~The~ ~Concealing~ ~Light~ | Room: {" + layout.getRoomNumber() + "} | ");
-        buildFightContainer();
         buildRoomContainer();
         add(roomContainer);
         add(fightContainer);
@@ -161,7 +156,10 @@ public class MainWindow extends JFrame
         System.out.println("Entered room number: {" + layout.getRoomNumber() + "}");
         roomLayout = layout.obtainRoom();
         findPlayer();
-        progressSaving.setSavePoint(player.getLevel(),player.getXP(),layout.getRoomNumber());
+        if(layout.getRoomNumber() < 6)
+        {
+            progressSaving.setSavePoint(player.getLevel(),player.getXP(),layout.getRoomNumber());
+        }
         setTitle("The Concealing Light | Room: {" + layout.getRoomNumber() + "}");
 
         buildRoomContainer();
@@ -169,11 +167,9 @@ public class MainWindow extends JFrame
 
     /**
      * @param dx -> 1 tile left/right (Left == -1) (Right == 1)
-     * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
-     * <p>
-     * [IF] User encounter square 10, move to next room
-     * <p>
-     * [IF] User encounters square 11, move back a room
+     * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1) <p>
+     * [IF] 10 -> Next room<p>
+     * [IF] 11 -> Previous room
      */
     public void movePlayer(int dx,int dy)
     {
@@ -196,18 +192,6 @@ public class MainWindow extends JFrame
                 {
                     playerRow = i;
                     playerCollumn = j;
-                }
-            }    
-        }
-
-        for(int i = 0; i < fightRoomX; i++)
-        {
-            for(int j = 0; j < fightRoomY; j++)
-            {
-                if(fightRoomLayout[i][j] == 2 || fightRoomLayout[i][j] == 4 || fightRoomLayout[i][j] == 6)
-                {
-                    selectorRow = i;
-                    selectorCollumn = j;
                 }
             }    
         }
@@ -299,7 +283,7 @@ public class MainWindow extends JFrame
                     case VOID -> roomArray.get(index).setBackground(Color.BLACK);
                     case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
                     case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
-                    case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
+                    case DESTROYED_CITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
                     case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
                     case 200 -> setTileImage("Sprites/Barriers/Forest.png", index);
                     case NEXT_ROOM -> roomArray.get(index).setBackground(Color.BLUE);
@@ -312,8 +296,8 @@ public class MainWindow extends JFrame
 
         roomContainer.revalidate();
         roomContainer.repaint();
-        //revalidate();
-        //repaint();
+        revalidate();
+        repaint();
     }
 
     /**
@@ -351,50 +335,23 @@ public class MainWindow extends JFrame
     /**
      * @param move_OR_selected -> 1 tile left/right (Left == -1) (Right == 1)
      * @param dy -> 1 tile Up/Down  (Down == -1) (Up == 1)
-     * /!\ WARNING: USABLE FOR RIGHT NOW, BUT PLSSS REMAKE THIS </3
     */
     public void moveSelector(int move_OR_selected)
     {
-        findPlayer();
         switch(move_OR_selected)
         {
-            case 1 -> // RIGHT
+            case 1 ->
             {
-                int targetTile = fightRoomLayout[selectorRow][selectorCollumn + 1];
-                switch(targetTile)
+                if(fightLayout[1]+1 != 4)
                 {
-                    case UNSELECTED_HEALTH ->
-                    {
-                        fightRoomLayout[selectorRow][selectorCollumn] = storedTileChoice;
-                        storedTileChoice = targetTile;
-                        fightRoomLayout[selectorRow][selectorCollumn + 1] = SELECTED_HEALTH;
-                    }
-                    case UNSELECTED_DEFENSE ->
-                    {
-                        fightRoomLayout[selectorRow][selectorCollumn] = storedTileChoice;
-                        storedTileChoice = targetTile;
-                        fightRoomLayout[selectorRow][selectorCollumn + 1] = SELECTED_DEFENSE;
-                    }
+                    fightLayout[1] += 1;
                 }
             }
-
             case -1 ->
             {
-                int targetTile = fightRoomLayout[selectorRow][selectorCollumn - 1];
-                switch(targetTile)
+                if(fightLayout[1] - 1 != 0)
                 {
-                    case UNSELECTED_ATTACK ->
-                    {
-                        fightRoomLayout[selectorRow][selectorCollumn] = storedTileChoice;
-                        storedTileChoice = targetTile;
-                        fightRoomLayout[selectorRow][selectorCollumn - 1] = SELECTED_ATTACK;   
-                    }
-                    case UNSELECTED_HEALTH ->
-                    {
-                        fightRoomLayout[selectorRow][selectorCollumn] = storedTileChoice;
-                        storedTileChoice = targetTile;
-                        fightRoomLayout[selectorRow][selectorCollumn - 1] = SELECTED_HEALTH;
-                    }
+                    fightLayout[1] -= 1;
                 }
             }
 
@@ -404,28 +361,43 @@ public class MainWindow extends JFrame
 
                 if(basic_FS.isEnemyAlive())
                 {
-                    switch (fightRoomLayout[selectorRow][selectorCollumn]) 
+                    switch(fightLayout[1])
                     {
-                        case 2 -> basic_FS.attack();
-                        case 4 -> basic_FS.heal();
-                        case 6 -> basic_FS.defend(); 
+                        case 1 -> basic_FS.attack();
+                        case 2 -> basic_FS.heal();
+                        case 3 -> basic_FS.defend(); 
                     }
                 }
 
                 else if(advanced_FS.isEnemyAlive())
                 {
-                    switch (fightRoomLayout[selectorRow][selectorCollumn]) 
+                    switch (fightLayout[1]) 
                     {
-                        case 2 -> advanced_FS.attack();
-                        case 4 -> advanced_FS.heal();
-                        case 6 -> advanced_FS.defend(); 
+                        case 1 -> advanced_FS.attack();
+                        case 2 -> advanced_FS.heal();
+                        case 3 -> advanced_FS.defend(); 
                     }
                 }
 
             }
         }
+        switch(fightLayout[1])
+        {
+            case 1 -> 
+            {
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Attack.png"));
+            }
+            case 2 -> 
+            {
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Heal.png"));
+            }
+            case 3 -> 
+            {
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Defend.png"));
+            }
+        }
         healthStatus();
-        buildFightContainer();
+        //buildFightContainer();
     }
 
     private void healthStatus()
@@ -434,116 +406,29 @@ public class MainWindow extends JFrame
 
         if(healthPercentage == 100)
         {
-            fightRoomLayout[2][0] = -200;
+            fightLayout[0] = -200;
         }
         else if(healthPercentage >= 75)
         {
-            fightRoomLayout[2][0] = -175;
+            fightLayout[0] = -175;
         }
         else if(healthPercentage >= 50)
         {
-            fightRoomLayout[2][0] = -150;
+            fightLayout[0] = -150;
         }
         else if(healthPercentage >= 25)
         {
-            fightRoomLayout[2][0] = -125;
+            fightLayout[0] = -125;
         }
         else if(healthPercentage > 0)
         {
-            fightRoomLayout[2][0] = -124;
+            fightLayout[0] = -124;
         }
         else if(healthPercentage <= 0)
         {
-            fightRoomLayout[2][0] = -100;
+            fightLayout[0] = -100;
             dialouge("You have died...\n=={GAMER-OVER}==");
         }
-    }
-
-    public void buildFightContainer()
-    {
-        int index = 0;
-        for(int i = 0; i < fightRoomX; i++)
-        {
-            for(int j = 0; j < fightRoomY; j++)
-            {
-                fightArray.get(index).removeAll();
-                switch (fightRoomLayout[i][j]) 
-                {
-                    case 0 -> fightArray.get(index).setBackground(Color.BLACK);
-                    
-                    //ATK
-                    case 1 -> setFightingTile("Sprites/Selectors/Unselected_Attack.png", index);
-                    case 2 -> setFightingTile("Sprites/Selectors/Selected_Attack.png", index);
-
-                    //HP
-                    case 3 -> setFightingTile("Sprites/Selectors/Unselected_Heal.png", index);
-                    case 4 -> setFightingTile("Sprites/Selectors/Selected_Heal.png", index);
-
-                    //DFN
-                    case 5 -> setFightingTile("Sprites/Selectors/Unselected_Defend.png", index);
-                    case 6 -> setFightingTile("Sprites/Selectors/Selected_Defend.png", index);
-
-                    case 300 -> setFightingTile("Sprites/Enemies/Atomize.gif", index);
-                    case 301 -> setFightingTile("Sprites/Enemies/ThreeDemons.png", index);
-                    case 400 -> setFightingTile("Sprites/Enemies/Frame_Empty.gif", index);
-
-                    case -200 -> setFightingTile("Sprites/HealthStates/MC_Full.png", index);
-                    case -175 -> setFightingTile("Sprites/HealthStates/MC_75.png", index);
-                    case -150 -> setFightingTile("Sprites/HealthStates/MC_50.png", index);
-                    case -125 -> setFightingTile("Sprites/HealthStates/MC_25.png", index);
-                    case -124 -> setFightingTile("Sprites/HealthStates/MC_Under25.png", index);
-                    case -100 -> setFightingTile("Sprites/HealthStates/MC_Dead.png", index);
-
-                    //ERROR
-                    default -> fightArray.get(index).setBackground(Color.magenta);
-                }
-
-                index++;
-            }
-        }
-        fightContainer.revalidate();
-        fightContainer.repaint();
-    }
-
-    /**
-     * @param tilePath String for picture of tile
-     * @param index Index of the [x]x[y] for loop
-     * Set each tile and center them
-     * [IF] image not found or error; set tile to magenta to spot it easily
-     */
-    private void setFightingTile(String tilePath, int index)
-    {
-        ImageIcon imageComponent = new ImageIcon(tilePath);
-        JLabel labelComponent = new JLabel(imageComponent);
-
-        labelComponent.setHorizontalAlignment(JLabel.CENTER);
-        labelComponent.setVerticalAlignment(JLabel.CENTER);
-
-        fightArray.get(index).add(labelComponent, BorderLayout.CENTER);  
-        fightArray.get(index).setBackground(Color.black);
-    }
-
-    public void setAdvancedEnemyFrame()
-    {
-        switch(advanced_FS.getCurrentName())
-        {
-            case "Atomize" -> fightRoomLayout[1][2] = 300;
-            case "ThreeDemons" -> fightRoomLayout[1][2] = 301;
-        }
-    }
-
-    public void setBasicEnemyFrame()
-    {
-        switch(basic_FS.getCurrentName())
-        {
-            case "Atomize" -> fightRoomLayout[1][2] = 300;
-            case "ThreeDemons" -> fightRoomLayout[1][2] = 301;
-        }
-    }
-
-    public void setfightRoomFrame(int e)
-    {
-        fightRoomLayout[1][2] = 400;
     }
 
 //-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E
