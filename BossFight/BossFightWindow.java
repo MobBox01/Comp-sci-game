@@ -13,14 +13,29 @@ import javax.swing.text.DefaultCaret;
 @SuppressWarnings("FieldMayBeFinal")
 public class BossFightWindow extends JFrame
 {
+    //Classes
+    private BossFightSystem bossFightSystem;
+    private MainWindow mainWindow;
+    private AudioPlayer audioPlayer;
+
+    //Sprites
     private JLabel evilKlus = new JLabel(new ImageIcon("Sprites/Boss/Klus.jpg"));
     private JLabel evilNies = new JLabel(new ImageIcon("Sprites/Boss/Nies.jpg"));
     private JLabel evilGurrito = new JLabel(new ImageIcon("Sprites/Boss/Gurrito.jpg"));
     private JLabel opFull = new JLabel(new ImageIcon("Sprites/HealthStates/OP_Full.png"));
+    private JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+
+    //Text box
     private JTextArea textBox = new JTextArea();
+
+    //Other
     private Layout layout;
-    private JLabel option = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
     private int[] fightLayout = {-200,1};
+    
+    //Boss Dialouge
+    private int currentStatement = 0;
+    private boolean isDialougeBusy = false;
+    private boolean moveOn = false;
     private boolean isBossDialougeBusy = false;
     private String[] bossFinalWords = 
     {
@@ -29,12 +44,7 @@ public class BossFightWindow extends JFrame
         "Converted to Happiness Mr Nies: Dihydrogen monoxide is very scary\n\nPress Enter to continue...",
         "(Previous Evil) Happy gang: Ferreto, we will let you pass for changing our world views.\n\nPress Enter to continue..."
     };
-    private int currentStatement = 0;
-    private boolean isDialougeBusy = false;
-    private boolean moveOn = false;
-    private BossFightSystem bossFightSystem;
-    private MainWindow mainWindow;
-    private AudioPlayer audioPlayer;
+
 
     public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass,AudioPlayer audioPlayerPass,MainWindow mainWindowPass)
     {
@@ -45,32 +55,37 @@ public class BossFightWindow extends JFrame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        //Bounds
         opFull.setBounds(50,250,201,201);
         evilKlus.setBounds(500, 100, 144, 300);
         evilNies.setBounds(300,50,144,364);
         evilGurrito.setBounds(700, 100,192,144);
-        option.setBounds(650,450,610,220);
+        selector.setBounds(300,450,610,220);
+        selector.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
         
+        //Additions
         add(evilKlus);
         add(evilNies);
         add(evilGurrito);
         add(opFull);
-        add(option);
+        add(selector);
         
-//MAx resoltion: 784 x 1382 pixels
+        //Frame
         setBackground(Color.BLACK);
         setTitle("Holy crap its Evil Klus");
         setLayout(null);
         getContentPane().setBackground(Color.BLACK);
 
+        //Text BOx
         textBox.setEditable(false);
         textBox.setFocusable(false);
         textBox.setBackground(Color.BLACK);
         textBox.setForeground(Color.WHITE);
         textBox.setFont(new Font("DialogInput", Font.BOLD, 20));
         textBox.setLineWrap(true);
+        textBox.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
         textBox.setWrapStyleWord(true);
-        textBox.setBounds(800,250,500,200);
+        textBox.setBounds(950,10,400,700);
         
         // remove blinking caret
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
@@ -197,15 +212,15 @@ public class BossFightWindow extends JFrame
         {
             case 1 -> 
             {
-                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
             }
             case 2 -> 
             {
-                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
             }
             case 3 -> 
             {
-                option.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
+                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
             }
         }
         if(bossFightSystem.isGurritoDead())

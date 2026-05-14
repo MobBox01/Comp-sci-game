@@ -6,12 +6,12 @@ import javax.sound.sampled.*;
 public class AudioPlayer 
 {
     //Arrays
-    String[] fightComplexityPath = {"Audio/BasicEnemies.wav", "Audio/AdvancedEnemies.wav", "Audio/Boss.wav"};
-    String[] roomComplexityPath = {"Audio/BasicRooms.wav", "Audio/AdvancedRooms.wav", "Audio/FinalRooms.wav"};
+    private String[] fightComplexityPath = {"Audio/BasicEnemies.wav", "Audio/AdvancedEnemies.wav", "Audio/Boss.wav"};
+    private String[] roomComplexityPath = {"Audio/BasicRooms.wav", "Audio/AdvancedRooms.wav", "Audio/FinalRooms.wav"};
 
     //Audio
-    Clip currentClip;
-    AudioInputStream audioInput;
+    private Clip currentClip;
+    private AudioInputStream audioInput;
 
     @SuppressWarnings("CallToPrintStackTrace")
     public void setFightAudio(int fightComplexity)

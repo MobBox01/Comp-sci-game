@@ -23,18 +23,12 @@ public class MainWindow extends JFrame
     //Arrays
     private int[][] roomLayout;
     private ArrayList<JPanel> roomArray = new ArrayList<>();
-    private ArrayList<JPanel> fightArray = new ArrayList<>();
 
     //Room Layout Size
     private boolean isDialougeBusy = false;
     private final int roomSizeX = 10;
     private final int roomSizeY = 10;
     private final int roomTotalTileCount = roomSizeX*roomSizeY;
-
-    //Fighting Layout Size
-    private final int fightRoomX = 5;
-    private final int fightRoomY = 5;
-    private final int fightTotalTileCount = fightRoomX*fightRoomY;
     
     //Rooms
     private int tileUnderPlayer = 1;
@@ -48,23 +42,19 @@ public class MainWindow extends JFrame
     private static final int PLAYER = 90;
     private static final int NEXT_ROOM = 10;
 
-    //Props; Positive
-    private static final int CITY_1 = 100;
-
-    //Destroyed Props; Negative
-    private static final int VOID = 0;
-    private static final int DESTROYED_CITY_1 = -100;
-
-    //Fight layout
-    private int selectorRow;
-    private int selectorCollumn;
-
     //Containers
-    JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
-    JPanel fightContainer = new JPanel(null);
-    JPanel dialougeContainer = new JPanel(new BorderLayout());
-    JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Attack.png"));
-    private int[] fightLayout = {100,1};
+    private JPanel roomContainer = new JPanel(new GridLayout(roomSizeX,roomSizeY,0,0));
+    private JPanel fightContainer = new JPanel(null);
+    private JPanel dialougeContainer = new JPanel(new BorderLayout());
+
+    //Labels
+    private JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Attack.png"));
+    private JLabel healthStatus = new JLabel(new ImageIcon("Sprites/HealthStates/MC_Full.png"));
+    private JLabel battleFrame = new JLabel(new ImageIcon("Frame_Empty.gif"));
+
+    //Other
+    private int[] fightLayout = {-200,1};
+    private boolean lightSpreading = true;
 
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
@@ -85,32 +75,34 @@ public class MainWindow extends JFrame
         progressSaving = progressPass;
         player = playerPass;
 
-        
-
-
         //Frame
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setBackground(Color.black);
-        setForeground(Color.black);
+
         getContentPane().setBackground(Color.black);
-        getContentPane().setForeground(Color.BLACK);
         setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
-        //Containers
+        //Room Container
         roomContainer.setBounds(0,0,750,750); 
-        roomContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        roomContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
 
+        //Fight Container
         fightContainer.setBounds(roomContainer.getWidth(),0,550,550);
-        fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        fightContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
         fightContainer.setBackground(Color.black);
         fightContainer.setForeground(Color.black);
         fightContainer.add(selector);
-        selector.setBounds(125,350,303,101);
-        fightContainer.revalidate();
-        fightContainer.repaint();
+        fightContainer.add(healthStatus);
+        fightContainer.add(battleFrame);
 
+        //Labels
+        selector.setBounds(125,350,303,101);
+        healthStatus.setBounds(20,200,101,101);
+        battleFrame.setBackground(Color.white);
+        battleFrame.setForeground(Color.white);
+        battleFrame.setBounds(130,0,303,303);
+        battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Frame_Empty.gif"));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -126,7 +118,7 @@ public class MainWindow extends JFrame
         //Dialouge
         dialougeContainer.setBounds(roomContainer.getWidth(),550,550,200);
         dialougeContainer.add(textBox, BorderLayout.CENTER);
-        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        dialougeContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
 
         textBox.setEditable(false);
         textBox.setFocusable(false);
@@ -145,6 +137,8 @@ public class MainWindow extends JFrame
         add(roomContainer);
         add(fightContainer);
         add(dialougeContainer);
+        fightContainer.revalidate();
+        fightContainer.repaint();
         setVisible(true);
     }
 
@@ -156,7 +150,7 @@ public class MainWindow extends JFrame
         System.out.println("Entered room number: {" + layout.getRoomNumber() + "}");
         roomLayout = layout.obtainRoom();
         findPlayer();
-        if(layout.getRoomNumber() < 6)
+        if(layout.getRoomNumber() < 15 )//6
         {
             progressSaving.setSavePoint(player.getLevel(),player.getXP(),layout.getRoomNumber());
         }
@@ -176,11 +170,21 @@ public class MainWindow extends JFrame
         if (dx != 0) movePlayerX(dx);
         if (dy != 0) movePlayerY(dy);
 
+        if(layout.getRoomNumber() == 17 && lightSpreading)
+        {
+            lightSpreading = false;
+            getContentPane().setBackground(Color.WHITE);
+            fightContainer.removeAll();
+            fightContainer.setBackground(Color.WHITE);
+            textBox.setBackground(Color.WHITE);
+            textBox.setForeground(Color.BLACK);
+            dialouge("The room fills with light the futhure you go... the void weakens, newly formed bonds break apart and the path behind you reveals damaged nature and rubble as void puddles break apart into energy as the previous link has been broken.");
+        }
         buildRoomContainer();
     }
 
     /**
-     * Finds the players current (Row,Collumn) position in the 2D-Array.
+     * Finds the players current (Row,Collumn) position in the Matrix.
     */
     private void findPlayer()
     {
@@ -280,15 +284,15 @@ public class MainWindow extends JFrame
                 roomArray.get(index).removeAll();
                 switch (roomLayout[r][c]) 
                 {
-                    case VOID -> roomArray.get(index).setBackground(Color.BLACK);
-                    case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
-                    case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
-                    case DESTROYED_CITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
-                    case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
+                    case 0 -> roomArray.get(index).setBackground(Color.BLACK);
+                    case 1 -> setTileImage("Sprites/Walkable/Concrete.png", index);
+                    case 90 -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
+                    case -100 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
+                    case 100 -> setTileImage("Sprites/Barriers/City_1.png", index);
                     case 200 -> setTileImage("Sprites/Barriers/Forest.png", index);
                     case NEXT_ROOM -> roomArray.get(index).setBackground(Color.BLUE);
 
-                    default -> roomArray.get(index).setBackground(Color.RED);
+                    default -> roomArray.get(index).setBackground(Color.WHITE);
                 }
                 index++;
             }
@@ -368,7 +372,6 @@ public class MainWindow extends JFrame
                         case 3 -> basic_FS.defend(); 
                     }
                 }
-
                 else if(advanced_FS.isEnemyAlive())
                 {
                     switch (fightLayout[1]) 
@@ -381,6 +384,7 @@ public class MainWindow extends JFrame
 
             }
         }
+
         switch(fightLayout[1])
         {
             case 1 -> 
@@ -396,11 +400,15 @@ public class MainWindow extends JFrame
                 selector.setIcon(new ImageIcon("Sprites/Selectors/Defend.png"));
             }
         }
-        healthStatus();
-        //buildFightContainer();
+        updateStatus();
     }
 
-    private void healthStatus()
+    /**
+     * Update health status based on health %
+     * Update battle frame
+     * 
+     */
+    public void updateStatus()
     {
         int healthPercentage = player.healthPercentage();
 
@@ -429,7 +437,39 @@ public class MainWindow extends JFrame
             fightLayout[0] = -100;
             dialouge("You have died...\n=={GAMER-OVER}==");
         }
+
+        switch(fightLayout[0])
+        {
+            case -200 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Full.png"));
+            case -175 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_75.png"));
+            case -150 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_50.png"));
+            case -125 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_25.png"));
+            case -124 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Under25.png"));
+            case -100 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Dead.png"));
+        }
+
+        if(basic_FS.isEnemyAlive())
+        {
+            //switch(basic_FS.getName())
+        }
+        else if(advanced_FS.isEnemyAlive())
+        {
+            switch(advanced_FS.getCurrentName())
+            {
+                case "ThreeDemons" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/ThreeDemons.png"));
+                case "Atomize" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Atomize.gif"));
+            }
+
+        }  
+        else
+        {
+            battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Frame_Empty.gif"));
+        }  
+        fightContainer.revalidate();
+        fightContainer.repaint();
     }
+
+
 
 //-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E-------D--I--A--L--O--U--G--E
 

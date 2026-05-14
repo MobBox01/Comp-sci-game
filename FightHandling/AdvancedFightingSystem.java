@@ -30,9 +30,8 @@ public class AdvancedFightingSystem
         switch((int)(Math.random()*5))
         {
             case 2 -> enemy = new Enemy(60,5,60,.2,"Atomize");
-            default -> enemy = new Enemy(100, 6,69,.3,"Three Demons");
+            default -> enemy = new Enemy(100, 6,69,.3,"ThreeDemons");
         }
-        //audio.advancedFight();
         player.fightingAdvanced();
         mainWindow.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }

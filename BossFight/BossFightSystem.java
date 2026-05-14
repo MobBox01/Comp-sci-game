@@ -6,10 +6,13 @@ import Stats.Player;
 @SuppressWarnings("FieldMayBeFinal")
 public class BossFightSystem 
 {
+    //Stats
     private Player player;
     private Enemy evilKlus = new Enemy(1,20, 666, .8, "Evil Klus");
     private Enemy evilNies = new Enemy(1, 10,666, .4, "Evil Nies");
     private Enemy evilGurrito = new Enemy(1,5, 666, 0.2, "Evil Gurrito");
+
+    //Other
     private BossFightWindow bossFightWindow;
 
     public BossFightSystem(Player playerPass) 

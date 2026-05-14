@@ -13,17 +13,19 @@ import javax.swing.*;
 @SuppressWarnings("FieldMayBeFinal")
 public class PlayerInput extends JFrame implements KeyListener 
 {
+    //Other
     private Layout layout;
     private BossFightWindow bossFightWindow;
     private BossFightSystem bossFightSystem;
-    private boolean debounce = false; 
     private MainWindow mainWindow;
     private AudioPlayer audioPlayer;
     private BasicFightingSystem basic_FS;
     private AdvancedFightingSystem advanced_FS;
     private Player player;
 
+    //Booleans
     private boolean fightStatus = false;
+    private boolean debounce = false; 
     private boolean alreadyChecked = false;
     private boolean playingFinalArea = true;
     private boolean[] finalRoomDialouge = {false, false, false, false, false};
@@ -41,14 +43,8 @@ public class PlayerInput extends JFrame implements KeyListener
     }
 
     /**
-     * @param keyEvent 
-     * <p>
-     * Checks if player is in a fight.
-     * <p>
-     * [IF] Player is in a fight state, any events passed in will connect with the top right second biggest window
-     * <p>
-     * [IF] Player isnt in a fight state, any events passed in will connect with the left window screen.
-     */
+     * @param keyEvent Move the player
+    */
     @Override
     public void keyPressed(KeyEvent keyEvent) 
     {
@@ -72,11 +68,13 @@ public class PlayerInput extends JFrame implements KeyListener
                 if(random < .03 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
                     fightSet(0);
+                    mainWindow.updateStatus();
                     audioPlayer.setFightAudio(0);
                 }
                 else if(random < .06 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
                     fightSet(1);
+                    mainWindow.updateStatus();
                     audioPlayer.setFightAudio(1);
                 }
             }
@@ -117,6 +115,9 @@ public class PlayerInput extends JFrame implements KeyListener
         }
     }
 
+    /**
+     * Debounce prevents you from spamming your character movement
+     */
     public void debounceStart()
     {
         int totalTime = 100;
@@ -142,21 +143,18 @@ public class PlayerInput extends JFrame implements KeyListener
             case 0 -> 
             {
                 basic_FS.enemyEncounter();
-
             }
             
             case 1 ->
             {
                 advanced_FS.enemyEncounter();
-
             }
         }
     }
     /**
-     * @return check if a fight is ongoing
-     * [IF] Enemy is alive -> True
-     * [ELSE-IF] Enemy isnt alive -> False
-     * [IF] Player dies -> Show a error message, kill the program once X is or "OK" is pressed
+     * @return true if enemies are alive and fight is active<p>
+     * Sets the room audio back to their dedicated room after defeat<p> 
+     * <b>Contains final room dialouge</b>
      */
     public boolean fightCheck()
     {
@@ -169,16 +167,12 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
-            //mainWindow.setfightRoomFrame(400);
-            //mainWindow.buildFightContainer();
             audioPlayer.setRoomAudio(0);
         }
         else if(!advanced_FS.isEnemyAlive() && !layout.isBossRoom() && !alreadyChecked && !layout.isFinalRooms())
         {
             alreadyChecked = true;
             fightStatus = false;
-            //mainWindow.setfightRoomFrame(400);
-            //mainWindow.buildFightContainer();
             audioPlayer.setRoomAudio(1);
         }
         else if(layout.isFinalRooms())
@@ -208,9 +202,9 @@ public class PlayerInput extends JFrame implements KeyListener
 
         }
 
-        if(!player.isAlive())
+        if(!player.isAlive() && !mainWindow.isDialougeActive())
         {
-            JOptionPane.showMessageDialog(null,"YOU DIED","GAME OVER",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null,"=={YOU DIED}==","GAME OVER",JOptionPane.ERROR_MESSAGE);
             System.exit(0);
         }
         return fightStatus;
