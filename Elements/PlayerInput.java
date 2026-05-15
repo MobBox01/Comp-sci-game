@@ -49,7 +49,7 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyPressed(KeyEvent keyEvent) 
     {
         //MainWindow
-        if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive())
+        if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive() && !(layout.getRoomNumber() == 22))
         {
             debounceStart();
             double random = Math.random();
@@ -105,6 +105,10 @@ public class PlayerInput extends JFrame implements KeyListener
             {
                 bossFightWindow.defeatedSequence();
             }
+        }
+        else if(layout.getRoomNumber() == 22)
+        {
+            
         }
         //Visibility of boss room
         if(!bossFightWindow.isVisible() && layout.isBossRoom())
