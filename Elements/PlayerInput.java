@@ -24,13 +24,17 @@ public class PlayerInput extends JFrame implements KeyListener
     private AdvancedFightingSystem advanced_FS;
     private Player player;
     private EndingWindow endingWindow;
+    private DialougeMapping storedDialouge = new DialougeMapping();
+    
 
     //Booleans
     private boolean fightStatus = false;
     private boolean debounce = false; 
     private boolean alreadyChecked = false;
-    private boolean playingFinalArea = true;
-    private boolean[] finalRoomDialouge = {false, false, false, false, false};
+    private boolean playingFinalArea = false;
+    private boolean endingCutScenePlaying = false;
+
+
     
     public PlayerInput(MainWindow windowPass,BossFightWindow bossFightingPass,BossFightSystem bossFightSystemPass, Layout layoutPass,AudioPlayer audioPlayerPass, BasicFightingSystem basic_FSPass, AdvancedFightingSystem advanced_FSPass,Player playerPass,EndingWindow endingWindowPass)
     {
@@ -132,7 +136,7 @@ public class PlayerInput extends JFrame implements KeyListener
         int totalTime = 100;
         if(layout.isFinalRooms())
         {
-            totalTime = 400;
+            totalTime = 200;
         }
         debounce = true;
         Timer timer = new Timer(totalTime, time ->
@@ -186,34 +190,16 @@ public class PlayerInput extends JFrame implements KeyListener
         }
         else if(layout.isFinalRooms())
         {
-            if(playingFinalArea)
+            if(!playingFinalArea)
             {
-                playingFinalArea = false;
+                playingFinalArea = true;
                 audioPlayer.setRoomAudio(2);
-                mainWindow.dialouge("{666}: Its the final strech... Ferreto don't give up. Destroy that portal. T-10 minutes before demon appearance. You defeated a majority of enemies they are to afraid. Your to powerful for them all shine that light against the void.");
-                finalRoomDialouge[0] = true;
+                mainWindow.dialouge(storedDialouge.obtainText());
             }
-            else if(layout.getRoomNumber() == 11 && !finalRoomDialouge[1])
+            else if(storedDialouge.isDialougeInRoom(layout.getRoomNumber()))
             {
-                mainWindow.dialouge("{666}: Ferreto, the portal is near the furthure you go the void will disappear... This long journey(5 minute game lmao) has been worth it, hasn't it? You are strong to fight back against them");
-                finalRoomDialouge[1] = true;
+                mainWindow.dialouge(storedDialouge.obtainText());
             }
-            else if(layout.getRoomNumber() == 12 && !finalRoomDialouge[2])
-            {
-                mainWindow.dialouge("{666}: So like anyway, why the hell didn't you do your computer science homework? Literally was befuddled throughout the entire boss encounter, i mean you got like 6666 XP so thats a win but still.............................................................");
-                finalRoomDialouge[2] = true;
-            }
-            else if(layout.getRoomNumber() == 13 && !finalRoomDialouge[3])
-            {
-                mainWindow.dialouge("{Ferreto}: Oh my god, STOP ASKING ME! I didn't feel like it. They're views have changed now so something positive came out of it, now lets stop this demon from forming\n");
-                finalRoomDialouge[3] = true;
-            }
-            else if(layout.getRoomNumber() == 15 && !finalRoomDialouge[4])
-            {
-                mainWindow.dialouge("{666}: The portal heart feels weak... we caught it in a early stage of development then but its strange how much void matter came out, probably because of this the void matter is also weaker to your light!");
-                finalRoomDialouge[4] = true;
-            }
-
         }
 
         if(!player.isAlive() && !mainWindow.isDialougeActive())

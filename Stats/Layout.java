@@ -569,4 +569,9 @@ public class Layout
     {
         return rooms.size();
     }
+
+    public boolean isEndingScene()
+    {
+        return rooms.size()-1 == roomNumber;
+    }
 }

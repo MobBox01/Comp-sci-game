@@ -8,6 +8,7 @@ public class EndingWindow extends JFrame
     JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
     JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
     JLabel animation = new JLabel("");
+    private boolean debounce = true;
     
     public EndingWindow()
     {
@@ -18,13 +19,13 @@ public class EndingWindow extends JFrame
         animation.setBounds(300,150,666,666);
         happyNies.setBounds(WIDTH, WIDTH, WIDTH, HEIGHT);
         getContentPane().setBackground(Color.WHITE);
-        //add(happyNies);
         repaint();
         revalidate();
     }
 
     public void playAnimation()
     {
+        debounce = false;
         String[] path = {""};
         int[] i = {0};
         Timer timer = new Timer(300, time ->
@@ -33,6 +34,7 @@ public class EndingWindow extends JFrame
                 if(i[0] > 53)
                 {
                     ((Timer)time.getSource()).stop();
+                    debounce = true;
                 }
                 else
                 {
