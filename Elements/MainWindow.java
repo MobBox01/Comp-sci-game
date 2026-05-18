@@ -482,6 +482,7 @@ public class MainWindow extends JFrame
         textBox.setText(newText);
     }
 
+    
     public void dialouge(String newText)
     {
         isDialougeBusy = true;

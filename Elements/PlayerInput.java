@@ -171,34 +171,40 @@ public class PlayerInput extends JFrame implements KeyListener
      */
     public boolean fightCheck()
     {
+        //Are enemies alive
         if(basic_FS.isEnemyAlive() || advanced_FS.isEnemyAlive())
         {
             alreadyChecked = false;
             fightStatus = true;
         }
+        //If basic enemy is dead
         else if(!basic_FS.isEnemyAlive() && !layout.isAdvancedRooms() && !alreadyChecked && !layout.isFinalRooms())
         {
             alreadyChecked = true;
             fightStatus = false;
             audioPlayer.setRoomAudio(0);
         }
+        //If advanced enemy is dead
         else if(!advanced_FS.isEnemyAlive() && !layout.isBossRoom() && !alreadyChecked && !layout.isFinalRooms())
         {
             alreadyChecked = true;
             fightStatus = false;
             audioPlayer.setRoomAudio(1);
         }
+        //If its the final rooms
         else if(layout.isFinalRooms())
         {
-            if(!playingFinalArea)
+            //Check if sound is playing for this area, only exception!
+            if(!playingFinalArea) 
             {
                 playingFinalArea = true;
                 audioPlayer.setRoomAudio(2);
-                mainWindow.dialouge(storedDialouge.obtainText());
+                mainWindow.dialouge(storedDialouge.getDialougeText());
             }
-            else if(storedDialouge.isDialougeInRoom(layout.getRoomNumber()))
+            //If the room has a dialouge option, play it
+            else if(storedDialouge.isDialougeInRoom(layout.getRoomNumber()) && !storedDialouge.dialougeStatus()) 
             {
-                mainWindow.dialouge(storedDialouge.obtainText());
+                mainWindow.dialouge(storedDialouge.getDialougeText());
             }
         }
 

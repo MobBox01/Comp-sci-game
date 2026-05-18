@@ -1,8 +1,10 @@
 package Elements;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class DialougeMapping
 {
     private int currentKey;
+    private int keyPosition;
     private String[] dialouge = 
     {
         "{666}: Its the final strech... Ferreto don't give up. Destroy that portal. T-10 minutes before demon appearance. You defeated a majority of enemies they are to afraid. Your to powerful for them all shine that light against the void.",
@@ -22,32 +24,48 @@ public class DialougeMapping
        16,
        19
     };
+
     private boolean[] dialougeStatus = 
-    {false, false, false, false, false, false};
+    {
+        false, 
+        false, 
+        false, 
+        false, 
+        false, 
+        false
+    };
 
 
+    /**
+     * @param roomNumber Check if current room has a dialouge to play<p>
+     * @return <b>True</b> if the room has dialouge. Set the key to this room
+     */
     public boolean isDialougeInRoom(int roomNumber)
     {
-        for(int i = 0; i < dialougeKey.length; i++)
+        for(int key = 0; key < dialougeKey.length; key++)
         {
-            if(roomNumber == dialougeKey[i])
+            if(roomNumber == dialougeKey[key])
             {
-                currentKey = dialougeKey[i];
+                currentKey = dialougeKey[key];
+                keyPosition = key;
                 return true;
             }
         }
         return false;
     }
 
-    public String obtainText()
+    /**
+     * @return Text of current room; set status to true
+     */
+    public String getDialougeText()
     {
-        dialougeStatus[currentKey] = true;
-        return dialouge[currentKey];
+        dialougeStatus[keyPosition] = true; //found issue
+        return dialouge[keyPosition];
     }
 
-    public boolean obtainStatus()
+    public boolean dialougeStatus()
     {
-        return dialougeStatus[currentKey];
+        return dialougeStatus[keyPosition];
     }
 
     
