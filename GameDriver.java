@@ -8,8 +8,7 @@ import FightHandling.BasicFightingSystem;
 import Saving.ProgressSaving;
 import Stats.Layout;
 import Stats.Player;
-import TheEnd.EndingGui;
-
+import TheEnd.EndingWindow;
 import java.io.IOException;
 
 public class GameDriver
@@ -35,13 +34,15 @@ public class GameDriver
         BossFightSystem bossFightSystem = new BossFightSystem(player);
         BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window);
         bossFightSystem.setGuiConnection(bossFightWindow);
+        //OTher
+        EndingWindow endingWindow = new EndingWindow();
 
         //Inputs
-        PlayerInput input = new PlayerInput(window, bossFightWindow, bossFightSystem, layout, audioPlayer, basic_FS, advanced_FS, player);
+        PlayerInput input = new PlayerInput(window, bossFightWindow, bossFightSystem, layout, audioPlayer, basic_FS, advanced_FS, player, endingWindow);
         window.addKeyListener(input);
         bossFightWindow.addKeyListener(input);
-        EndingGui ending = new EndingGui();
-    }
+        endingWindow.addKeyListener(input);
+        }
 }
 
 
