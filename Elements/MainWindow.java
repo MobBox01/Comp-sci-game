@@ -223,12 +223,12 @@ public class MainWindow extends JFrame
             }
             case NEXT_ROOM -> 
             {
-                layout.changeRoomNumber(1);
+                layout.nextRoom(1);
                 enteredRoom();
             }
             case 11 -> 
             {
-                layout.changeRoomNumber(-1);
+                layout.nextRoom(-1);
                 enteredRoom();
             }
         }
@@ -256,12 +256,12 @@ public class MainWindow extends JFrame
             }
             case NEXT_ROOM -> 
             {
-                layout.changeRoomNumber(1);
+                layout.nextRoom(1);
                 enteredRoom();
             }
             case 11 -> 
             {
-                layout.changeRoomNumber(-1);
+                layout.nextRoom(-1);
                 enteredRoom();
             }
         }

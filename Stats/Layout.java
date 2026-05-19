@@ -445,13 +445,27 @@ public class Layout
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69}
     };
-    private int[][] finalRoom22 = 
+
+    private int[][] endingRoom1 = 
     {
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
-        {69,69,69,69,90,69,69,69,69,69},
+        {69,69,69,69,90,10,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69}
+    };
+    private int[][] endingRoom2 = 
+    {
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,69,69,69,69,69,69},
+        {69,69,69,69,90,10,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
         {69,69,69,69,69,69,69,69,69,69},
@@ -518,7 +532,8 @@ public class Layout
         rooms.add(finalRoom19);
         rooms.add(finalRoom20);
         rooms.add(finalRoom21);
-        rooms.add(finalRoom22);
+        rooms.add(endingRoom1);
+        rooms.add(endingRoom2);
     }
 
     /**
@@ -530,7 +545,7 @@ public class Layout
         return rooms.get(roomNumber);
     }
 
-    public void changeRoomNumber(int change)
+    public void nextRoom(int change)
     {
         roomNumber += change;
     }
@@ -570,8 +585,8 @@ public class Layout
         return rooms.size();
     }
 
-    public boolean isEndingScene()
+    public boolean isEndingRooms()
     {
-        return rooms.size()-1 == roomNumber;
+        return  roomNumber > 29;
     }
 }

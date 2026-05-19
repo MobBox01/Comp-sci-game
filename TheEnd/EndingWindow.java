@@ -6,16 +6,18 @@ import java.awt.Graphics;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class EndingWindow extends JFrame
 {
-    JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyNies.jpg"));
-    JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
-    JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
-    JLabel animation = new JLabel("");
+    private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyNies.jpg"));
+    private JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
+    private JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
+    private JLabel animation = new JLabel("");
     private boolean debounce = true;
     private JTextArea textBox = new JTextArea();
     private JPanel dialougeContainer = new JPanel(new BorderLayout());
-        boolean isDialougeBusy = true;
+    private boolean animationStatus = true;
+    private boolean dialougeStatus = true;
 
     
     public EndingWindow()
@@ -48,8 +50,7 @@ public class EndingWindow extends JFrame
     public void playAnimation()
     {
         //Working on dialouge right now
-        //dialouge("As the light takes over... You look back. You see everything destroyed and rubble. Survivors are slowly getting up as your light heals them. What now is infront of you is just light. You have begun to seal the core... \n\nPress enter to continue....");
-        debounce = false;
+        animationStatus = true;
         String[] path = {""};
         int[] i = {0};
         Timer timer = new Timer(300, time ->
@@ -58,7 +59,7 @@ public class EndingWindow extends JFrame
                 if(i[0] > 53)
                 {
                     ((Timer)time.getSource()).stop();
-                    debounce = true;
+                    animationStatus = false;
                 }
                 else
                 {
@@ -73,25 +74,23 @@ public class EndingWindow extends JFrame
     }
 
 
-
-
     public void setNewText(String newText)
     {
         textBox.setText(newText);
     }
 
-    
-    public void dialouge(String newText)
+
+    public void endingDialouge(String newText)
     {
-        isDialougeBusy = true;
+        dialougeStatus = true;
         setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(30, time -> 
+        Timer timer = new Timer(400, time -> 
             {
                 if(i[0] == newText.length())
                 {
                     ((Timer)time.getSource()).stop();
-                    isDialougeBusy = false;
+                    dialougeStatus = false;
                 }
                 else
                 {
@@ -106,7 +105,12 @@ public class EndingWindow extends JFrame
 
     public boolean isDialougeActive()
     {
-        return isDialougeBusy;
+         return dialougeStatus;
+    }
+
+    public boolean isAnimationActive()
+    {
+        return animationStatus;
     }
 
 }

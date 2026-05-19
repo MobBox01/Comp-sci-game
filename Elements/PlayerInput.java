@@ -32,7 +32,6 @@ public class PlayerInput extends JFrame implements KeyListener
     private boolean debounce = false; 
     private boolean alreadyChecked = false;
     private boolean playingFinalArea = false;
-    private boolean endingCutScenePlaying = false;
 
 
     
@@ -56,13 +55,13 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyPressed(KeyEvent keyEvent) 
     {
         //MainWindow
-        if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive() && !(layout.getRoomNumber() == layout.getTotalRoomCount()))
+        if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive() && !layout.isEndingRooms())
         {
             debounceStart();
             double random = Math.random();
 
             //Room Movement
-            if(!fightCheck())
+            if(!checkRoom())
             {
                 switch(keyEvent.getKeyCode())
                 {
@@ -74,13 +73,13 @@ public class PlayerInput extends JFrame implements KeyListener
 
                 if(random < .03 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
-                    fightSet(0);
+                    basic_FS.enemyEncounter();
                     mainWindow.updateStatus();
                     audioPlayer.setFightAudio(0);
                 }
                 else if(random < .06 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
-                    fightSet(1);
+                    advanced_FS.enemyEncounter();
                     mainWindow.updateStatus();
                     audioPlayer.setFightAudio(1);
                 }
@@ -113,12 +112,31 @@ public class PlayerInput extends JFrame implements KeyListener
                 bossFightWindow.defeatedSequence();
             }
         }
-        else if(layout.getRoomNumber() == layout.getTotalRoomCount()-1)
+        //Ending Window
+        else if(layout.isEndingRooms())
         {
-            mainWindow.setVisible(false);
-            endingWindow.setVisible(true);
-            endingWindow.playAnimation();
+            //Move to next room
+            //Dialouge will work as normal, animations will play at specified rooms
+            if(!endingWindow.isVisible())
+            {
+                mainWindow.setVisible(false);
+                endingWindow.setVisible(true);
+            }
+            //ENTER, CHECK FOR DIALOUGE, SEE STATUS OF DIALOUGE
+            else if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER && storedDialouge.isDialougeInRoom(layout.getRoomNumber()) && !storedDialouge.dialougeStatus() && !endingWindow.isDialougeActive() && !endingWindow.isAnimationActive())
+            {
+                endingWindow.endingDialouge(storedDialouge.getDialougeText());
+                layout.nextRoom(1);
+
+            }
+            //ENTER, CHECK FOR ANIMATION OR OTHER, SEE STATUS OF ANIMATION OR OTHER
+            else if(keyEvent.getKeyCode() == KeyEvent.VK_ENTER && !storedDialouge.animationStatus() && storedDialouge.isAnimationInRoom(layout.getRoomNumber()))
+            {
+                endingWindow.playAnimation();
+                layout.nextRoom(1);
+            }             
         }
+    
         //Visibility of boss room
         if(!bossFightWindow.isVisible() && layout.isBossRoom())
         {
@@ -149,27 +167,12 @@ public class PlayerInput extends JFrame implements KeyListener
         timer.start();
     }
 
-    public void fightSet(int complexity)
-    {
-        switch(complexity)
-        {
-            case 0 -> 
-            {
-                basic_FS.enemyEncounter();
-            }
-            
-            case 1 ->
-            {
-                advanced_FS.enemyEncounter();
-            }
-        }
-    }
     /**
      * @return true if enemies are alive and fight is active<p>
      * Sets the room audio back to their dedicated room after defeat<p> 
      * <b>Contains final room dialouge</b>
      */
-    public boolean fightCheck()
+    public boolean checkRoom()
     {
         //Are enemies alive
         if(basic_FS.isEnemyAlive() || advanced_FS.isEnemyAlive())

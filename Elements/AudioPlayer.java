@@ -3,6 +3,7 @@ package Elements;
 import java.io.*;
 import javax.sound.sampled.*;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class AudioPlayer 
 {
     //Arrays
