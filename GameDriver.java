@@ -34,7 +34,8 @@ public class GameDriver
         BossFightSystem bossFightSystem = new BossFightSystem(player);
         BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window);
         bossFightSystem.setGuiConnection(bossFightWindow);
-        //OTher
+
+        //Other
         EndingWindow endingWindow = new EndingWindow();
 
         //Inputs
