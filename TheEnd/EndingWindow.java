@@ -166,7 +166,7 @@ public class EndingWindow extends JFrame
     {
         isActive = true;
 
-        if(Math.random() > .10) //10% chance of playing secret audio
+        if(Math.random() < .10) //10% chance of playing secret audio
         {
             audioPlayer.setRoomAudio(4);
         }
