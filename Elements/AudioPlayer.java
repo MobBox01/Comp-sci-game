@@ -8,7 +8,7 @@ public class AudioPlayer
 {
     //Arrays
     private String[] fightComplexityPath = {"Audio/BasicEnemies.wav", "Audio/AdvancedEnemies.wav", "Audio/Boss.wav"};
-    private String[] roomComplexityPath = {"Audio/BasicRooms.wav", "Audio/AdvancedRooms.wav", "Audio/FinalRooms.wav"};
+    private String[] roomComplexityPath = {"Audio/BasicRooms.wav", "Audio/AdvancedRooms.wav", "Audio/FinalRooms.wav", "Audio/EndingSong1.wav", "Audio/EndingSongSecret.wav"};
 
     //Audio
     private Clip currentClip;

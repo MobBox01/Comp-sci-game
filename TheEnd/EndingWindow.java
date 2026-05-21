@@ -1,4 +1,5 @@
 package TheEnd;
+import Elements.AudioPlayer;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -7,10 +8,13 @@ import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
 @SuppressWarnings("FieldMayBeFinal")
+//3, 4 Secret ending song
 public class EndingWindow extends JFrame
 {
+    //Classess 
+    private AudioPlayer audioPlayer;
     //Images
-    private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyNies.jpg"));
+    private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyChemistryTeacherNies.jpg"));
     private JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
     private JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
     private JLabel animation = new JLabel("");
@@ -35,25 +39,29 @@ public class EndingWindow extends JFrame
     };
     private String[] endingDialougeList =
     {
-        "Your light shines, as the portal infront of you gets concealed and destroyed",
-        "",
-        "",
-        "",
+        "Your light shines, as the portal infront of you gets concealed and destroyed. The world is saved as you see the darkness vanish, all portals get destroyed as you see the energy in the sky finally disperse",
+        "Mr Nies has become very happy, and now is a chemistry teacher at the fairport highschool. AFter returning to fairport, he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
+        "Mr Gurrito has become australian and blue, he now works on his english project to destroy the british. He now fights for kung fu panda in china.",
+        "Mr Klus has formed the band \"The null pointer exception\" and now torments those who do their computer science homework and saved the world from certain anniahlation",
         ""
     };
 
     
-    public EndingWindow()
+    public EndingWindow(AudioPlayer audioPlayer)
     {
+        this.audioPlayer = audioPlayer;
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        add(animation);
-        animation.setBounds(300,150,666,666);
-        happyNies.setBounds(WIDTH, WIDTH, WIDTH, HEIGHT);
         getContentPane().setBackground(Color.WHITE);
+
+        animation.setBounds(300,100,666,666);
+        happyNies.setBounds(200, 100, 300, 500);
+
+        happyNies.setVisible(false);
+        
         //Dialouge
-        dialougeContainer.setBounds(0,0,550,200);
+        dialougeContainer.setBounds(50,50,1200,120);
         dialougeContainer.add(textBox, BorderLayout.CENTER);
 
         //Text box
@@ -61,7 +69,7 @@ public class EndingWindow extends JFrame
         textBox.setFocusable(false);
         textBox.setBackground(Color.WHITE);
         textBox.setForeground(Color.BLACK);
-        textBox.setFont(new Font("DialogInput", Font.BOLD, 16));
+        textBox.setFont(new Font("DialogInput", Font.BOLD, 25));
         textBox.setLineWrap(true);
         textBox.setWrapStyleWord(true);
         
@@ -69,22 +77,23 @@ public class EndingWindow extends JFrame
         textBox.setCaret(new DefaultCaret() {@Override public void paint(Graphics g) {}});
 
         add(dialougeContainer);
+        add(animation);
+        add(happyNies);
         repaint();
         revalidate();
     }
 
     public void playHeartAnimation()
     {
-        animationStatus = true;
         String[] path = {""};
         int[] i = {0};
-        Timer timer = new Timer(300, time ->
+        
+        Timer timer = new Timer(200, time ->
             {//pixil-frame-0
                 path[0] = "Sprites/Happy/Seal/pixil-frame-" + i[0] + ".png";
                 if(i[0] == 100)
                 {
                     ((Timer)time.getSource()).stop();
-                    animationStatus = false;
                 }
                 else if(i[0] < 54)
                 {
@@ -109,12 +118,38 @@ public class EndingWindow extends JFrame
 
     public void playNiesAnimation()
     {
-        //TODO: Make Nies Animation
+        animation.setVisible(false);
+        happyNies.setVisible(true);
+        happyNies.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
+    }
+
+    private void timeForAnimation()
+    {
+        animationStatus = true;
+        int[] i = {0};
+        Timer timer = new Timer(300,time ->
+            {
+                if(i[0] == 100)
+                {
+                    animationStatus = false;
+                    ((Timer)time.getSource()).stop();
+                }
+                else 
+                {
+                    i[0]++;
+                }
+            }
+        );
+
+        timer.start();
     }
 
     public void playKlusAnimation()
     {
         //TODO: Make Klus Animation
+        //MR KLUS STARTED HIS OWN BAND, THE NULL POINTER EXCEPTION. IT BECAME VERY FAMOUS AND HE NOW SHARES HIS
+        //EXPERIENCES IN FAIRPORT HIGHSCHOOL, AND NOW TRAUMATIZES KIDS WITH THE NULL POINTER EXCEPTION BEING A ANIMORPHIC
+        //BEING
 
     }
 
@@ -127,6 +162,16 @@ public class EndingWindow extends JFrame
     public void playAnimations()
     {
         isActive = true;
+
+        if(Math.random() > .25) //25% chance of playing secret audio
+        {
+            audioPlayer.setRoomAudio(4);
+        }
+        else
+        {
+            audioPlayer.setRoomAudio(3);
+        }
+        
         int[] i = {0};
         Timer looper = new Timer(500, loop ->
             {
@@ -146,6 +191,7 @@ public class EndingWindow extends JFrame
                         }
                     }
 
+                    timeForAnimation();
                     endingDialouge(endingDialougeList[i[0]]);
                     i[0]++;
                 }
@@ -167,7 +213,7 @@ public class EndingWindow extends JFrame
         dialougeStatus = true;
         setNewText("");
         int[] i = {0};
-        Timer timer = new Timer(170, time -> 
+        Timer timer = new Timer(50 , time -> 
             {
                 if(i[0] == newText.length())
                 {

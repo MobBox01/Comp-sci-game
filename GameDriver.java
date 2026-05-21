@@ -36,7 +36,7 @@ public class GameDriver
         bossFightSystem.setGuiConnection(bossFightWindow);
 
         //Other
-        EndingWindow endingWindow = new EndingWindow();
+        EndingWindow endingWindow = new EndingWindow(audioPlayer);
 
         //Inputs
         PlayerInput input = new PlayerInput(window, bossFightWindow, bossFightSystem, layout, audioPlayer, basic_FS, advanced_FS, player, endingWindow);
