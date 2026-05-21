@@ -48,16 +48,22 @@ public class BossFightSystem
         String extraDialouge = "";
         if(evilGurrito.isAlive())
         {
-            if(dialougeRandom >= .75)
-            { 
-                extraDialouge = "You need to do your homework, ferreto, i shall not let you pass";
-            }
-            else if(dialougeRandom >= .50)
-            {
-                extraDialouge = "TBD";
-            }
-
             evilGurrito.damageRecieved(damage);
+            if(!evilGurrito.isAlive())
+            {
+                if(dialougeRandom >= .75)
+                { 
+                    extraDialouge = "You need to do your homework, ferreto, i shall not let you pass";
+                }
+                else if(dialougeRandom >= .50)
+                {
+                    extraDialouge = "TBD";
+                }
+            }
+            else
+            {
+                return "You have defeated me..\n\n Evil Nies remaining HP: [ " + evilNies.getHealth() + "]";
+            }
 
             return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge;
         }

@@ -15,8 +15,8 @@ public class EndingWindow extends JFrame
     private AudioPlayer audioPlayer;
     //Images
     private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyChemistryTeacherNies.jpg"));
-    private JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/death.jpg"));
-    private JLabel australianGurrito = new JLabel(new ImageIcon("Sprites/Happy/Austrialian.jpg"));
+    //private JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/Happy.jpg"));
+    private JLabel happyGurrito = new JLabel(new ImageIcon("Sprites/Happy/HappyAustralianGurrito.jpg"));
     private JLabel animation = new JLabel("");
 
     //Dialouge
@@ -57,7 +57,8 @@ public class EndingWindow extends JFrame
 
         animation.setBounds(300,100,666,666);
         happyNies.setBounds(200, 100, 300, 500);
-
+        happyGurrito.setBounds(500,100,300,500);
+        happyGurrito.setVisible(false);
         happyNies.setVisible(false);
         
         //Dialouge
@@ -79,6 +80,7 @@ public class EndingWindow extends JFrame
         add(dialougeContainer);
         add(animation);
         add(happyNies);
+        add(happyGurrito);
         repaint();
         revalidate();
     }
@@ -113,23 +115,24 @@ public class EndingWindow extends JFrame
 
     public void playGurritoAnimation()
     {
-        //TODO: Make Gurrito Animation
+        happyGurrito.setVisible(true);
+        happyGurrito.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
     }
 
     public void playNiesAnimation()
     {
         animation.setVisible(false);
         happyNies.setVisible(true);
-        happyNies.setBorder(BorderFactory.createLineBorder(Color.WHITE,5));
+        happyNies.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
     }
 
     private void timeForAnimation()
     {
         animationStatus = true;
         int[] i = {0};
-        Timer timer = new Timer(300,time ->
+        Timer timer = new Timer(7500,time ->
             {
-                if(i[0] == 100)
+                if(i[0] == 2)
                 {
                     animationStatus = false;
                     ((Timer)time.getSource()).stop();
@@ -163,7 +166,7 @@ public class EndingWindow extends JFrame
     {
         isActive = true;
 
-        if(Math.random() > .25) //25% chance of playing secret audio
+        if(Math.random() > .10) //10% chance of playing secret audio
         {
             audioPlayer.setRoomAudio(4);
         }
