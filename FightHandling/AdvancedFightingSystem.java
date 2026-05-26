@@ -95,7 +95,7 @@ public class AdvancedFightingSystem
         {
             enemy.damageRecieved(player.attackAction()+additional+slightCrit);
             player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.5)));
-            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + enemy.Attack() + "] damage!\nHealth remaining: " + player.getHealth() + "\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + enemy.Attack() + "] damage!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
         }
     }
  

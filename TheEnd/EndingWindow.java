@@ -15,7 +15,7 @@ public class EndingWindow extends JFrame
     private AudioPlayer audioPlayer;
     //Images
     private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyChemistryTeacherNies.jpg"));
-    //private JLabel deadKlus = new JLabel(new ImageIcon("Sprites/Happy/Happy.jpg"));
+    private JLabel happyKlus = new JLabel(new ImageIcon("Sprites/Happy/HappyBandKlus.jpg"));
     private JLabel happyGurrito = new JLabel(new ImageIcon("Sprites/Happy/HappyAustralianGurrito.jpg"));
     private JLabel animation = new JLabel("");
 
@@ -39,11 +39,11 @@ public class EndingWindow extends JFrame
     };
     private String[] endingDialougeList =
     {
-        "Your light shines, as the portal infront of you gets concealed and destroyed. The world is saved as you see the darkness vanish, all portals get destroyed as you see the energy in the sky finally disperse",
-        "Mr Nies has become very happy, and now is a chemistry teacher at the ######### highschool. AFter returning to #######, he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
-        "Mr Gurrito has become australian and blue, he now works on his english project to destroy the british. He now fights for kung fu panda in china.",
-        "Mr Klus has formed the band \"The null pointer exception\" and now torments those who do their computer science homework and saved the world from certain anniahlation",
-        ""
+        "Your light shines, as the portal infront of you gets concealed. The world is saved as you see the darkness vanish in the world it tried to torment, you look up to see the sky clearing up as the evil energy disperses.",
+        "Mr Nies has become very happy, and now is a chemistry teacher at the ######## high school. After returning to ######## he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
+        "Mr Gurrito has become australian and blue, he now works on his english project to destroy the british. He now fights for kung fu panda and fights against evil like giving kids candy.",
+        "Mr Klus has formed the band \"The null pointer exception\" and still torments those who don't do their computer science homework and saved the world from certain annihilation",
+        "{IO}: The happy gang have a good ending, so does the world. But will you have a happy ending? Thats up to you Ferreto, my job here is done and i am going back to the {IO} realm to go back to eternal slumber."
     };
 
     
@@ -56,8 +56,9 @@ public class EndingWindow extends JFrame
         getContentPane().setBackground(Color.WHITE);
 
         animation.setBounds(300,100,666,666);
-        happyNies.setBounds(200, 100, 300, 500);
-        happyGurrito.setBounds(500,100,300,500);
+        happyKlus.setBounds(800,200,300,400);
+        happyNies.setBounds(200, 200, 300, 400);
+        happyGurrito.setBounds(500,200,300,400);
         happyGurrito.setVisible(false);
         happyNies.setVisible(false);
         
@@ -81,6 +82,7 @@ public class EndingWindow extends JFrame
         add(animation);
         add(happyNies);
         add(happyGurrito);
+        add(happyKlus);
         repaint();
         revalidate();
     }
@@ -149,11 +151,8 @@ public class EndingWindow extends JFrame
 
     public void playKlusAnimation()
     {
-        //TODO: Make Klus Animation
-        //MR KLUS STARTED HIS OWN BAND, THE NULL POINTER EXCEPTION. IT BECAME VERY FAMOUS AND HE NOW SHARES HIS
-        //EXPERIENCES IN FAIRPORT HIGHSCHOOL, AND NOW TRAUMATIZES KIDS WITH THE NULL POINTER EXCEPTION BEING A ANIMORPHIC
-        //BEING
-
+        happyKlus.setVisible(true);
+        happyKlus.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
     }
 
     public void playHappyGangAnimation()

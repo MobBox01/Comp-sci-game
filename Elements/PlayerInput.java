@@ -177,7 +177,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
-            mainWindow.dialouge("Void is coming... Enemies are weak... You hear sirens in the distance\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
+            mainWindow.setNewText("Void is coming... Enemies are weak... You hear sirens in the distance\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
             audioPlayer.setRoomAudio(0);
         }
         //Advanced enemy defeated
@@ -185,7 +185,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
-            mainWindow.dialouge("Void surrounds... Enemies are strong... You hear destruction and screaming\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
+            mainWindow.setNewText("Void surrounds... Enemies are strong... You hear destruction and screaming\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
             audioPlayer.setRoomAudio(1);
         }
         //Final rooms

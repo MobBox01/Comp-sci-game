@@ -8,9 +8,22 @@ public class BossFightSystem
 {
     //Stats
     private Player player;
-    private Enemy evilKlus = new Enemy(1,20, 666, .8, "Evil Klus");
-    private Enemy evilNies = new Enemy(1, 10,666, .4, "Evil Nies");
-    private Enemy evilGurrito = new Enemy(1,5, 666, 0.2, "Evil Gurrito");
+    //20, 200,400
+    private Enemy evilKlus = new Enemy(100,40, 666, .9, "Evil Klus");
+    private Enemy evilNies = new Enemy(200, 60,666, .5, "Evil Nies");
+    private Enemy evilGurrito = new Enemy(1,25, 666, 0.2, "Evil Gurrito");
+    private String[] extraDialouge = 
+    {
+        "You need to do your homework, ferreto, i shall not let you pass",
+        "Ferreto, your english project is DUE TODAY!!!!!",
+        "Ferreto, your sins will never be forgiven",
+        "Dihydrogen Monoxide scares me....",
+        "What is Dihydrogen Monoxide?",
+        "HA! Dihydrogen Monoxide attack!",
+        "Be ready for your computer science exam...",
+        "Mr.Klus prepares you for your computer science exam *ASMR* 24/7 study for your AP exam!",
+        "I want to develop a band..."
+    };
 
     //Other
     private BossFightWindow bossFightWindow;
@@ -29,9 +42,6 @@ public class BossFightSystem
         //"Rat.. You haven't done your CSA Homework... for this you must pay"
     }
 
-    /**
-     * 1/2 chance for failure, reduce incoming attack by 40%
-    */
     public String defend()
     {
         return "Debug: Boss Defend option";
@@ -44,41 +54,28 @@ public class BossFightSystem
     public String attack()
     {
         int damage = player.attackAction();
-        double dialougeRandom = Math.random();
-        String extraDialouge = "";
+    
         if(evilGurrito.isAlive())
         {
+            int randomDialouge = (int)((Math.random()*3));
             evilGurrito.damageRecieved(damage);
-            if(!evilGurrito.isAlive())
-            {
-                if(dialougeRandom >= .75)
-                { 
-                    extraDialouge = "You need to do your homework, ferreto, i shall not let you pass";
-                }
-                else if(dialougeRandom >= .50)
-                {
-                    extraDialouge = "TBD";
-                }
-            }
-            else
-            {
-                return "You have defeated me..\n\n Evil Nies remaining HP: [ " + evilNies.getHealth() + "]";
-            }
-
-            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge;
+            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge[randomDialouge];
         }
         else if(evilNies.isAlive())
         {
+            int randomDialouge = (int)((Math.random()*4)+3);
+
             evilNies.damageRecieved(damage);
 
-            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilNies.getHealth() + "]";
+            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilNies.getHealth() + "]\nNies: " + extraDialouge[randomDialouge];
         }
         else if(evilKlus.isAlive())
         {
             evilKlus.damageRecieved(damage);
-
-            return "You have dealt: " + damage + "\nEvil Klus remaining HP: [" + evilKlus.getHealth() + "]";
+            int randomDialouge = (int)((Math.random()*4)+6);
+            return "You have dealt: " + damage + "\nEvil Klus remaining HP: [" + evilKlus.getHealth() + "]\nKlus: " + extraDialouge[randomDialouge];
         }
+        else
         return "Debug: Boss Attack Action";
     }
  
