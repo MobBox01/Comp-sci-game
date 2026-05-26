@@ -3,7 +3,7 @@ package Stats;
 @SuppressWarnings("FieldMayBeFinal")
 public class Player
 {
-    private int[] attack = {10,20,30,40,50};
+    private int[] attack = {10,20,30,40,60};
     private int[] health = {75,100,125,150,200};
     private int[] maxHealth = {75,100,125,150,200};
 
@@ -77,7 +77,7 @@ public class Player
      * Avoids health overflow
      * Random chance for heal to fail, and you will get less healing!
      */
-    public void playerHeal(int heal)
+    public void heal(int heal)
     {
         if(((int)(Math.random()*100)) >= 30)
         {

@@ -77,14 +77,14 @@ public class PlayerInput extends JFrame implements KeyListener
                 }
 
                 //Initialize fight system; Basic
-                if(random < .03 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
+                if(random < .1 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
                     basic_FS.enemyEncounter();
                     mainWindow.updateStatus();
                     audioPlayer.setFightAudio(0);
                 }
                 //Initialize fight system; Advanced
-                else if(random < .06 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
+                else if(random < .03 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
                 {
                     advanced_FS.enemyEncounter();
                     mainWindow.updateStatus();
@@ -147,14 +147,11 @@ public class PlayerInput extends JFrame implements KeyListener
     {
         debounce = true;
         int totalTime = 100;
-        //Final rooms your a bit slower in 
-        if(layout.isFinalRooms())
-        {
-            totalTime = 200;
-        }
+        if(layout.isFinalRooms()) totalTime = 200;
+
         Timer timer = new Timer(totalTime, time ->
             {
-                ((Timer)time.getSource()).setRepeats(false);
+                ((Timer)time.getSource()).setRepeats(false); 
                 debounce = false;
             }
         );
@@ -180,6 +177,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
+            mainWindow.dialouge("Void is coming... Enemies are weak... You hear sirens in the distance\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
             audioPlayer.setRoomAudio(0);
         }
         //Advanced enemy defeated
@@ -187,6 +185,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
+            mainWindow.dialouge("Void surrounds... Enemies are strong... You hear destruction and screaming\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
             audioPlayer.setRoomAudio(1);
         }
         //Final rooms

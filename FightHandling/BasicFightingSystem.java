@@ -27,33 +27,18 @@ public class BasicFightingSystem
     {
         switch((int)(Math.random()*5))
         {
-
-            default -> enemy = new Enemy(20,3,30,.1,"TBD");
+            case 1 -> enemy = new Enemy(30,5,400,.1,"Vampire Tree");
+            case 2 -> enemy = new Enemy(20,15,200,.4,"Deal Talk");
+            default -> enemy = new Enemy(10,10,300,.8,"Blorbus");
         }
-        //audio.basicFight();
+        canRewardBeGiven = true;
         window.dialouge("You have encountered [" + enemy.getName() + "] \n" + "Enemy HP: [" + enemy.getHealth() + "]");
     }
 
-    /**
-     * 1/2 chance for failure, reduce incoming attack by 50%
-     */
+
     public void defend()
     {
-        int random = (int)(Math.random()*3);
-
-        if(random == 1)
-        {
-
-            int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
-            player.damageRecieved(damage);
-
-            window.dialouge("PARRY FAILED!\n Damage taken: " + damage + "\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
-        }
-
-        else
-        {
-            window.dialouge("PARRIED!\nYour health: " + player.getHealth() + "\n" + enemy.getName() + " health:" + enemy.getHealth());
-        }
+        window.dialouge("Defending, its pointless... you attack first... Turn nullified. \nHeal or Attack");
     }
 
     /**
@@ -61,9 +46,10 @@ public class BasicFightingSystem
      */
     public void attack()
     {
+        int damageTaken = enemy.Attack() + ((int)(enemy.Attack()*.2));
         enemy.damageRecieved(player.attackAction());
-        player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.2)));
-        window.dialouge("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: " + enemy.getHealth() + "\nYour health: " + player.getHealth());
+        player.damageRecieved(damageTaken);
+        window.dialouge("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + damageTaken + "] damage!\nHealth remaining: [" + player.getHealth() + "]");
     }
 
     /**
@@ -71,9 +57,8 @@ public class BasicFightingSystem
      */
     public void heal()
     {
-        player.playerHeal(10);
-        player.damageRecieved((int)(enemy.Attack()*.5));
-        window.dialouge("Your health: " + player.getHealth() + "\n" + enemy.getName() + " health: " + enemy.getHealth());
+        player.heal(10);
+        window.dialouge("You have healed 10 hp!");
     }
 
     //GETTERS
@@ -81,7 +66,6 @@ public class BasicFightingSystem
     {
         if(!enemy.isAlive() && !player.isFightingAdvanced() && canRewardBeGiven)
         {
-            window.setNewText("Basic Area, Basic Enemies, Peaceful...");
             player.gainedXp(enemy.xpReward());
             canRewardBeGiven = false;
         }

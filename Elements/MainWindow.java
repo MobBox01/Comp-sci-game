@@ -2,6 +2,7 @@ package Elements;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import Saving.ProgressSaving;
+import Stats.Enemy;
 import Stats.Layout;
 import Stats.Player;
 import java.awt.*;
@@ -102,7 +103,7 @@ public class MainWindow extends JFrame
         battleFrame.setBackground(Color.white);
         battleFrame.setForeground(Color.white);
         battleFrame.setBounds(130,0,303,303);
-        battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Frame_Empty.gif"));
+        battleFrame.setIcon(new ImageIcon("Sprites/Enemies/FrameEmpty.gif"));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -170,7 +171,7 @@ public class MainWindow extends JFrame
         if (dx != 0) movePlayerX(dx);
         if (dy != 0) movePlayerY(dy);
 
-        if(layout.getRoomNumber() == 17 && lightSpreading)
+        if(layout.getRoomNumber() == 23 && lightSpreading)
         {
             lightSpreading = false;
             getContentPane().setBackground(Color.WHITE);
@@ -450,20 +451,27 @@ public class MainWindow extends JFrame
 
         if(basic_FS.isEnemyAlive())
         {
-            //switch(basic_FS.getName())
+            switch(basic_FS.getCurrentName())
+            {
+                case "Vampire Tree" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/VampireTree.png"));
+                case "Blorbus" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Blorbus.png"));
+                case "Deal Talk" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/DealTalk.png"));
+            }
         }
         else if(advanced_FS.isEnemyAlive())
         {
             switch(advanced_FS.getCurrentName())
             {
-                case "ThreeDemons" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/ThreeDemons.png"));
+                case "Cubed" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Cubed.png"));
                 case "Atomize" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Atomize.gif"));
+                case "Masked Emotions" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/MaskedEmotions.png"));
+                case "White Space" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/WhiteSpace.png"));
+                case "The Guilty Cross" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/TheGuiltyCross.png"));
             }
-
-        }  
+        }
         else
         {
-            battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Frame_Empty.gif"));
+            battleFrame.setIcon(new ImageIcon("Sprites/Enemies/FrameEmpty.gif"));
         }  
         fightContainer.revalidate();
         fightContainer.repaint();

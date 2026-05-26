@@ -40,7 +40,7 @@ public class EndingWindow extends JFrame
     private String[] endingDialougeList =
     {
         "Your light shines, as the portal infront of you gets concealed and destroyed. The world is saved as you see the darkness vanish, all portals get destroyed as you see the energy in the sky finally disperse",
-        "Mr Nies has become very happy, and now is a chemistry teacher at the fairport highschool. AFter returning to fairport, he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
+        "Mr Nies has become very happy, and now is a chemistry teacher at the ######### highschool. AFter returning to #######, he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
         "Mr Gurrito has become australian and blue, he now works on his english project to destroy the british. He now fights for kung fu panda in china.",
         "Mr Klus has formed the band \"The null pointer exception\" and now torments those who do their computer science homework and saved the world from certain anniahlation",
         ""
