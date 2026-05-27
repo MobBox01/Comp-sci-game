@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-
+import java.io.*;
 @SuppressWarnings("FieldMayBeFinal")
 //3, 4 Secret ending song
 public class EndingWindow extends JFrame
@@ -14,9 +14,9 @@ public class EndingWindow extends JFrame
     //Classess 
     private AudioPlayer audioPlayer;
     //Images
-    private JLabel happyNies = new JLabel(new ImageIcon("Sprites/Happy/HappyChemistryTeacherNies.jpg"));
-    private JLabel happyKlus = new JLabel(new ImageIcon("Sprites/Happy/HappyBandKlus.jpg"));
-    private JLabel happyGurrito = new JLabel(new ImageIcon("Sprites/Happy/HappyAustralianGurrito.jpg"));
+    private JLabel happyNies = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Happy/HappyChemistryTeacherNies.jpg"));
+    private JLabel happyKlus = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Happy/HappyBandKlus.jpg"));
+    private JLabel happyGurrito = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Happy/HappyAustralianGurrito.jpg"));
     private JLabel animation = new JLabel("");
 
     //Dialouge

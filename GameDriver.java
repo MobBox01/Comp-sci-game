@@ -9,12 +9,16 @@ import Saving.ProgressSaving;
 import Stats.Layout;
 import Stats.Player;
 import TheEnd.EndingWindow;
+import java.io.File;
 import java.io.IOException;
 
 public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
+        //Redirect Java to this folder
+        //System.setProperty("user.dir", new File(".").getAbsolutePath()); 
+
         //Elements
         AudioPlayer audioPlayer = new AudioPlayer();
         ProgressSaving progressSaving = new ProgressSaving();
@@ -43,6 +47,7 @@ public class GameDriver
         window.addKeyListener(input);
         bossFightWindow.addKeyListener(input);
         endingWindow.addKeyListener(input);
+
         }
 }
 

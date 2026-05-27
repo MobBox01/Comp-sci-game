@@ -6,6 +6,8 @@ import Stats.Layout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.File;
+
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
@@ -19,11 +21,11 @@ public class BossFightWindow extends JFrame
     private AudioPlayer audioPlayer;
 
     //Sprites
-    private JLabel evilKlus = new JLabel(new ImageIcon("Sprites/Boss/Klus.jpg"));
-    private JLabel evilNies = new JLabel(new ImageIcon("Sprites/Boss/Nies.jpg"));
-    private JLabel evilGurrito = new JLabel(new ImageIcon("Sprites/Boss/Gurrito.jpg"));
-    private JLabel opFull = new JLabel(new ImageIcon("Sprites/HealthStates/OP_Full.png"));
-    private JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+    private JLabel evilKlus = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Klus.jpg"));
+    private JLabel evilNies = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Nies.jpg"));
+    private JLabel evilGurrito = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Gurrito.jpg"));
+    private JLabel opFull = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_Full.png"));
+    private JLabel selector = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Boss_Selected_Attack.png"));
 
     //Text box
     private JTextArea textBox = new JTextArea();
@@ -212,28 +214,28 @@ public class BossFightWindow extends JFrame
         {
             case 1 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Attack.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Boss_Selected_Attack.png"));
             }
             case 2 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Heal.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Boss_Selected_Heal.png"));
             }
             case 3 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Boss_Selected_Defend.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Boss_Selected_Defend.png"));
             }
         }
         if(bossFightSystem.isGurritoDead())
         {
-            evilGurrito.setIcon(new ImageIcon("Sprites/Boss/DefeatedGurrito.jpg"));
+            evilGurrito.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/DefeatedGurrito.jpg"));
         }
         if(bossFightSystem.isNiesDead())
         {
-            evilNies.setIcon(new ImageIcon("Sprites/Boss/DefeatedNies.jpg"));
+            evilNies.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/DefeatedNies.jpg"));
         }
         if(bossFightSystem.isKlusDead())
         {
-            evilKlus.setIcon(new ImageIcon("Sprites/Boss/DefeatedKlus.jpg"));
+            evilKlus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/DefeatedKlus.jpg"));
         }
 
         repaint();

@@ -2,13 +2,13 @@ package Elements;
 import FightHandling.AdvancedFightingSystem;
 import FightHandling.BasicFightingSystem;
 import Saving.ProgressSaving;
-import Stats.Enemy;
 import Stats.Layout;
 import Stats.Player;
 import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
+import java.io.*;
 @SuppressWarnings("FieldMayBeFinal")
 public class MainWindow extends JFrame 
 {
@@ -49,9 +49,9 @@ public class MainWindow extends JFrame
     private JPanel dialougeContainer = new JPanel(new BorderLayout());
 
     //Labels
-    private JLabel selector = new JLabel(new ImageIcon("Sprites/Selectors/Attack.png"));
-    private JLabel healthStatus = new JLabel(new ImageIcon("Sprites/HealthStates/MC_Full.png"));
-    private JLabel battleFrame = new JLabel(new ImageIcon("Frame_Empty.gif"));
+    private JLabel selector = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Attack.png"));
+    private JLabel healthStatus = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_Full.png"));
+    private JLabel battleFrame = new JLabel(new ImageIcon(new File(".") + "/Sprites/Frame_Empty.gif"));
 
     //Other
     private int[] fightLayout = {-200,1};
@@ -103,7 +103,7 @@ public class MainWindow extends JFrame
         battleFrame.setBackground(Color.white);
         battleFrame.setForeground(Color.white);
         battleFrame.setBounds(130,0,303,303);
-        battleFrame.setIcon(new ImageIcon("Sprites/Enemies/FrameEmpty.gif"));
+        battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/FrameEmpty.gif"));
 
         for (int i = 0; i < roomTotalTileCount; i++) 
         {
@@ -286,11 +286,11 @@ public class MainWindow extends JFrame
                 switch (roomLayout[r][c]) 
                 {
                     case 0 -> roomArray.get(index).setBackground(Color.BLACK);
-                    case 1 -> setTileImage("Sprites/Walkable/Concrete.png", index);
-                    case 90 -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
-                    case -100 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
-                    case 100 -> setTileImage("Sprites/Barriers/City_1.png", index);
-                    case 200 -> setTileImage("Sprites/Barriers/Forest.png", index);
+                    case 1 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Walkable/Concrete.png", index);
+                    case 90 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Walkable/PlayerSpot.gif", index);
+                    case -100 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Barriers/CityDestroyed_1.gif", index);
+                    case 100 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Barriers/City_1.png", index);
+                    case 200 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Barriers/Forest.png", index);
                     case NEXT_ROOM -> roomArray.get(index).setBackground(Color.BLUE);
 
                     default -> roomArray.get(index).setBackground(Color.WHITE);
@@ -390,15 +390,15 @@ public class MainWindow extends JFrame
         {
             case 1 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Attack.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Attack.png"));
             }
             case 2 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Heal.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Heal.png"));
             }
             case 3 -> 
             {
-                selector.setIcon(new ImageIcon("Sprites/Selectors/Defend.png"));
+                selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Defend.png"));
             }
         }
         updateStatus();
@@ -441,37 +441,37 @@ public class MainWindow extends JFrame
 
         switch(fightLayout[0])
         {
-            case -200 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Full.png"));
-            case -175 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_75.png"));
-            case -150 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_50.png"));
-            case -125 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_25.png"));
-            case -124 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Under25.png"));
-            case -100 -> healthStatus.setIcon(new ImageIcon("Sprites/HealthStates/MC_Dead.png"));
+            case -200 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_Full.png"));
+            case -175 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_75.png"));
+            case -150 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_50.png"));
+            case -125 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_25.png"));
+            case -124 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_Under25.png"));
+            case -100 -> healthStatus.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_Dead.png"));
         }
 
         if(basic_FS.isEnemyAlive())
         {
             switch(basic_FS.getCurrentName())
             {
-                case "Vampire Tree" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/VampireTree.png"));
-                case "Blorbus" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Blorbus.png"));
-                case "Deal Talk" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/DealTalk.png"));
+                case "Vampire Tree" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/VampireTree.png"));
+                case "Blorbus" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/Blorbus.png"));
+                case "Deal Talk" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/DealTalk.png"));
             }
         }
         else if(advanced_FS.isEnemyAlive())
         {
             switch(advanced_FS.getCurrentName())
             {
-                case "Cubed" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Cubed.png"));
-                case "Atomize" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/Atomize.gif"));
-                case "Masked Emotions" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/MaskedEmotions.png"));
-                case "White Space" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/WhiteSpace.png"));
-                case "The Guilty Cross" -> battleFrame.setIcon(new ImageIcon("Sprites/Enemies/TheGuiltyCross.png"));
+                case "Cubed" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/Cubed.png"));
+                case "Atomize" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/Atomize.gif"));
+                case "Masked Emotions" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/MaskedEmotions.png"));
+                case "White Space" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/WhiteSpace.png"));
+                case "The Guilty Cross" -> battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/TheGuiltyCross.png"));
             }
         }
         else
         {
-            battleFrame.setIcon(new ImageIcon("Sprites/Enemies/FrameEmpty.gif"));
+            battleFrame.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Enemies/FrameEmpty.gif"));
         }  
         fightContainer.revalidate();
         fightContainer.repaint();

@@ -208,10 +208,10 @@ public class RoomGui extends JFrame
                 switch (roomLayout[r][c]) 
                 {
                     case VOID -> panelArray.get(index).setBackground(Color.BLACK);
-                    case CONCRETE -> setTileImage("Sprites/Walkable/Concrete.png", index);
-                    case PLAYER -> setTileImage("Sprites/Walkable/PlayerSpot.gif", index);
-                    case DESTROYEDCITY_1 -> setTileImage("Sprites/Barriers/CityDestroyed_1.gif", index);
-                    case CITY_1 -> setTileImage("Sprites/Barriers/City_1.png", index);
+                    case CONCRETE -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Walkable/Concrete.png", index);
+                    case PLAYER -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Walkable/PlayerSpot.gif", index);
+                    case DESTROYEDCITY_1 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Barriers/CityDestroyed_1.gif", index);
+                    case CITY_1 -> setTileImage(new File(".").getAbsolutePath() + "/Sprites/Barriers/City_1.png", index);
                     case NEXT_ROOM -> panelArray.get(index).setBackground(Color.BLUE);
 
                     default -> panelArray.get(index).setBackground(Color.RED);
