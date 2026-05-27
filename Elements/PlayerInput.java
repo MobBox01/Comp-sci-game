@@ -159,6 +159,8 @@ public class PlayerInput extends JFrame implements KeyListener
         timer.start();
     }
 
+
+
     /**
      * @return true if enemies are alive and fight is active<p>
      * Sets the room audio back to their dedicated room after defeat<p> 
@@ -219,6 +221,4 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyTyped(KeyEvent e){}
     @Override
     public void keyReleased(KeyEvent e){}
-
-    
 }
