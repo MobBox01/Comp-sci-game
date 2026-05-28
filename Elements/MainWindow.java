@@ -5,10 +5,10 @@ import Saving.ProgressSaving;
 import Stats.Layout;
 import Stats.Player;
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-import java.io.*;
 @SuppressWarnings("FieldMayBeFinal")
 public class MainWindow extends JFrame 
 {
@@ -140,7 +140,6 @@ public class MainWindow extends JFrame
         add(dialougeContainer);
         fightContainer.revalidate();
         fightContainer.repaint();
-        setVisible(true);
     }
 
     /**

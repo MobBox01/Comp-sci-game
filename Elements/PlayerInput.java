@@ -7,8 +7,11 @@ import FightHandling.BasicFightingSystem;
 import Stats.Layout;
 import Stats.Player;
 import TheEnd.EndingWindow;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import javax.swing.*;
 
 @SuppressWarnings("FieldMayBeFinal")
@@ -18,6 +21,8 @@ public class PlayerInput extends JFrame implements KeyListener
     private Layout layout;
     private MainWindow mainWindow;
     private AudioPlayer audioPlayer;
+    private JFrame tutorial = new JFrame("Tutorial");
+    private JLabel tutorialImage = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Intro/Tutorial.png"));
     
     //Fighting System
     private BasicFightingSystem basic_FS;
@@ -38,6 +43,7 @@ public class PlayerInput extends JFrame implements KeyListener
     private boolean fightStatus = false;
     private boolean alreadyChecked = false;
     private boolean playingFinalArea = false;
+    private boolean tutorialScreenAlreadyAppeared = false;
 
     public PlayerInput(MainWindow windowPass,BossFightWindow bossFightingPass,BossFightSystem bossFightSystemPass, Layout layoutPass,AudioPlayer audioPlayerPass, BasicFightingSystem basic_FSPass, AdvancedFightingSystem advanced_FSPass,Player playerPass,EndingWindow endingWindowPass)
     {
@@ -50,6 +56,14 @@ public class PlayerInput extends JFrame implements KeyListener
         this.bossFightWindow = bossFightingPass;
         this.layout = layoutPass;
         this.audioPlayer = audioPlayerPass;
+
+        tutorial.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        tutorialImage.setBounds(0,0,666,666);
+        tutorial.add(tutorialImage, BorderLayout.CENTER);
+        tutorial.getContentPane().setBackground(Color.BLACK);
+        tutorial.setVisible(true);
+        tutorial.addKeyListener(this);
+
     }
 
     /**
@@ -59,84 +73,95 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyPressed(KeyEvent keyEvent) 
     {
         //MainWindow
-        if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive() && !layout.isEndingRooms())
+        if(tutorialScreenAlreadyAppeared)
         {
-            debounceStart();
-            double random = Math.random();
+            if(!layout.isBossRoom() && !debounce && !mainWindow.isDialougeActive() && !layout.isEndingRooms())
+            {
+                debounceStart();
+                double random = Math.random();
 
-            //Room Movement
-            if(!checkRoom())
-            {
-                //Move Player
-                switch(keyEvent.getKeyCode())
+                //Room Movement
+                if(!checkRoom())
                 {
-                    case KeyEvent.VK_LEFT -> mainWindow.movePlayer(-1, 0);
-                    case KeyEvent.VK_RIGHT -> mainWindow.movePlayer(1,0);
-                    case KeyEvent.VK_UP -> mainWindow.movePlayer(0, 1);
-                    case KeyEvent.VK_DOWN -> mainWindow.movePlayer(0, -1);
-                }
+                    //Move Player
+                    switch(keyEvent.getKeyCode())
+                    {
+                        case KeyEvent.VK_LEFT -> mainWindow.movePlayer(-1, 0);
+                        case KeyEvent.VK_RIGHT -> mainWindow.movePlayer(1,0);
+                        case KeyEvent.VK_UP -> mainWindow.movePlayer(0, 1);
+                        case KeyEvent.VK_DOWN -> mainWindow.movePlayer(0, -1);
+                    }
 
-                //Initialize fight system; Basic
-                if(random < .1 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
-                {
-                    basic_FS.enemyEncounter();
-                    mainWindow.updateStatus();
-                    audioPlayer.setFightAudio(0);
+                    //Initialize fight system; Basic
+                    if(random < .1 && !layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
+                    {
+                        basic_FS.enemyEncounter();
+                        mainWindow.updateStatus();
+                        audioPlayer.setFightAudio(0);
+                    }
+                    //Initialize fight system; Advanced
+                    else if(random < .03 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
+                    {
+                        advanced_FS.enemyEncounter();
+                        mainWindow.updateStatus();
+                        audioPlayer.setFightAudio(1);
+                    }
                 }
-                //Initialize fight system; Advanced
-                else if(random < .03 && layout.isAdvancedRooms() && !(keyEvent.getKeyCode() == KeyEvent.VK_ENTER) && !layout.isFinalRooms())
+                //Fighting movement
+                else
                 {
-                    advanced_FS.enemyEncounter();
-                    mainWindow.updateStatus();
-                    audioPlayer.setFightAudio(1);
+                    //Move Selector
+                    switch (keyEvent.getKeyCode()) 
+                    {
+                        case KeyEvent.VK_LEFT -> mainWindow.moveSelector(-1);
+                        case KeyEvent.VK_RIGHT -> mainWindow.moveSelector(1);
+                        case KeyEvent.VK_ENTER -> mainWindow.moveSelector(90);
+                    }
                 }
             }
-            //Fighting movement
-            else
+            //Boss Fight Window
+            else if(layout.isBossRoom() && bossFightWindow.isVisible() && !bossFightWindow.dialougeStatus())
             {
-                //Move Selector
-                switch (keyEvent.getKeyCode()) 
+                //Boss fight not over
+                if(!bossFightSystem.isBossFightOver())
                 {
-                    case KeyEvent.VK_LEFT -> mainWindow.moveSelector(-1);
-                    case KeyEvent.VK_RIGHT -> mainWindow.moveSelector(1);
-                    case KeyEvent.VK_ENTER -> mainWindow.moveSelector(90);
+                    //Move Selector
+                    switch(keyEvent.getKeyCode())
+                    {
+                        case KeyEvent.VK_LEFT -> bossFightWindow.movePlayer(-1);
+                        case KeyEvent.VK_RIGHT -> bossFightWindow.movePlayer(1);
+                        case KeyEvent.VK_ENTER -> bossFightWindow.movePlayer(90);
+                    }
                 }
+                //If boss fight ended; start the ending sequence to it
+                else if(!bossFightWindow.moveOn() && keyEvent.getKeyCode() == KeyEvent.VK_ENTER && bossFightSystem.isBossFightOver())
+                {
+                    bossFightWindow.defeatedSequence();
+                }
+            }
+            //Ending Window
+            else if(layout.isEndingRooms() && !endingWindow.endingOngoing())
+            {
+                mainWindow.setVisible(false);
+                endingWindow.setVisible(true);
+                endingWindow.playAnimations();       
+            }
+        
+            //Visibility of boss room
+            if(!bossFightWindow.isVisible() && layout.isBossRoom())
+            {
+                bossFightWindow.setVisible(true);
+                mainWindow.setVisible(false);
+                audioPlayer.setFightAudio(2);
             }
         }
-        //Boss Fight Window
-        else if(layout.isBossRoom() && bossFightWindow.isVisible() && !bossFightWindow.dialougeStatus())
+        else
         {
-            //Boss fight not over
-            if(!bossFightSystem.isBossFightOver())
-            {
-                //Move Selector
-                switch(keyEvent.getKeyCode())
-                {
-                    case KeyEvent.VK_LEFT -> bossFightWindow.movePlayer(-1);
-                    case KeyEvent.VK_RIGHT -> bossFightWindow.movePlayer(1);
-                    case KeyEvent.VK_ENTER -> bossFightWindow.movePlayer(90);
-                }
-            }
-            //If boss fight ended; start the ending sequence to it
-            else if(!bossFightWindow.moveOn() && keyEvent.getKeyCode() == KeyEvent.VK_ENTER && bossFightSystem.isBossFightOver())
-            {
-                bossFightWindow.defeatedSequence();
-            }
-        }
-        //Ending Window
-        else if(layout.isEndingRooms() && !endingWindow.endingOngoing())
-        {
-            mainWindow.setVisible(false);
-            endingWindow.setVisible(true);
-            endingWindow.playAnimations();       
-        }
-    
-        //Visibility of boss room
-        if(!bossFightWindow.isVisible() && layout.isBossRoom())
-        {
-            bossFightWindow.setVisible(true);
-            mainWindow.setVisible(false);
-            audioPlayer.setFightAudio(2);
+            tutorial.setVisible(false);
+            mainWindow.setVisible(true);
+            tutorial.addKeyListener(this);
+            tutorialScreenAlreadyAppeared = true;
+
         }
     }
 
@@ -187,7 +212,7 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             alreadyChecked = true;
             fightStatus = false;
-            mainWindow.setNewText("Void surrounds... Enemies are strong... You hear destruction and screaming\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]");
+            mainWindow.setNewText("Void surrounds... Enemies are strong... You hear destruction and screaming\nCurrent experience [" + player.getXP() + "]\nCurrent Level [" + player.getLevel() +"]\n");
             audioPlayer.setRoomAudio(1);
         }
         //Final rooms
@@ -221,4 +246,6 @@ public class PlayerInput extends JFrame implements KeyListener
     public void keyTyped(KeyEvent e){}
     @Override
     public void keyReleased(KeyEvent e){}
+
+    
 }
