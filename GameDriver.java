@@ -9,7 +9,6 @@ import Saving.ProgressSaving;
 import Stats.Layout;
 import Stats.Player;
 import TheEnd.EndingWindow;
-import java.io.File;
 import java.io.IOException;
 
 public class GameDriver
@@ -37,7 +36,6 @@ public class GameDriver
         //Boss Fight
         BossFightSystem bossFightSystem = new BossFightSystem(player);
         BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window);
-        bossFightSystem.setGuiConnection(bossFightWindow);
 
         //Other
         EndingWindow endingWindow = new EndingWindow(audioPlayer);

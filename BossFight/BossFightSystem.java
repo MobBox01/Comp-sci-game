@@ -9,9 +9,10 @@ public class BossFightSystem
     //Stats
     private Player player;
     //20, 200,400
-    private Enemy evilKlus = new Enemy(100,40, 666, .9, "Evil Klus");
-    private Enemy evilNies = new Enemy(200, 60,666, .5, "Evil Nies");
-    private Enemy evilGurrito = new Enemy(1,25, 666, 0.2, "Evil Gurrito");
+    private Enemy evilKlus = new Enemy(10,40, 666, .9, "Evil Klus");
+    private Enemy evilNies = new Enemy(100, 60,666, .5, "Evil Nies");
+    private Enemy evilGurrito = new Enemy(500,25, 666, 0.0, "Evil Gurrito");
+    private Enemy currentEnemy = evilGurrito;
     private String[] extraDialouge = 
     {
         "You need to do your homework, ferreto, i shall not let you pass",
@@ -25,8 +26,7 @@ public class BossFightSystem
         "I want to develop a band..."
     };
 
-    //Other
-    private BossFightWindow bossFightWindow;
+
 
     public BossFightSystem(Player playerPass) 
     {
@@ -44,7 +44,24 @@ public class BossFightSystem
 
     public String defend()
     {
-        return "Debug: Boss Defend option";
+        int defenceRNG = (int)(Math.random()*6);
+        int damage = 0;
+        if(defenceRNG <= 1) // 2/5 chance
+        {
+            return "You have decided to defend... Charge has increased!\nCurrent Critical Charge: [" + player.getCharge() + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.addCharge(((int)(Math.random()*11))+10) + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
+        }
+        else if(defenceRNG == 2)
+        {
+            return "You have decided to defend... " + currentEnemy.getName() + " has attacked and you slipped up...\n" + currentEnemy.getName() + " has dealt " + damage + "\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
+        }
+        else if(defenceRNG == 3)
+        {
+            return "You have decided to defend... " + currentEnemy.getName() + " has attacked you and you both headbutted... [50] damage taken to both, ouchie.\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: ["  + currentEnemy.getHealth() + "]";
+        }
+        else
+        {
+            return "you defended to long, charge hasn't been gained.";
+        }
     }
 
     /**
@@ -59,24 +76,37 @@ public class BossFightSystem
         {
             int randomDialouge = (int)((Math.random()*3));
             evilGurrito.damageRecieved(damage);
+            if(!evilGurrito.isAlive())
+            {
+                currentEnemy = evilNies;
+                return "Ah you've defeated me... Evil Nies remaining HP: [" + evilNies.getHealth() + "]";
+            }
             return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge[randomDialouge];
         }
+
         else if(evilNies.isAlive())
         {
-            int randomDialouge = (int)((Math.random()*4)+3);
+            int randomDialouge = (int)((Math.random()*3)+2);
 
             evilNies.damageRecieved(damage);
-
-            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilNies.getHealth() + "]\nNies: " + extraDialouge[randomDialouge];
+            if(!evilNies.isAlive())
+            {
+                currentEnemy = evilKlus;
+                return "Ah you've defeated me... Evil Klus remaining HP: [" + evilKlus.getHealth() + "]";
+            }
+            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilKlus.getHealth() + "]\nKlus: " + extraDialouge[randomDialouge];
         }
         else if(evilKlus.isAlive())
         {
             evilKlus.damageRecieved(damage);
             int randomDialouge = (int)((Math.random()*4)+6);
+
             return "You have dealt: " + damage + "\nEvil Klus remaining HP: [" + evilKlus.getHealth() + "]\nKlus: " + extraDialouge[randomDialouge];
         }
         else
-        return "Debug: Boss Attack Action";
+        {
+            return "Debug: Boss Attack Action";
+        }
     }
  
 
@@ -85,7 +115,16 @@ public class BossFightSystem
     */
     public String heal()
     {
-        return "Debug: Boss Heal Action";
+        int healRng = ((int)(Math.random()*5));
+
+        if(healRng <= 1)
+        {
+            return "You have healed! ";
+        }
+        else
+        {
+            return "l";
+        }
     }
 
     //GETTERS
@@ -97,11 +136,6 @@ public class BossFightSystem
     public String getCurrentName()
     {
         return null;
-    }
-
-    public void setGuiConnection(BossFightWindow e)
-    {
-        bossFightWindow = e;
     }
 
     public boolean isGurritoDead()
