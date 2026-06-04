@@ -15,8 +15,6 @@ public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
-        //Redirect Java to this folder
-        //System.setProperty("user.dir", new File(".").getAbsolutePath()); 
 
         //Elements
         AudioPlayer audioPlayer = new AudioPlayer();
