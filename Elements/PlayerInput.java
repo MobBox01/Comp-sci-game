@@ -159,9 +159,9 @@ public class PlayerInput extends JFrame implements KeyListener
         {
             tutorial.setVisible(false);
             mainWindow.setVisible(true);
-            tutorial.addKeyListener(this);
+            tutorial.removeKeyListener(this);
+            tutorial.dispose();
             tutorialScreenAlreadyAppeared = true;
-
         }
     }
 

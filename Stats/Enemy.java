@@ -73,7 +73,7 @@ public class Enemy
         return reward;
     }
     
-    public int Attack()
+    public int attack()
     {
         double increase = ((int)(Math.random() * 10))/100;
 

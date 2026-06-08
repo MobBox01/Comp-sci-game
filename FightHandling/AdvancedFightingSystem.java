@@ -49,14 +49,14 @@ public class AdvancedFightingSystem
         switch (defendRNG) {
             case 3 ->
                 {
-                    int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
+                    int damage = enemy.attack()-((int)(enemy.attack()*.5));
                     player.damageRecieved(damage);
                     player.addCharge((int)((Math.random()*5)+5));
                     mainWindow.dialouge("PARRY ![FAILED]!\nDamage taken: [" + damage*2 + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n"+ enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
                 }
             case 2 ->
                 {
-                    int damage = enemy.Attack()-((int)(enemy.Attack()*.5));
+                    int damage = enemy.attack()-((int)(enemy.attack()*.5));
                     player.damageRecieved(damage*3);
                     player.substractCharge((int)(Math.random()*5));
                     mainWindow.dialouge("PARRY [FAILED] ITS A ~~CRITICAL~~\nDamage taken: [" + (damage*3) + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]");
@@ -70,7 +70,7 @@ public class AdvancedFightingSystem
     }
 
     /**
-     * Attack the enemy
+     * attack the enemy
      * If less then or equal to 40% HP; 50% chance of being counter attacked with x2 damage
      */
     public void attack()
@@ -79,8 +79,8 @@ public class AdvancedFightingSystem
         int slightCrit = (int) ((Math.random()*15)+3);
         if(player.healthPercentage() <= 40 && Math.random() < .5)
         {
-            player.damageRecieved(enemy.Attack()*2);
-            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has hit you with a critical! Damage taken: [" +  (enemy.Attack()*2) + "] Heal up!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]\n" + enemy.getName() + "health remaining: [" + enemy.getHealth() + "]");
+            player.damageRecieved(enemy.attack()*2);
+            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has hit you with a critical! Damage taken: [" +  (enemy.attack()*2) + "] Heal up!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]\n" + enemy.getName() + "health remaining: [" + enemy.getHealth() + "]");
 
         }
         else if(player.getHealth() == 1)
@@ -94,8 +94,8 @@ public class AdvancedFightingSystem
         else
         {
             enemy.damageRecieved(player.attackAction()+additional+slightCrit);
-            player.damageRecieved(enemy.Attack() + ((int)(enemy.Attack()*.5)));
-            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + enemy.Attack() + "] damage!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
+            player.damageRecieved(enemy.attack() + ((int)(enemy.attack()*.5)));
+            mainWindow.dialouge("You have dealt [" + (player.attackAction()+additional+slightCrit) + "] damage!\n" + enemy.getName() + " health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + enemy.attack() + "] damage!\nHealth remaining: [" + player.getHealth() + "]\nCritical Charge remaining: [" + player.substractCharge(2+slightCrit) + "]");
         }
     }
  
@@ -114,7 +114,7 @@ public class AdvancedFightingSystem
         }
         else if(rng < .4 && rng > .3)
         {
-            int attack = (int)(enemy.Attack()*1.2);
+            int attack = (int)(enemy.attack()*1.2);
             player.damageRecieved(attack);
             enemy.heal(10);
             player.substractCharge((int)((Math.random()*5)+5));

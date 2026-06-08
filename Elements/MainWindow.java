@@ -371,6 +371,8 @@ public class MainWindow extends JFrame
                         case 2 -> basic_FS.heal();
                         case 3 -> basic_FS.defend(); 
                     }
+                    updateStatus();
+
                 }
                 else if(advanced_FS.isEnemyAlive())
                 {
@@ -380,6 +382,7 @@ public class MainWindow extends JFrame
                         case 2 -> advanced_FS.heal();
                         case 3 -> advanced_FS.defend(); 
                     }
+                    updateStatus();
                 }
 
             }
@@ -400,7 +403,7 @@ public class MainWindow extends JFrame
                 selector.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Defend.png"));
             }
         }
-        updateStatus();
+
     }
 
     /**

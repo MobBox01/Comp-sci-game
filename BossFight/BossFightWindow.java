@@ -3,11 +3,11 @@ package BossFight;
 import Elements.AudioPlayer;
 import Elements.MainWindow;
 import Stats.Layout;
+import Stats.Player;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.io.File;
-
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 
@@ -19,12 +19,13 @@ public class BossFightWindow extends JFrame
     private BossFightSystem bossFightSystem;
     private MainWindow mainWindow;
     private AudioPlayer audioPlayer;
+    private Player player;
 
     //Sprites
     private JLabel evilKlus = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Klus.jpg"));
     private JLabel evilNies = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Nies.jpg"));
     private JLabel evilGurrito = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Boss/Gurrito.jpg"));
-    private JLabel opFull = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_Full.png"));
+    private JLabel opFull = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_100.png"));
     private JLabel selector = new JLabel(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/Selectors/Boss_Selected_Attack.png"));
 
     //Text box
@@ -48,12 +49,13 @@ public class BossFightWindow extends JFrame
     };
 
 
-    public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass,AudioPlayer audioPlayerPass,MainWindow mainWindowPass)
+    public BossFightWindow(BossFightSystem BossFightSystemPass,Layout layoutPass,AudioPlayer audioPlayerPass,MainWindow mainWindowPass,Player playerPass)
     {
         this.mainWindow = mainWindowPass;
         this.audioPlayer = audioPlayerPass;
         this.layout = layoutPass;
         bossFightSystem = BossFightSystemPass;
+        this.player = playerPass;
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -129,6 +131,8 @@ public class BossFightWindow extends JFrame
                         case 2 -> dialouge(bossFightSystem.heal());
                         case 3 -> dialouge(bossFightSystem.defend());
                     }
+
+                    updateStatus();
                 }
             }
         }
@@ -242,7 +246,29 @@ public class BossFightWindow extends JFrame
         revalidate();
     }
 
-
+    public void updateStatus()
+    {
+        if(player.healthPercentage() > 75)
+        {
+            opFull.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_Full.png"));
+        }
+        else if(player.healthPercentage() >= 75)
+        {
+            opFull.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_75.png"));
+        }
+        else if(player.healthPercentage() >= 50)
+        {
+            opFull.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_50.png"));
+        }
+        else if(player.healthPercentage() >= 25)
+        {
+            opFull.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/OP_25.png"));
+        }
+        else
+        {
+            opFull.setIcon(new ImageIcon(new File(".").getAbsolutePath() + "/Sprites/HealthStates/MC_0.png"));
+        }
+    }
 
     public void defeatedSequence()
     {   

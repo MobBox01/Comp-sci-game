@@ -158,6 +158,7 @@ public class EndingWindow extends JFrame
     public void playHappyGangAnimation()
     {
         //TODO: Make Happy Gang Animation
+        //
 
     }
 

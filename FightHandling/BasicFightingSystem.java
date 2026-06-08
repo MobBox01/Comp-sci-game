@@ -38,15 +38,15 @@ public class BasicFightingSystem
 
     public void defend()
     {
-        window.dialouge("Defending, its pointless... you attack first... Turn nullified. \nHeal or Attack");
+        window.dialouge("Defending, its pointless... you attack first... Turn nullified. \nHeal or attack");
     }
 
     /**
-     * Attack the enemy
+     * attack the enemy
      */
     public void attack()
     {
-        int damageTaken = enemy.Attack() + ((int)(enemy.Attack()*.2));
+        int damageTaken = enemy.attack() + ((int)(enemy.attack()*.2));
         enemy.damageRecieved(player.attackAction());
         player.damageRecieved(damageTaken);
         window.dialouge("You have dealt [" + player.attackAction() + "] damage!\n" + enemy.getName() + " Health remaining: [" + enemy.getHealth() + "]\n" + enemy.getName() + " has dealt [" + damageTaken + "] damage!\nHealth remaining: [" + player.getHealth() + "]");

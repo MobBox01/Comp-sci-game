@@ -45,18 +45,24 @@ public class BossFightSystem
     public String defend()
     {
         int defenceRNG = (int)(Math.random()*6);
-        int damage = 0;
+        int damage = currentEnemy.attack()+ ((int)((currentEnemy.attack())*((int)(Math.random()*100)))/100);
+
         if(defenceRNG <= 1) // 2/5 chance
         {
-            return "You have decided to defend... Charge has increased!\nCurrent Critical Charge: [" + player.getCharge() + "]\nHealth remaining: [" + player.getHealth() + "]\nCurrent Critical Charge: [" + player.addCharge(((int)(Math.random()*11))+10) + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
+            return "You have decided to defend... Charge has increased!\nCurrent Critical Charge: [" + player.addCharge(((int)(Math.random()*11))+10) + "]\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
         }
         else if(defenceRNG == 2)
         {
-            return "You have decided to defend... " + currentEnemy.getName() + " has attacked and you slipped up...\n" + currentEnemy.getName() + " has dealt " + damage + "\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
+            damage = (int)(currentEnemy.attack()*1.2);
+            player.damageRecieved(damage);
+            return "You have decided to defend... " + currentEnemy.getName() + " has attacked and you slipped up...\n" + currentEnemy.getName() + " has dealt " + damage + "\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]\nYou have recieved [" + player.addCharge(5) + "] charge!";
         }
         else if(defenceRNG == 3)
         {
-            return "You have decided to defend... " + currentEnemy.getName() + " has attacked you and you both headbutted... [50] damage taken to both, ouchie.\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: ["  + currentEnemy.getHealth() + "]";
+            player.substractCharge(4);
+            player.damageRecieved(50);
+            currentEnemy.damageRecieved(50);
+            return "You have decided to defend... " + currentEnemy.getName() + " has attacked you and... you both headbutted... lmao! [50] damage taken to both of you, womp womp.\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: ["  + currentEnemy.getHealth() + "]\nLost 5 charge.";
         }
         else
         {
@@ -109,17 +115,17 @@ public class BossFightSystem
         }
     }
  
-
     /**
      * Heal a specified amount, default: 5 HP
     */
     public String heal()
     {
-        int healRng = ((int)(Math.random()*5));
+        int healRng = ((int)(Math.random()*30))+10;
 
         if(healRng <= 1)
         {
-            return "You have healed! ";
+            player.heal(healRng);
+            return "You have healed!\nHealth remaining: " + player.getHealth() + "\n" + currentEnemy.getName() + " health remaining: " + currentEnemy.getHealth();
         }
         else
         {

@@ -15,7 +15,6 @@ public class GameDriver
 {
     public static void main(String[] args) throws IOException
     {
-
         //Elements
         AudioPlayer audioPlayer = new AudioPlayer();
         ProgressSaving progressSaving = new ProgressSaving();
@@ -33,7 +32,7 @@ public class GameDriver
 
         //Boss Fight
         BossFightSystem bossFightSystem = new BossFightSystem(player);
-        BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window);
+        BossFightWindow bossFightWindow = new BossFightWindow(bossFightSystem, layout, audioPlayer, window, player);
 
         //Other
         EndingWindow endingWindow = new EndingWindow(audioPlayer);
@@ -44,7 +43,7 @@ public class GameDriver
         bossFightWindow.addKeyListener(input);
         endingWindow.addKeyListener(input);
 
-        }
+    }
 }
 
 
