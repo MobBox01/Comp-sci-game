@@ -7,9 +7,9 @@ public class DialougeMapping
     private int dialougeKeyPosition;
     private String[] dialouge = 
     {
-        "{IO}: Its the final strech... Ferreto don't give up. Destroy that portal. T-10 minutes before demon appearance. You defeated a majority of enemies they are to afraid. Your to powerful for them all shine that light against the void.",
-        "{IO}: Ferreto, the portal is near the further you go the void will disappear... This long journey(5 minute game lmao) has been worth it, hasn't it? You are strong to fight back against them",
-        "{IO}: So like anyway, why the hell didn't you do your computer science homework? Literally was befuddled throughout the entire boss encounter, i mean you got like 6666 XP so thats a win but still.............................................................",
+        "{IO}: Its the final stretch... Ferreto don't give up. Destroy that portal. T-10 minutes before demon appearance. You defeated a majority of enemies they are to afraid. Your to powerful for them all shine that light against the void.",
+        "{IO}: Ferreto, the portal is near the further you go void fades... This long journey (5 minute game lmao) has been worth it, hasn't it? You are strong to fight back against them",
+        "{IO}: So like anyway, why the hell didn't you do your computer science homework? Literally was befuddled throughout the entire boss encounter. You got like 6666 XP so thats a win but still.............................................................",
         "{Ferreto}: Oh my god, STOP ASKING ME! I didn't feel like it. They're views have changed now so something positive came out of it, now lets stop this demon from forming\n",
         "{IO}: The portal heart feels weak... we caught it in a early stage of development then but its strange how much void matter came out, probably because of this the void matter is also weaker to your light!",
     };

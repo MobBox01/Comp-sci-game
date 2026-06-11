@@ -38,6 +38,7 @@ public class Player
     {
         health[level] -= damage-((int)(damage*defense[level]));
 
+        damage -= ((int)(damage*defense[level]));
         return damage;
     }
 
@@ -77,7 +78,7 @@ public class Player
      * Avoids health overflow
      * Random chance for heal to fail, and you will get less healing!
      */
-    public void heal(int heal)
+    public int heal(int heal)
     {
         if(((int)(Math.random()*100)) >= 30)
         {
@@ -92,6 +93,8 @@ public class Player
         {
             health[level] = maxHealth[level];
         }
+
+        return heal;
     }
 
 

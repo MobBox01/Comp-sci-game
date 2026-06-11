@@ -63,7 +63,6 @@ public class PlayerInput extends JFrame implements KeyListener
         tutorial.getContentPane().setBackground(Color.BLACK);
         tutorial.setVisible(true);
         tutorial.addKeyListener(this);
-
     }
 
     /**

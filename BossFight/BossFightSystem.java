@@ -11,7 +11,7 @@ public class BossFightSystem
     //20, 200,400
     private Enemy evilKlus = new Enemy(10,40, 666, .9, "Evil Klus");
     private Enemy evilNies = new Enemy(100, 60,666, .5, "Evil Nies");
-    private Enemy evilGurrito = new Enemy(500,25, 666, 0.0, "Evil Gurrito");
+    private Enemy evilGurrito = new Enemy(1,25, 666, 0.0, "Evil Gurrito");
     private Enemy currentEnemy = evilGurrito;
     private String[] extraDialouge = 
     {
@@ -45,7 +45,7 @@ public class BossFightSystem
     public String defend()
     {
         int defenceRNG = (int)(Math.random()*6);
-        int damage = currentEnemy.attack()+ ((int)((currentEnemy.attack())*((int)(Math.random()*100)))/100);
+        int damage = ((int)(currentEnemy.attack()*1.2));
 
         if(defenceRNG <= 1) // 2/5 chance
         {
@@ -55,7 +55,7 @@ public class BossFightSystem
         {
             damage = (int)(currentEnemy.attack()*1.2);
             player.damageRecieved(damage);
-            return "You have decided to defend... " + currentEnemy.getName() + " has attacked and you slipped up...\n" + currentEnemy.getName() + " has dealt " + damage + "\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]\nYou have recieved [" + player.addCharge(5) + "] charge!";
+            return "You have decided to defend... " + currentEnemy.getName() + " has attacked and you slipped up...\n" + currentEnemy.getName() + " has dealt [" + damage + " ]damage!\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]\nYou have gained [" + player.addCharge(((int)(Math.random()*20))+10) + "] critical charge!\nCurrent Critical Charge: [" + player.getCharge() + "]";
         }
         else if(defenceRNG == 3)
         {
@@ -71,43 +71,28 @@ public class BossFightSystem
     }
 
     /**
-     * Attack the enemy
-     * If less then or equal to 40% HP; 50% chance of being counter attacked with x2 damage
+     * Attack the enemy; Enemy attacks back (constant)
      */
     public String attack()
     {
-        int damage = player.attackAction();
-    
+        int damage = player.attackAction() + ((int)(player.attackAction()*(player.getCharge()/100)));
+        
         if(evilGurrito.isAlive())
         {
             int randomDialouge = (int)((Math.random()*3));
-            evilGurrito.damageRecieved(damage);
-            if(!evilGurrito.isAlive())
-            {
-                currentEnemy = evilNies;
-                return "Ah you've defeated me... Evil Nies remaining HP: [" + evilNies.getHealth() + "]";
-            }
-            return "You have dealt: " + damage + "\nEvil Gurrito remaining HP: [" + evilGurrito.getHealth() + "]\nGurrito: " + extraDialouge[randomDialouge];
+            return attackDialouge(damage, randomDialouge);
         }
-
         else if(evilNies.isAlive())
         {
             int randomDialouge = (int)((Math.random()*3)+2);
+            return attackDialouge(damage, randomDialouge);
 
-            evilNies.damageRecieved(damage);
-            if(!evilNies.isAlive())
-            {
-                currentEnemy = evilKlus;
-                return "Ah you've defeated me... Evil Klus remaining HP: [" + evilKlus.getHealth() + "]";
-            }
-            return "You have dealt: " + damage + "\nEvil Nies remaining HP: [" + evilKlus.getHealth() + "]\nKlus: " + extraDialouge[randomDialouge];
         }
         else if(evilKlus.isAlive())
         {
-            evilKlus.damageRecieved(damage);
-            int randomDialouge = (int)((Math.random()*4)+6);
+            int randomDialouge = (int)((Math.random()*4)+5);
+            return attackDialouge(damage, randomDialouge);
 
-            return "You have dealt: " + damage + "\nEvil Klus remaining HP: [" + evilKlus.getHealth() + "]\nKlus: " + extraDialouge[randomDialouge];
         }
         else
         {
@@ -120,16 +105,20 @@ public class BossFightSystem
     */
     public String heal()
     {
-        int healRng = ((int)(Math.random()*30))+10;
-
-        if(healRng <= 1)
+        int healRng = ((int)(Math.random()*5));
+        int damage = (int)(currentEnemy.attack() * 1.2);
+        if(healRng >= 1) //Healed
         {
-            player.heal(healRng);
+            player.heal(healRng); 
             return "You have healed!\nHealth remaining: " + player.getHealth() + "\n" + currentEnemy.getName() + " health remaining: " + currentEnemy.getHealth();
         }
-        else
+        else if(healRng ==4) //Attacked
         {
-            return "l";
+            return currentEnemy.getName() + " has attacked! You were caught off guard and took [" + player.damageRecieved(damage) + "] damage!\nHealth remaining: [" + player.getHealth() + "\n"  + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]\nCurrent Critical Charge: ["  + player.getCharge() + "]";
+        }
+        else //Healed and charged
+        {
+            return "You healed [" + player.heal(((int)(Math.random()*20))+10) + "] HP! You also gained [" + player.addCharge(((int)(Math.random()*20))+10) + "] critical charge!\nHealth remaining: [" + player.getHealth() + "\nCurrent Critical Charge: [" + player.getCharge() + "]\n" + currentEnemy.getName() + " health remaining: [" + currentEnemy.getHealth() + "]";
         }
     }
 
@@ -156,5 +145,29 @@ public class BossFightSystem
     public boolean isKlusDead()
     {
         return !evilKlus.isAlive();
+    }
+
+    public String attackDialouge(int damage,int randomDialouge)
+    {
+        //Defeat Case
+        if(evilGurrito == currentEnemy && !evilGurrito.isAlive())
+        {
+            currentEnemy = evilNies;
+            return "Ah you have defeated your english teacher that you never had officially and only for a english recovery course... how could you.\nEvil Nies remaining health: [" + currentEnemy.getHealth() + "]";
+        }
+        else if(evilNies == currentEnemy && !evilNies.isAlive())
+        {
+            currentEnemy = evilKlus;
+            return "Ah you have defeated your chemistry teacher that you never had officially, ever...........Evil Klus remaining health: [" + currentEnemy.getHealth() + "]";
+        }
+        else if(evilKlus == currentEnemy && !evilKlus.isAlive())
+        {
+            currentEnemy = null;
+            return "Ah, you defeated me Ferreto............";
+        }
+        
+
+        //Default case
+        return "You have dealt: " + currentEnemy.damageRecieved(damage) + "\n" + currentEnemy.getName() + " remaining HP: [" + currentEnemy.getHealth() + "]\n" + currentEnemy.getName() + " has attacked! " + currentEnemy.getName() + " has dealt [" + player.damageRecieved(currentEnemy.attack()) + "]\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + ": "+ extraDialouge[randomDialouge];
     }
 }

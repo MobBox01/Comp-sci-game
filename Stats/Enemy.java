@@ -51,6 +51,8 @@ public class Enemy
         {
             health = 0;
         }
+
+        attackDamageRecieved -=((int)(attackDamageRecieved*defense));
         return attackDamageRecieved;
     }
 

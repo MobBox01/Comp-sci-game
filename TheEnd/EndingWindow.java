@@ -4,9 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.io.*;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
-import java.io.*;
 @SuppressWarnings("FieldMayBeFinal")
 //3, 4 Secret ending song
 public class EndingWindow extends JFrame
@@ -34,16 +34,16 @@ public class EndingWindow extends JFrame
         "Conceal",
         "Nies",
         "Gurrito",
-        "Kluss",
+        "Klus",
         "Happy"
     };
     private String[] endingDialougeList =
     {
-        "Your light shines, as the portal infront of you gets concealed. The world is saved as you see the darkness vanish in the world it tried to torment, you look up to see the sky clearing up as the evil energy disperses.",
-        "Mr Nies has become very happy, and now is a chemistry teacher at the ######## high school. After returning to ######## he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
-        "Mr Gurrito has become australian and blue, he now works on his english project to destroy the british. He now fights for kung fu panda and fights against evil like giving kids candy.",
-        "Mr Klus has formed the band \"The null pointer exception\" and still torments those who don't do their computer science homework and saved the world from certain annihilation",
-        "{IO}: The happy gang have a good ending, so does the world. But will you have a happy ending? Thats up to you Ferreto, my job here is done and i am going back to the {IO} realm to go back to eternal slumber."
+        "Your light shines. The portal infront of you gets concealed. The world is saved as you see the darkness vanish in the world it tried to torment. You look up to see the sky clearing up as the evil energy disperses.",
+        "Mr Nies has become very happy; and now is a chemistry teacher at the ######## high school. After returning to ######## he found his long lost sister Mrs.Nephew... Then he discovered he had his own niece",
+        "Mr Gurrito has become a;ustralian; and blue;;;;;, he now works on his english project to destroy the british. Gurrito now fights for; ;kung; f;u; pan;da and fights against;; evil like giving kids candy.",
+        "Mr Klus has formed the band \"The null pointer exception\". Klus still torments those who don't do their computer science homework and now writes books in his retirement of 1 hour.",
+        "{IO}: The happy gang have a good ending, so does the world. But will you have a happy ending? Thats up to you Ferreto, my job here is done and i am going back to the {BIOS} realm to go back to eternal slumber."
     };
 
     
@@ -61,7 +61,7 @@ public class EndingWindow extends JFrame
         happyGurrito.setBounds(500,200,300,400);
         happyGurrito.setVisible(false);
         happyNies.setVisible(false);
-        
+        happyKlus.setVisible(false);
         //Dialouge
         dialougeContainer.setBounds(50,50,1200,120);
         dialougeContainer.add(textBox, BorderLayout.CENTER);
@@ -155,13 +155,6 @@ public class EndingWindow extends JFrame
         happyKlus.setBorder(BorderFactory.createLineBorder(Color.BLACK,5));
     }
 
-    public void playHappyGangAnimation()
-    {
-        //TODO: Make Happy Gang Animation
-        //
-
-    }
-
     public void playAnimations()
     {
         isActive = true;
@@ -188,7 +181,6 @@ public class EndingWindow extends JFrame
                         case "Klus" -> playKlusAnimation();
                         case "Happy" -> 
                         {
-                            playHappyGangAnimation();
                             isActive = false;
                             ((Timer)loop.getSource()).stop();
                         }
