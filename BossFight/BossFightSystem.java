@@ -10,8 +10,8 @@ public class BossFightSystem
     private Player player;
     //20, 200,400
     private Enemy evilKlus = new Enemy(10,40, 666, .9, "Evil Klus");
-    private Enemy evilNies = new Enemy(100, 60,666, .5, "Evil Nies");
-    private Enemy evilGurrito = new Enemy(1,25, 666, 0.0, "Evil Gurrito");
+    private Enemy evilNies = new Enemy(50, 60,666, .5, "Evil Nies");
+    private Enemy evilGurrito = new Enemy(100,25, 666, 0.0, "Evil Gurrito");
     private Enemy currentEnemy = evilGurrito;
     private String[] extraDialouge = 
     {
@@ -26,20 +26,9 @@ public class BossFightSystem
         "I want to develop a band..."
     };
 
-
-
     public BossFightSystem(Player playerPass) 
     {
         player = playerPass;
-    }
-    //You defeat evil nies, then evil gurrito, finally defeat mr klus
-    /**
-     * Initialize the new enemy
-     * Set dialouge text for new enemy encounter
-     */
-    public void bossEncounter(int bossLevel)
-    {
-        //"Rat.. You haven't done your CSA Homework... for this you must pay"
     }
 
     public String defend()
@@ -60,8 +49,8 @@ public class BossFightSystem
         else if(defenceRNG == 3)
         {
             player.substractCharge(4);
-            player.damageRecieved(50);
-            currentEnemy.damageRecieved(50);
+            player.damageRecieved(currentEnemy.attack()+ ((int)(currentEnemy.attack()*(Math.random()/100))));
+            currentEnemy.damageRecieved(player.attackAction()+ ((int)(player.attackAction()*(Math.random()/100))));
             return "You have decided to defend... " + currentEnemy.getName() + " has attacked you and... you both headbutted... lmao! [50] damage taken to both of you, womp womp.\nHealth remaining: [" + player.getHealth() + "]\n" + currentEnemy.getName() + " health remaining: ["  + currentEnemy.getHealth() + "]\nLost 5 charge.";
         }
         else
@@ -125,6 +114,10 @@ public class BossFightSystem
     //GETTERS
     public boolean isBossFightOver()
     {
+        if(!evilKlus.isAlive())
+        {
+            player.heal(999999);
+        }
         return !evilKlus.isAlive();
     }
 

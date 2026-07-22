@@ -118,7 +118,8 @@ public class PlayerInput extends JFrame implements KeyListener
                     }
                 }
             }
-            //Boss Fight Window
+            
+            //Boss Fight Window active and on-going
             else if(layout.isBossRoom() && bossFightWindow.isVisible() && !bossFightWindow.dialougeStatus())
             {
                 //Boss fight not over
